@@ -10,16 +10,17 @@ set nocompatible
 set autoindent
 set smartindent
 
-" syntax on
 set number
-set mouse=a
-map <ScrollWheelDown> j
-map <ScrollWheelUp> k
-set cc=80
-highlight ColorColumn ctermbg=8
+"set mouse=a
+"map <ScrollWheelDown> j
+"map <ScrollWheelUp> k
+"set cc=80
+"highlight ColorColumn ctermbg=8
 set comments=sl:/*,mb:**,elx:*/
-" colorscheme zellner
 imap jk <Esc>
+
+"set t_Co=256
+"syntax on
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -27,26 +28,28 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 Plug 'tpope/vim-sensible'
-Plug 'junegunn/seoul256.vim'
-Plug 'tpope/vim-sensible'
+" Plug 'junegunn/seoul256.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'huyvohcmc/atlas.vim'
+Plug 'itchyny/lightline.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " Unified color scheme (default: dark)
-colo seoul256
+" colo seoul256
 
 " Light color scheme
-colo seoul256-light
+" colo seoul256-light
 
 " Switch
-set background=dark
+" set background=dark
 
 let mapleader = "\<Space>"
 
@@ -56,3 +59,6 @@ nmap <C-m> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
 nnoremap <leader>b :buffers<CR>
+
+colorscheme atlas
+let g:lightline = { 'colorscheme': 'atlas' }
