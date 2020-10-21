@@ -10,16 +10,19 @@ set nocompatible
 set autoindent
 set smartindent
 
-" syntax on
 set number
-set mouse=a
-map <ScrollWheelDown> j
-map <ScrollWheelUp> k
-set cc=80
-highlight ColorColumn ctermbg=8
+"set mouse=a
+"map <ScrollWheelDown> j
+"map <ScrollWheelUp> k
+"set cc=80
+"highlight ColorColumn ctermbg=8
 set comments=sl:/*,mb:**,elx:*/
-" colorscheme zellner
 imap jk <Esc>
+
+" set background=dark
+set t_Co=256
+syntax on
+" syntax off
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -32,22 +35,38 @@ call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 Plug 'tpope/vim-sensible'
-Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-commentary'
-Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+" Plug 'itchyny/lightline.vim'
+Plug 'robertmeta/nofrils'
+Plug 'huyvohcmc/atlas.vim'
+" Plug 'pbrisbin/vim-colors-off'
+" Plug 'danishprakash/vim-yami'
+" Plug 'ewilazarus/preto'
+" Plug 'lokaltog/vim-monotone'
+" Plug 'fxn/vim-monochrome'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
+" colorscheme yami
+" colorscheme off
+" colorscheme monochrome
+" colo atlas
+" colo monotone
+" colo preto
+colo nofrils-dark
+"let g:lightline = { 'colorscheme': 'atlas' }
+
 " Unified color scheme (default: dark)
-colo seoul256
+" colo seoul256
 
 " Light color scheme
-colo seoul256-light
+" colo seoul256-light
 
 " Switch
-set background=dark
+" set background=dark
 
 let mapleader = "\<Space>"
 
@@ -67,3 +86,4 @@ if has('persistent_undo')
   set undodir=/tmp/.vim/backups
   set undofile
 endif
+"nnoremap <leader>b :buffers<CR>
