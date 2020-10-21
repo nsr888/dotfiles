@@ -33,8 +33,9 @@ call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
 Plug 'tpope/vim-sensible'
 Plug 'junegunn/seoul256.vim'
-Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -55,4 +56,14 @@ let mapleader = "\<Space>"
 nmap <C-m> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
-nnoremap <leader>b :buffers<CR>
+"nnoremap <leader>b :buffers<CR>
+nnoremap <Leader>b :ls<CR>:b<Space>
+
+" ================ Persistent Undo ==================
+" Keep undo history across sessions, by storing in file.
+" Only works all the time.
+if has('persistent_undo')
+  silent !mkdir /tmp/.vim/backups > /dev/null 2>&1
+  set undodir=/tmp/.vim/backups
+  set undofile
+endif
