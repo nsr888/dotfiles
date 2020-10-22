@@ -24,8 +24,8 @@ set t_Co=256
 syntax on
 " syntax off
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
@@ -38,35 +38,16 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
-" Plug 'itchyny/lightline.vim'
-Plug 'robertmeta/nofrils'
+Plug 'itchyny/lightline.vim'
+"Plug 'robertmeta/nofrils'
 Plug 'huyvohcmc/atlas.vim'
-" Plug 'pbrisbin/vim-colors-off'
-" Plug 'danishprakash/vim-yami'
-" Plug 'ewilazarus/preto'
-" Plug 'lokaltog/vim-monotone'
-" Plug 'fxn/vim-monochrome'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
-" colorscheme yami
-" colorscheme off
-" colorscheme monochrome
-" colo atlas
-" colo monotone
-" colo preto
-colo nofrils-dark
-"let g:lightline = { 'colorscheme': 'atlas' }
-
-" Unified color scheme (default: dark)
-" colo seoul256
-
-" Light color scheme
-" colo seoul256-light
-
-" Switch
-" set background=dark
+colo atlas
+"colo nofrils-dark
+let g:lightline = { 'colorscheme': 'atlas' }
 
 let mapleader = "\<Space>"
 
