@@ -41,6 +41,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
 "Plug 'robertmeta/nofrils'
 Plug 'huyvohcmc/atlas.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -53,11 +55,10 @@ let mapleader = "\<Space>"
 
 """ Plugins Keymaps
 
-nmap <C-m> :NERDTreeFind<CR>
+nmap <leader>v :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
-"nnoremap <leader>b :buffers<CR>
-nnoremap <Leader>b :ls<CR>:b<Space>
+nnoremap <leader>b :Buffers<CR>
 
 " ================ Persistent Undo ==================
 " Keep undo history across sessions, by storing in file.
@@ -68,3 +69,12 @@ if has('persistent_undo')
   set undofile
 endif
 "nnoremap <leader>b :buffers<CR>
+
+" Mapping
+nmap <leader><tab> :FZF<CR>
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
