@@ -17,6 +17,9 @@ alias oldvim="/usr/bin/vim"
 # Ctags
 ## Replace ctag in mac
 ```bash
+brew install ctag
+```
+```bash
 alias ctags="`brew --prefix`/bin/ctags  -R --exclude=.git --exclude=log"
 ```
 ## Links
