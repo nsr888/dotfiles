@@ -13,8 +13,6 @@ set smartindent
 set ttyfast
 set lazyredraw
 set number
-set cursorline
-set hlsearch
 "set mouse=a
 "map <ScrollWheelDown> j
 "map <ScrollWheelUp> k
