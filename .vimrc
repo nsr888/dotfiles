@@ -18,15 +18,18 @@ set hlsearch
 "set mouse=a
 "map <ScrollWheelDown> j
 "map <ScrollWheelUp> k
-"set cc=80
+set colorcolumn=80
 "highlight ColorColumn ctermbg=8
-set comments=sl:/*,mb:**,elx:*/
 imap jk <Esc>
+nnoremap Q <Nop>
 
 " set background=dark
 set t_Co=256
 syntax on
 " syntax off
+
+" Comments autocomletion
+au Bufenter *.c,*.h set comments=sl:/*,mbl:**,elx:*/
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -38,6 +41,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
+Plug 'pbondoer/vim-42header'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -59,7 +63,8 @@ let mapleader = "\<Space>"
 
 """ Plugins Keymaps
 
-nmap <leader>v :NERDTreeFind<CR>
+"nmap <leader>v :NERDTreeFind<CR>
+nmap <C-m> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
 nnoremap <leader>b :Buffers<CR>
@@ -82,3 +87,8 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" Edit .vimrc
+map <leader>vl :vsp $MYVIMRC<CR>
+map <leader>vr :source $MYVIMRC<CR>
+
