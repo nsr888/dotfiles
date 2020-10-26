@@ -20,12 +20,18 @@ set hlsearch
 "map <ScrollWheelUp> k
 set colorcolumn=80
 "highlight ColorColumn ctermbg=8
-imap jk <Esc>
+
+" jk | Escaping!
+inoremap jk <Esc>
+xnoremap jk <Esc>
+cnoremap jk <C-c>
+"imap jk <Esc>
+
 nnoremap Q <Nop>
 
 " set background=dark
-set t_Co=256
-syntax on
+" set t_Co=256
+" syntax on
 " syntax off
 
 " Comments autocomletion
@@ -52,8 +58,8 @@ Plug 'huyvohcmc/atlas.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
-" Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -66,8 +72,8 @@ let mapleader = "\<Space>"
 
 """ Plugins Keymaps
 
-"nmap <leader>v :NERDTreeFind<CR>
-nmap <C-m> :NERDTreeFind<CR>
+nmap <leader>v :NERDTreeFind<CR>
+"nmap <C-m> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
 nnoremap <leader>b :Buffers<CR>
@@ -82,16 +88,26 @@ if has('persistent_undo')
 endif
 "nnoremap <leader>b :buffers<CR>
 
+
+""""" FZF
 " Mapping
-nmap <leader><tab> :FZF<CR>
+map <C-f> :Files<CR>
+nnoremap <silent> <leader>t :Tags<CR>
+let g:fzf_tags_command = 'ctags -R'
+nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
+"nmap <leader><tab> :FZF<CR>
+" Mapping selecting mappings
+" nmap <leader><tab> :Tags<CR>
+" command! -bang -nargs=* Ag
+"   \ call fzf#vim#grep(
+"   \   'ag --column --numbers --noheading --color --smart-case '.shellescape(<q-args>), 1,
+"   \   fzf#vim#with_preview(), <bang>0)
 
-" Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
+" map <C-g> :Ag
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 
-" Edit .vimrc
 map <leader>vl :vsp $MYVIMRC<CR>
 map <leader>vr :source $MYVIMRC<CR>
 
@@ -102,57 +118,35 @@ let g:cscope_silent = 1
 
 
 """" COC
+" TextEdit might fail if hidden is not set.
+set hidden
 
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" Give more space for displaying messages.
+set cmdheight=2
 
-let g:coc_snippet_next = '<tab>'
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
 
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-"
-" " Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
 
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -171,23 +165,21 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 "" Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-"" Remap for format selected region
-"xmap <leader>f  <Plug>(coc-format-selected)
-"nmap <leader>f  <Plug>(coc-format-selected)
-
-" Create mappings for function text object, requires document symbols feature of languageserver.
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
 omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
-" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
 "" Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
-nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
-nmap <leader>p :r /tmp/.vim/.vbuf<CR>
