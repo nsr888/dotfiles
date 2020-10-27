@@ -53,7 +53,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
-"Plug 'robertmeta/nofrils'
+Plug 'robertmeta/nofrils'
 Plug 'huyvohcmc/atlas.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -64,9 +64,6 @@ Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
-colo atlas
-"colo nofrils-dark
-let g:lightline = { 'colorscheme': 'atlas' }
 
 let mapleader = "\<Space>"
 
@@ -183,3 +180,7 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 "" Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+colo atlas
+"colo nofrils-dark
+let g:lightline = { 'colorscheme': 'atlas' }
