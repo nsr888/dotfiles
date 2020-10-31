@@ -9,34 +9,26 @@ set tabstop=4
 set nocompatible
 set autoindent
 set smartindent
+set colorcolumn=80
+set number
 
+" Don't redraw while executing macros (good performance config)
 set ttyfast
 set lazyredraw
-set number
+
 set cursorline
 set hlsearch
-"set mouse=a
-"map <ScrollWheelDown> j
-"map <ScrollWheelUp> k
-set colorcolumn=80
-"highlight ColorColumn ctermbg=8
 
 " jk | Escaping!
-" inoremap jk <Esc>
-" xnoremap jk <Esc>
-" cnoremap jk <C-c>
 imap jk <Esc>
 
+" Disable entering Ex mode
 nnoremap Q <Nop>
-
-" set background=dark
-" set t_Co=256
-" syntax on
-" syntax off
 
 " Comments autocomletion
 au Bufenter *.c,*.h set comments=sl:/*,mbl:**,elx:*/
 
+" Install vim-plug if not found
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -53,13 +45,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
-" Plug 'robertmeta/nofrils'
 Plug 'huyvohcmc/atlas.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -67,15 +59,20 @@ call plug#end()
 
 let mapleader = "\<Space>"
 
-""" Plugins Keymaps
+" ================ theme config 
+colo atlas
+let g:lightline = { 'colorscheme': 'atlas' }
+" Fix atlas theme documentation menu font color
+hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
+
+" ================ Plugins Keymaps
 
 nmap <leader>v :NERDTreeFind<CR>
-"nmap <C-m> :NERDTreeFind<CR>
 nmap <silent> <leader><leader> :NERDTreeToggle<CR>
 
 nnoremap <leader>b :Buffers<CR>
 
-" ================ Persistent Undo ==================
+" ================ Persistent Undo 
 " Keep undo history across sessions, by storing in file.
 " Only works all the time.
 if has('persistent_undo')
@@ -86,19 +83,12 @@ endif
 "nnoremap <leader>b :buffers<CR>
 
 
-""""" FZF
+" ================ FZF
 " Mapping
 map <C-f> :Files<CR>
 nnoremap <silent> <leader>t :Tags<CR>
 let g:fzf_tags_command = 'ctags -R'
 nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
-"nmap <leader><tab> :FZF<CR>
-" Mapping selecting mappings
-" nmap <leader><tab> :Tags<CR>
-" command! -bang -nargs=* Ag
-"   \ call fzf#vim#grep(
-"   \   'ag --column --numbers --noheading --color --smart-case '.shellescape(<q-args>), 1,
-"   \   fzf#vim#with_preview(), <bang>0)
 
 " map <C-g> :Ag
 nmap <leader><tab> <plug>(fzf-maps-n)
@@ -108,13 +98,13 @@ omap <leader><tab> <plug>(fzf-maps-o)
 map <leader>vl :vsp $MYVIMRC<CR>
 map <leader>vr :source $MYVIMRC<CR>
 
-" Cscope
+" ================ Cscope
 nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
 nnoremap <leader>l :call ToggleLocationList()<CR>
 let g:cscope_silent = 1
 
 
-"""" COC
+" ================ COC
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -180,8 +170,3 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 "" Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" colo nofrils-dark
-colo atlas
-let g:lightline = { 'colorscheme': 'atlas' }
-hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
