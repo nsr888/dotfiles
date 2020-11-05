@@ -83,6 +83,12 @@ Below command in project folder will generate file `compile_commands.json` for c
 ```bash
 make clean; bear make
 ```
+#### 9 clang-format
+Add into project `.clang-format` with following content. 
+This will disable autoformatting code with coc.nvim.
+```
+DisableFormat: true
+```
 
 ## Useful links
 * https://wiki.archlinux.org/index.php/Neovim
