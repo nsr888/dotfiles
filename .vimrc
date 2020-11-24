@@ -50,8 +50,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+      \ 'coc-tabnine',
+      \ 'coc-prettier',
+      \ 'coc-vimlsp',
+      \ 'coc-go',
+      \ 'coc-json',
+      \ 'coc-python',
+      \]
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Plug 'junegunn/seoul256.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -65,10 +74,12 @@ let g:lightline = { 'colorscheme': 'atlas' }
 " Fix atlas theme documentation menu font color
 hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
 
-" ================ Plugins Keymaps
 
-nmap <leader>v :NERDTreeFind<CR>
-nmap <silent> <leader><leader> :NERDTreeToggle<CR>
+" Unified color scheme (default: dark)
+" let g:seoul256_background = 236
+" colo seoul256
+
+" ================ Plugins Keymaps
 
 nnoremap <leader>b :Buffers<CR>
 
@@ -170,3 +181,21 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 
 "" Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" ================ NERD
+
+nmap <leader>v :NERDTreeFind<CR>
+nmap <silent> <leader><leader> :NERDTreeToggle<CR>
+
+set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,tags
+
+"" Nerdtree config for wildignore
+let NERDTreeRespectWildIgnore=1
+
+vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
+nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
+nmap <leader>p :r /tmp/.vim/.vbuf<CR>
