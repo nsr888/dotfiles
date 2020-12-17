@@ -78,6 +78,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
       \ 'coc-tabnine'
       \]
+      " \ 'coc-tabnine'
+      " \ 'coc-prettier',
+      " \ 'coc-vimlsp',
+      " \ 'coc-go',
+      " \ 'coc-json',
+      " \ 'coc-python',
+      " \]
 " Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
