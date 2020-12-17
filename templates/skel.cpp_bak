@@ -1,0 +1,31 @@
+#include "@BASENAME@.hpp"
+
+@BASENAME@::@BASENAME@(void): _name("") {
+    return;
+}
+
+@BASENAME@::@BASENAME@(const std::string & @CURSOR@name):
+    _name(name) {
+    return;
+}
+
+@BASENAME@::~@BASENAME@(void) {
+    return;
+}
+
+@BASENAME@::@BASENAME@(const @BASENAME@ & other) {
+    *this = other;
+}
+
+@BASENAME@ & @BASENAME@::operator=(const @BASENAME@ & other) {
+    this->_name = other.getName();
+    return *this;
+}
+
+void @BASENAME@::setName(const std::string & name) {
+    this->_name = name;
+}
+
+std::string @BASENAME@::getName(void) const {
+    return this->_name;
+}

@@ -3,6 +3,14 @@
 * Mac or Linux
 * [Neovim](https://neovim.io/)
 * [Silver Searcher (ag)](https://github.com/ggreer/the_silver_searcher)
+* [nodejs](https://nodejs.org/en/download/) >= 10.12 for coc.nvim plugin 
+
+To install nodejs run:
+
+```
+curl -sL install-node.now.sh/lts | bash
+```
+
 ## Step by step configuration
 #### 1. Clone this repo to `~/dotfiles`
 ```bash
@@ -12,6 +20,11 @@ git clone https://github.com/sun604/dotfiles ~/dotfiles
 ```bash
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ```
+And for cpp/hpp templates I use [vim-skeletons](https://github.com/noahfrederick/vim-skeleton) templates, so it needed to make apropriate linking:
+```bash
+ln -s ~/dotfiles/templates ~/.vim/templates
+```
+
 #### 3. Replacing `vi` and `vim` commands with neovim
 Add this aliases in your `.profile`, for zsh this will be `.zshrc`
 ```bash
@@ -64,6 +77,7 @@ export PATH="/Users/<name>/clangd/bin:/Users/<name>/clangd/lib:$PATH"
 4. Open vim, run `:CocConfig` and place this config:
 ```json
 {
+    "diagnostic.displayByAle": true,
     "languageserver": {
         "clangd": {
             "command": "clangd",
@@ -83,12 +97,55 @@ Below command in project folder will generate file `compile_commands.json` for c
 ```bash
 make clean; bear make
 ```
-#### 9 clang-format
+#### 9 Add `.clang-format` file
 Add into project `.clang-format` with following content. 
 This will disable autoformatting code with coc.nvim.
 ```
 DisableFormat: true
 ```
+#### 10 ALE (Asynchronous Lint Engine) configuration
+
+The easiest way to get coc.nvim and ALE work together is to configure coc.nvim to send diagnostics to ALE, so ALE controls how all problems are presented to you, and to disable all LSP features in ALE, so ALE doesn't try to provide LSP features already provided by coc.nvim, such as auto-completion.
+
+1. Open your coc.nvim configuration file with :CocConfig and add "diagnostic.displayByAle": true to your settings.
+2. Add let g:ale_disable_lsp = 1 to your vimrc file, before plugins are loaded.
+
+##### 10.1 Install cppcheck (static analysis of c/c++ code)
+
+It will be used automaticly by ALE
+
+```
+brew install cppcheck
+```
+
+##### 10.2 Install clang-tidy (static analysis of c/c++ code)
+
+It will be used automaticly by ALE
+
+Easeast way to install by installing LLVM via brew: `brew install llvm`, but LLVM has size about 1Gb. So I recommend to download prebuild binaries from:
+
+https://releases.llvm.org/download.html#11.0.0
+
+Extract downloaded archive and copy only `clang-tidy` and `include` folder:
+
+```
+copy ~/Downloads/clang+llvm-11.0.0-x86_64-apple-darwin/bin/clang-tidy ~/clangd/bin/
+copy -r ~/Downloads/clang+llvm-11.0.0-x86_64-apple-darwin/include/ ~/clangd/
+```
+#### 11. Fix vim-skeleton plugin for better hpp files support
+
+In file `vim-skeleton/autoload/skeleton.vim`, after line:
+
+```vimscript
+call skeleton#Replace('BASENAME', basename)
+```
+
+I add add rule for uppercase basename, so it will become look like this:
+```vimscript
+call skeleton#Replace('BASENAME', basename)
+call skeleton#Replace('BASENAME_UPPER', toupper(basename))
+```
+
 
 ## Useful links
 * https://wiki.archlinux.org/index.php/Neovim

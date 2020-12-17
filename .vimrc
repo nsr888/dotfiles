@@ -6,6 +6,12 @@ set termencoding=utf-8
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+" expand tabs to spaces in cpp projects
+au BufNewFile,BufRead *.cpp,*.hpp set tabstop=4 shiftwidth=4 expandtab
+" Skeleton template for cpp files
+" au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
+" au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
+
 set nocompatible
 set autoindent
 set smartindent
@@ -17,7 +23,6 @@ set ttyfast
 set lazyredraw
 
 set cursorline
-set hlsearch
 
 " jk | Escaping!
 imap jk <Esc>
@@ -28,6 +33,26 @@ nnoremap Q <Nop>
 " Comments autocomletion
 au Bufenter *.c,*.h set comments=sl:/*,mbl:**,elx:*/
 
+" Disable ALE LSP features allready provided by coc.nvim
+let g:ale_disable_lsp = 1
+
+"====[ Set up smarter search behaviour ]=======================
+
+set incsearch       "Lookahead as search pattern is specified
+set ignorecase      "Ignore case in all searches...
+set smartcase       "...unless uppercase letters used
+
+set hlsearch        "Highlight all matches
+nmap <silent> // :nohlsearch<CR>
+noremap <leader>hl :set hlsearch! hlsearch?<CR>
+
+"====[ Protodef ]=======================
+" au! BufEnter *.cpp let b:fswitchdst = 'hpp,h' | let b:fswitchlocs = '.'
+" au! BufEnter *.cpp let b:fswitchdst = 'hpp'
+let g:protodefctagsexe = '/usr/local/bin/ctags'
+let g:protodefprotogetter = '~/.vim/plugged/vim-protodef/pullproto.pl'
+
+"====[ Plugins ]=======================
 " Install vim-plug if not found
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -51,16 +76,20 @@ Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
-      \ 'coc-tabnine',
-      \ 'coc-prettier',
-      \ 'coc-vimlsp',
-      \ 'coc-go',
-      \ 'coc-json',
-      \ 'coc-python',
+      \ 'coc-tabnine'
       \]
-Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 " Plug 'junegunn/seoul256.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'dense-analysis/ale'
+Plug 'noahfrederick/vim-skeleton'
+
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'vim-scripts/BufOnly.vim'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'derekwyatt/vim-protodef'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -115,7 +144,7 @@ nnoremap <leader>l :call ToggleLocationList()<CR>
 let g:cscope_silent = 1
 
 
-" ================ COC
+" ================ Coc
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -196,6 +225,29 @@ set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,tags
 "" Nerdtree config for wildignore
 let NERDTreeRespectWildIgnore=1
 
-vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
-nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
-nmap <leader>p :r /tmp/.vim/.vbuf<CR>
+" ================ Buffer Copy & Paste
+
+" vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
+" nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
+" nmap <leader>p :r /tmp/.vim/.vbuf<CR>
+
+" ================ ALE
+" let g:ale_linters = {
+" \   'cpp': ['clangd'],
+" \   'c': ['clangd'],
+" \}
+" let g:ale_fixers={
+" \   'cpp': ['clang-format'],
+" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \}
+" let g:ale_cpp_clangtidy_checks = []
+" let g:ale_cpp_clangtidy_executable = 'clang-tidy'
+" let g:ale_c_parse_compile_commands=1
+" let g:ale_cpp_clangtidy_extra_options = ''
+" let g:ale_cpp_clangtidy_options = ''
+" let g:ale_set_balloons=1
+" ================ Skeleton
+" function! g:skeleton_replacements.BASENAME_UPPER()
+"     return toupper(fnamemodify(a:filename, ':t:r'))
+" endfunction
+
