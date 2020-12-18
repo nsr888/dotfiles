@@ -7,7 +7,19 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 " expand tabs to spaces in cpp projects
-au BufNewFile,BufRead *.cpp,*.hpp set tabstop=4 shiftwidth=4 expandtab
+au BufNewFile,BufRead *.cpp,*.hpp
+	\ set tabstop=4 |
+	\ set shiftwidth=4 |
+	\ set expandtab
+" python
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
@@ -76,14 +88,14 @@ Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
-      \ 'coc-tabnine'
+      \ 'coc-tabnine',
+      \ 'coc-prettier',
+      \ 'coc-vimlsp',
+      \ 'coc-go',
+      \ 'coc-json',
+      \ 'coc-pyright'
       \]
       " \ 'coc-tabnine'
-      " \ 'coc-prettier',
-      " \ 'coc-vimlsp',
-      " \ 'coc-go',
-      " \ 'coc-json',
-      " \ 'coc-python',
       " \]
 " Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
@@ -234,9 +246,9 @@ let NERDTreeRespectWildIgnore=1
 
 " ================ Buffer Copy & Paste
 
-" vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
-" nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
-" nmap <leader>p :r /tmp/.vim/.vbuf<CR>
+vmap <leader>y :w! /tmp/.vim/.vbuf<CR>
+nmap <leader>y :.w! /tmp/.vim/.vbuf<CR>
+nmap <leader>p :r /tmp/.vim/.vbuf<CR>
 
 " ================ ALE
 " let g:ale_linters = {
@@ -253,6 +265,7 @@ let NERDTreeRespectWildIgnore=1
 " let g:ale_cpp_clangtidy_extra_options = ''
 " let g:ale_cpp_clangtidy_options = ''
 " let g:ale_set_balloons=1
+
 " ================ Skeleton
 " function! g:skeleton_replacements.BASENAME_UPPER()
 "     return toupper(fnamemodify(a:filename, ':t:r'))
