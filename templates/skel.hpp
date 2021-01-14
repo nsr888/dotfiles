@@ -1,7 +1,6 @@
 #ifndef @BASENAME_UPPER@_HPP
 # define @BASENAME_UPPER@_HPP
 # include <iostream>
-# include <string>
 
 class @BASENAME@ {
 public:
@@ -17,5 +16,7 @@ public:
 private:
     std::string _name;
 };
+
+std::ostream & operator<<(std::ostream & o, @BASENAME@ const & other);
 
 #endif
