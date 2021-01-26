@@ -16,10 +16,10 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix
+    " \ set textwidth=79 |
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
@@ -88,14 +88,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
-      \ 'coc-tabnine',
-      \ 'coc-prettier',
-      \ 'coc-vimlsp',
-      \ 'coc-go',
       \ 'coc-json',
-      \ 'coc-pyright'
+      \ 'coc-pyright',
+      \ 'coc-tabnine'
       \]
-      " \ 'coc-tabnine'
+      " \ 'coc-tabnine',
+      " \ 'coc-prettier',
+      " \ 'coc-vimlsp',
+      " \ 'coc-go',
+      " \ 'coc-pyright'
       " \]
 " Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
