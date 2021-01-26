@@ -20,10 +20,10 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
+    \ set textwidth=79 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix
-    " \ set textwidth=79 |
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
@@ -92,25 +92,32 @@ Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
+      \ 'coc-tabnine',
+      \ 'coc-prettier',
+      \ 'coc-vimlsp',
+      \ 'coc-go',
       \ 'coc-json',
       \ 'coc-pyright',
-      \ 'coc-tabnine'
+	  \ 'coc-html',
+      \ 'coc-lists',
+      \ 'coc-phpls',
+      \ 'coc-sh',
+      \ 'coc-css',
       \]
 " Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'dense-analysis/ale'
 Plug 'noahfrederick/vim-skeleton'
-Plug 'michaeljsmith/vim-indent-object'
 
-" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'vim-scripts/BufOnly.vim'
 Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
-" Plug 'othree/html5.vim'
-" Plug 'alvan/vim-closetag'
+Plug 'othree/html5.vim'
+Plug 'alvan/vim-closetag'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -272,3 +279,12 @@ nmap <leader>p :r /tmp/.vim/.vbuf<CR>
 " function! g:skeleton_replacements.BASENAME_UPPER()
 "     return toupper(fnamemodify(a:filename, ':t:r'))
 " endfunction
+
+set tags+=tags;$HOME
+" autocmd FileType css,html set iskeyword+=-
+augroup css
+    autocmd!
+    autocmd FileType css,html setlocal iskeyword+=-
+augroup END
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
