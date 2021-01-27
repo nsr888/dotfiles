@@ -236,6 +236,10 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 nmap <silent> <TAB> <Plug>(coc-range-select)
 xmap <silent> <TAB> <Plug>(coc-range-select)
 
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+
 " ================ NERD
 
 nmap <leader>v :NERDTreeFind<CR>
