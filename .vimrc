@@ -105,7 +105,7 @@ Plug 'derekwyatt/vim-protodef'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " get machine specific hostname
-let HOSTNAME=system('hostname')
+let HOSTNAME=substitute(system('hostname'), "\n", "", "")
 if (HOSTNAME == "aimac.local")
 	" home mac machine
 	let g:coc_global_extensions = [
