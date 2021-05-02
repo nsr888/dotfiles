@@ -6,6 +6,11 @@ set termencoding=utf-8
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+
+" use relative numbers for all lines except the current line
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
+
 " expand tabs to spaces in cpp projects
 au BufNewFile,BufRead *.cpp,*.hpp
     \ set tabstop=4 |
@@ -103,6 +108,7 @@ let g:coc_global_extensions = [
       \ 'coc-phpls',
       \ 'coc-sh',
       \ 'coc-css',
+      \ 'coc-sql',
       \]
 " Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
@@ -118,6 +124,8 @@ Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
 Plug 'othree/html5.vim'
 Plug 'alvan/vim-closetag'
+Plug 'michaeljsmith/vim-indent-object'
+" Plug 'wikitopian/hardmode'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -243,6 +251,9 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 nmap <silent> <TAB> <Plug>(coc-range-select)
 xmap <silent> <TAB> <Plug>(coc-range-select)
 
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 " ================ NERD
 
 nmap <leader>v :NERDTreeFind<CR>
@@ -288,3 +299,7 @@ augroup css
 augroup END
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 
+" ================ VIM Hard Mode
+
+" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+" nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
