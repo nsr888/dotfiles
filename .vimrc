@@ -25,10 +25,10 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
+    \ set textwidth=79 |
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix
-    " \ set textwidth=79 |
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
@@ -95,35 +95,46 @@ Plug 'huyvohcmc/atlas.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'brookhong/cscope.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = [
-      \ 'coc-json',
-      \ 'coc-pyright',
-	  \ 'coc-html',
-      \ 'coc-lists',
-      \ 'coc-phpls',
-      \ 'coc-sh',
-      \ 'coc-css',
-      \ 'coc-sql',
-      \ 'coc-tabnine'
-      \]
-" Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'dense-analysis/ale'
 Plug 'noahfrederick/vim-skeleton'
-Plug 'michaeljsmith/vim-indent-object'
-
-" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-" Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'vim-scripts/BufOnly.vim'
 Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
-Plug 'othree/html5.vim'
-Plug 'alvan/vim-closetag'
 Plug 'michaeljsmith/vim-indent-object'
-" Plug 'wikitopian/hardmode'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" get machine specific hostname
+let HOSTNAME=system('hostname')
+if (HOSTNAME == "aimac.local")
+	" home mac machine
+	let g:coc_global_extensions = [
+		  \ 'coc-tabnine',
+		  \ 'coc-prettier',
+		  \ 'coc-vimlsp',
+		  \ 'coc-go',
+		  \ 'coc-json',
+		  \ 'coc-pyright',
+		  \ 'coc-html',
+		  \ 'coc-lists',
+		  \ 'coc-phpls',
+		  \ 'coc-sh',
+		  \ 'coc-css',
+		  \ 'coc-sql',
+		  \]
+	Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+	Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+	Plug 'othree/html5.vim'
+	Plug 'alvan/vim-closetag'
+else
+	" school mac
+	let g:coc_global_extensions = [
+		  \ 'coc-json',
+		  \ 'coc-pyright',
+		  \ 'coc-tabnine'
+		  \]
+endif
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
