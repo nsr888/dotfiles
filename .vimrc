@@ -107,7 +107,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " get machine specific hostname
 let HOSTNAME=substitute(system('hostname'), "\n", "", "")
 if (HOSTNAME == "aimac.local")
-	" home mac machine
+	" set plugins for home machine
 	let g:coc_global_extensions = [
 		  \ 'coc-tabnine',
 		  \ 'coc-prettier',
@@ -128,7 +128,7 @@ if (HOSTNAME == "aimac.local")
 	Plug 'othree/html5.vim'
 	Plug 'alvan/vim-closetag'
 else
-	" school mac
+	" set plugins for school machine
 	let g:coc_global_extensions = [
 		  \ 'coc-json',
 		  \ 'coc-pyright',
