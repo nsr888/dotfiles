@@ -101,7 +101,7 @@ make clean; bear make
 Add into project `.clang-format` with following content. 
 This will disable autoformatting code with coc.nvim.
 ```
-DisableFormat: true
+echo "DisableFormat: true" > .clang-format
 ```
 #### 10 ALE (Asynchronous Lint Engine) configuration
 
