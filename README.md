@@ -14,7 +14,7 @@ curl -sL install-node.now.sh/lts | bash
 ## Step by step configuration
 #### 1. Clone this repo to `~/dotfiles`
 ```bash
-git clone https://github.com/sun604/dotfiles ~/dotfiles
+git clone https://github.com/nsr888/dotfiles ~/dotfiles
 ```
 #### 2. Symlinking init.vim to .vimrc
 ```bash
