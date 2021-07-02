@@ -15,10 +15,11 @@ set expandtab
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 
-" set tabs for 42 school norminette requirements
-au BufNewFile,BufRead *.cpp,*.hpp
+" set tab as tab for 42 school norminette requirements
+au BufNewFile,BufRead *.c,*.h
     \ set noexpandtab
-au BufNewFile,BufRead *.js,*.tsx,*.css,*.html
+" set 2 space tabs for specific files with long lines
+au BufNewFile,BufRead *.js,*.tsx,*.ts,*.jsx,*.css,*.html
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
