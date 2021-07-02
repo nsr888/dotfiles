@@ -15,23 +15,31 @@ set expandtab
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 
+set nocompatible
+set autoindent
+set smartindent
+set cindent
+filetype indent off
+set colorcolumn=80
+
 " set tab as tab for 42 school norminette requirements
-au BufNewFile,BufRead *.c,*.h
-    \ set noexpandtab
+au BufNewFile,BufRead *.c,*.h set noexpandtab
+
 " set 2 space tabs for specific files with long lines
 au BufNewFile,BufRead *.js,*.tsx,*.ts,*.jsx,*.css,*.html
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
     \ set expandtab
+
+" turn off double indentation in vim
+" https://stackoverflow.com/questions/3538785/how-to-turn-off-double-indentation-in-vim
+
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
 
-set nocompatible
-set autoindent
-set smartindent
-set colorcolumn=80
+
 
 set termguicolors
 augroup SyntaxSettings
