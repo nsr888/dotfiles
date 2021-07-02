@@ -3,40 +3,26 @@ set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 set encoding=UTF-8
-" set tabs for 42 school norminette requirements
+set fileformat=unix
+set textwidth=79
+" set default tabs
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+set expandtab
 
 " use relative numbers for all lines except the current line
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 
-" expand tabs to spaces in cpp projects
+" set tabs for 42 school norminette requirements
 au BufNewFile,BufRead *.cpp,*.hpp
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix
-" python
-au BufNewFile,BufRead *.py
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix
-au BufNewFile,BufRead *.js,*.tsx,*.css
+    \ set noexpandtab
+au BufNewFile,BufRead *.js,*.tsx,*.css,*.html
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
-    \ set textwidth=79 |
     \ set expandtab |
-    \ set autoindent |
     \ set fileformat=unix
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
@@ -46,7 +32,6 @@ set nocompatible
 set autoindent
 set smartindent
 set colorcolumn=80
-set number
 
 set termguicolors
 augroup SyntaxSettings
@@ -127,37 +112,37 @@ Plug 'alvan/vim-closetag'
 " get machine specific hostname
 let HOSTNAME=substitute(system('hostname'), "\n", "", "")
 if (HOSTNAME == "aimac.local")
-	" set plugins for home pc
-	let g:coc_global_extensions = [
-		  \ 'coc-tabnine',
-		  \ 'coc-vimlsp',
-		  \ 'coc-go',
-		  \ 'coc-json',
-		  \ 'coc-pyright',
-		  \ 'coc-html',
-		  \ 'coc-lists',
-		  \ 'coc-phpls',
-		  \ 'coc-sh',
-		  \ 'coc-css',
-		  \ 'coc-sql',
-		  \ 'coc-eslint',
-		  \ 'coc-tsserver',
-		  \ 'coc-stylelint',
-		  \]
-		  " \ 'coc-prettier',
-	Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-	Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
-	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+    " set plugins for home pc
+    let g:coc_global_extensions = [
+          \ 'coc-tabnine',
+          \ 'coc-vimlsp',
+          \ 'coc-go',
+          \ 'coc-json',
+          \ 'coc-pyright',
+          \ 'coc-html',
+          \ 'coc-lists',
+          \ 'coc-phpls',
+          \ 'coc-sh',
+          \ 'coc-css',
+          \ 'coc-sql',
+          \ 'coc-eslint',
+          \ 'coc-tsserver',
+          \ 'coc-stylelint',
+          \]
+          " \ 'coc-prettier',
+    Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+    Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 else
-	" set plugins for school pc
-	let g:coc_global_extensions = [
-		  \ 'coc-json',
-		  \ 'coc-pyright',
-		  \ 'coc-tabnine',
-		  \ 'coc-eslint',
-		  \ 'coc-tsserver',
-		  \ 'coc-stylelint',
-		  \]
+    " set plugins for school pc
+    let g:coc_global_extensions = [
+          \ 'coc-json',
+          \ 'coc-pyright',
+          \ 'coc-tabnine',
+          \ 'coc-eslint',
+          \ 'coc-tsserver',
+          \ 'coc-stylelint',
+          \]
 endif
 
 Plug 'ryanoasis/vim-devicons'
