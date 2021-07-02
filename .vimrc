@@ -2,6 +2,7 @@
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
+set encoding=UTF-8
 " set tabs for 42 school norminette requirements
 set shiftwidth=4
 set softtabstop=4
@@ -29,6 +30,14 @@ au BufNewFile,BufRead *.py
     \ set expandtab |
     \ set autoindent |
     \ set fileformat=unix
+au BufNewFile,BufRead *.js,*.tsx,*.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
@@ -38,6 +47,12 @@ set autoindent
 set smartindent
 set colorcolumn=80
 set number
+
+set termguicolors
+augroup SyntaxSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+augroup END
 
 " Don't redraw while executing macros (good performance config)
 set ttyfast
@@ -104,13 +119,17 @@ Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'herringtondarkholme/yats.vim'
+Plug 'othree/html5.vim'
+Plug 'alvan/vim-closetag'
+
 " get machine specific hostname
 let HOSTNAME=substitute(system('hostname'), "\n", "", "")
 if (HOSTNAME == "aimac.local")
-	" set plugins for home machine
+	" set plugins for home pc
 	let g:coc_global_extensions = [
 		  \ 'coc-tabnine',
-		  \ 'coc-prettier',
 		  \ 'coc-vimlsp',
 		  \ 'coc-go',
 		  \ 'coc-json',
@@ -121,20 +140,28 @@ if (HOSTNAME == "aimac.local")
 		  \ 'coc-sh',
 		  \ 'coc-css',
 		  \ 'coc-sql',
+		  \ 'coc-eslint',
+		  \ 'coc-tsserver',
+		  \ 'coc-stylelint',
 		  \]
+		  " \ 'coc-prettier',
 	Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 	Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
 	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-	Plug 'othree/html5.vim'
-	Plug 'alvan/vim-closetag'
 else
-	" set plugins for school machine
+	" set plugins for school pc
 	let g:coc_global_extensions = [
 		  \ 'coc-json',
 		  \ 'coc-pyright',
-		  \ 'coc-tabnine'
+		  \ 'coc-tabnine',
+		  \ 'coc-eslint',
+		  \ 'coc-tsserver',
+		  \ 'coc-stylelint',
 		  \]
 endif
+
+Plug 'ryanoasis/vim-devicons'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -143,10 +170,13 @@ call plug#end()
 let mapleader = "\<Space>"
 
 " ================ theme config 
-colo atlas
-let g:lightline = { 'colorscheme': 'atlas' }
+" colo atlas
+" let g:lightline = { 'colorscheme': 'atlas' }
 " Fix atlas theme documentation menu font color
-hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
+" hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
+
+colo dracula
+let g:lightline = { 'colorscheme': 'dracula' }
 
 
 " Unified color scheme (default: dark)
@@ -263,6 +293,21 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+" Coc Navigating
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
 " ================ NERD
 
 nmap <leader>v :NERDTreeFind<CR>
@@ -307,8 +352,3 @@ augroup css
     autocmd FileType css,html setlocal iskeyword+=-
 augroup END
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
-
-" ================ VIM Hard Mode
-
-" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
-" nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
