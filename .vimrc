@@ -23,8 +23,7 @@ au BufNewFile,BufRead *.js,*.tsx,*.ts,*.jsx,*.css,*.html
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
-    \ set expandtab |
-    \ set fileformat=unix
+    \ set expandtab
 " Skeleton template for cpp files
 " au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 " au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
