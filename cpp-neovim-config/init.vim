@@ -1,51 +1,43 @@
-" Sets UTF-8 encoding
+"~/.vim/templates/skeleton.cpp Sets UTF-8 encoding
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
-set encoding=UTF-8
-set fileformat=unix
-set textwidth=79
-" set default tabs
+" set tabs for 42 school norminette requirements
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-set expandtab
 
 " use relative numbers for all lines except the current line
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 
+" expand tabs to spaces in cpp projects
+au BufNewFile,BufRead *.cpp,*.hpp
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+" python
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+" Skeleton template for cpp files
+au BufNewFile *.cpp 0r ~/.config/nvim/templates/skeleton.cpp
+au BufNewFile *.hpp 0r ~/.config/nvim/templates/skeleton.hpp
+
 set nocompatible
 set autoindent
 set smartindent
-set cindent
-filetype indent off
 set colorcolumn=80
-
-" set tab as tab for 42 school norminette requirements
-au BufNewFile,BufRead *.c,*.h set noexpandtab
-
-" set 2 space tabs for specific files with long lines
-au BufNewFile,BufRead *.js,*.tsx,*.ts,*.jsx,*.css,*.html
-    \ set tabstop=2 |
-    \ set softtabstop=2 |
-    \ set shiftwidth=2 |
-    \ set expandtab
-
-" turn off double indentation in vim
-" https://stackoverflow.com/questions/3538785/how-to-turn-off-double-indentation-in-vim
-
-" Skeleton template for cpp files
-" au BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
-" au BufNewFile *.hpp 0r ~/.vim/templates/skeleton.hpp
-
-
-
-set termguicolors
-augroup SyntaxSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-augroup END
+set number
 
 " Don't redraw while executing macros (good performance config)
 set ttyfast
@@ -112,49 +104,37 @@ Plug 'derekwyatt/vim-fswitch'
 Plug 'derekwyatt/vim-protodef'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'herringtondarkholme/yats.vim'
-Plug 'othree/html5.vim'
-Plug 'alvan/vim-closetag'
-
 " get machine specific hostname
 let HOSTNAME=substitute(system('hostname'), "\n", "", "")
 if (HOSTNAME == "aimac.local")
-    " set plugins for home pc
-    let g:coc_global_extensions = [
-          \ 'coc-tabnine',
-          \ 'coc-vimlsp',
-          \ 'coc-go',
-          \ 'coc-json',
-          \ 'coc-pyright',
-          \ 'coc-html',
-          \ 'coc-lists',
-          \ 'coc-phpls',
-          \ 'coc-sh',
-          \ 'coc-css',
-          \ 'coc-sql',
-          \ 'coc-eslint',
-          \ 'coc-tsserver',
-          \ 'coc-stylelint',
-          \]
-          " \ 'coc-prettier',
-    Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-    Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+	" set plugins for home machine
+	let g:coc_global_extensions = [
+		  \ 'coc-tabnine',
+		  \ 'coc-prettier',
+		  \ 'coc-vimlsp',
+		  \ 'coc-go',
+		  \ 'coc-json',
+		  \ 'coc-pyright',
+		  \ 'coc-html',
+		  \ 'coc-lists',
+		  \ 'coc-phpls',
+		  \ 'coc-sh',
+		  \ 'coc-css',
+		  \ 'coc-sql',
+		  \]
+	Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+	Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+	Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+	Plug 'othree/html5.vim'
+	Plug 'alvan/vim-closetag'
 else
-    " set plugins for school pc
-    let g:coc_global_extensions = [
-          \ 'coc-json',
-          \ 'coc-pyright',
-          \ 'coc-tabnine',
-          \ 'coc-eslint',
-          \ 'coc-tsserver',
-          \ 'coc-stylelint',
-          \]
+	" set plugins for school machine
+	let g:coc_global_extensions = [
+		  \ 'coc-json',
+		  \ 'coc-pyright',
+		  \ 'coc-tabnine'
+		  \]
 endif
-
-Plug 'ryanoasis/vim-devicons'
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -163,13 +143,10 @@ call plug#end()
 let mapleader = "\<Space>"
 
 " ================ theme config 
-" colo atlas
-" let g:lightline = { 'colorscheme': 'atlas' }
+colo atlas
+let g:lightline = { 'colorscheme': 'atlas' }
 " Fix atlas theme documentation menu font color
-" hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
-
-colo dracula
-let g:lightline = { 'colorscheme': 'dracula' }
+hi Pmenu term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE
 
 
 " Unified color scheme (default: dark)
@@ -286,21 +263,6 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Coc Navigating
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gr <Plug>(coc-references)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
 " ================ NERD
 
 nmap <leader>v :NERDTreeFind<CR>
@@ -345,3 +307,8 @@ augroup css
     autocmd FileType css,html setlocal iskeyword+=-
 augroup END
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" ================ VIM Hard Mode
+
+" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+" nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
