@@ -2,8 +2,9 @@ vim.opt.mouse = "" -- disable mouse
 vim.opt.relativenumber = true
 -- vim.opt.cursorline = true -- show the cursor line
 vim.opt.hidden = true
+vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
-vim.opt.clipboard = "unnamedplus" -- use system clipboard
+-- vim.opt.clipboard = "unnamedplus" -- use system clipboard
 vim.opt.smartcase = true -- ignores case for search unless a capital is used in search
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
@@ -47,6 +48,7 @@ vim.g.tokyonight_sidebars = {"qf", "vista_kind", "terminal", "packer"}
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
 vim.g.tokyonight_colors = {hint = "orange", error = "#ff0000"}
 vim.cmd [[colorscheme tokyonight]]
+-- vim.cmd [[colorscheme embark]]
 
 -- highlight on yank
 vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]

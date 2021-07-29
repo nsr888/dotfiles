@@ -44,7 +44,19 @@ local mappings = {
     {"f", ":HopWord<cr>"},
     {"F", ":HopLine<cr>"},
     -- NvimTree
-    {"<C-n>", ":NvimTreeToggle<CR>"}
+    {"<C-n>", ":NvimTreeToggle<CR>"},
+    -- lsp
+    {"<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>"},
+    -- lspsaga
+    {"gh", ":Lspsaga lsp_finder<cr>", {silent = true}},
+    {"<leader>ca", ":Lspsaga code_action<cr>", {silent = true}},
+    {"K", ":Lspsaga hover_doc<cr>", {silent = true}},
+    {"<C-f>", ':lua require("lspsaga.action").smart_scroll_with_saga(1)<cr>', {silent = true}},
+    {"<C-b>", ':lua require("lspsaga.action").smart_scroll_with_saga(-1)<cr>', {silent = true}},
+    {"gs", ":Lspsaga signature_help<cr>", {silent = true}},
+    {"gr", ":Lspsaga rename<cr>", {silent = true}},
+    {"gd", ":Lspsaga preview_definition<cr>", {silent = true}},
+    {"gl", ":Lspsaga show_line_diagnostics<cr>", {silent = true}}
   },
   t = {
     -- Terminal mode
@@ -63,7 +75,9 @@ local mappings = {
     {"<", "<gv"},
     {">", ">gv"},
     -- hop words
-    {"f", "<cmd>lua require'hop'.hint_words()<cr>"}
+    {"f", "<cmd>lua require'hop'.hint_words()<cr>"},
+    -- lspsago
+    {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>", {silent = true}}
   },
   x = {}
 }

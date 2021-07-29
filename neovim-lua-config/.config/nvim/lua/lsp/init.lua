@@ -9,6 +9,7 @@ require("lsp/html")
 require("lsp/luals")
 require("lsp/python")
 require("lsp/json")
+require("lsp/cpp")
 
 -- Customization and appearance -----------------------------------------
 -- change gutter diagnostic symbols
