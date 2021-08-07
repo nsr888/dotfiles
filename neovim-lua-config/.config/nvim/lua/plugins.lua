@@ -52,7 +52,18 @@ local function init()
   local use = packer.use
 
   -- Packer can manage itself
-  use "wbthomason/packer.nvim"
+  use {
+    "wbthomason/packer.nvim",
+    config = {
+      profile = {
+        enable = true,
+        threshold = 1
+      }
+    }
+  }
+
+  -- plugin reload
+  use "famiu/nvim-reload"
 
   -- tpope
   use "tpope/vim-fugitive"
@@ -88,6 +99,13 @@ local function init()
     "glepnir/lspsaga.nvim",
     requires = {"neovim/nvim-lspconfig"}
   }
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {}
+    end
+  }
 
   -- file tree
   use {
@@ -117,7 +135,16 @@ local function init()
 
   -- Theme
   use "folke/tokyonight.nvim"
+  -- use "marko-cerovac/material.nvim"
   -- use {"dracula/vim", as = "dracula"}
+
+  -- Shows RGB colors
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require "colorizer".setup()
+    end
+  }
 
   -- Treesitter
   use {
@@ -160,7 +187,7 @@ local function init()
 
   use "knubie/vim-kitty-navigator"
   use "alvan/vim-closetag"
-  use "jiangmiao/auto-pairs"
+  -- use "jiangmiao/auto-pairs"
   use {"mhartington/formatter.nvim", config = "require('plugin.formatter')"}
   -- use "airblade/vim-gitgutter"
 
@@ -180,7 +207,19 @@ local function init()
   }
 
   -- Indent Blankline
-  use "lukas-reineke/indent-blankline.nvim"
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead",
+    config = function()
+      require("plugin.indent-blankline")
+    end
+  }
+
+  -- bufonly, close all buffers except current one
+  use {"numtostr/BufOnly.nvim", cmd = "BufOnly"}
+
+  -- :TZMinimalist :TZFocus :TZAtaraxis
+  use "Pocco81/TrueZen.nvim"
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

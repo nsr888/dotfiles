@@ -28,6 +28,7 @@ vim.g.nvim_tree_show_icons = {
 
 vim.g.nvim_tree_add_trailing = 0
 vim.g.nvim_tree_auto_close = 1
+vim.g.nvim_tree_quit_on_open = 1
 vim.g.nvim_tree_auto_open = 0
 vim.g.nvim_tree_follow = 0
 vim.g.nvim_tree_git_hl = 1

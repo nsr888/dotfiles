@@ -20,11 +20,21 @@ local mappings = {
   },
   n = {
     -- Normal mode
+    -- remap ; to C-w
+    {";", "<C-w>"},
+    {";;", "<C-w>w"},
     -- Better window movement
     {"<C-h>", "<C-w>h", {silent = true}},
     {"<C-j>", "<C-w>j", {silent = true}},
     {"<C-k>", "<C-w>k", {silent = true}},
     {"<C-l>", "<C-w>l", {silent = true}},
+    -- tab navigation
+    {"<leader>nt", ":tabnew<cr>"},
+    {"<leader>pp", ":tabprevious<cr>"},
+    {"<leader>nn", ":tabnext<cr>"},
+    -- {"<C-j>", "<C-w>j", {silent = true}},
+    -- {"<C-k>", "<C-w>k", {silent = true}},
+
     -- Resize with arrows
     {"<C-Up>", ":resize -2<CR>", {silent = true}},
     {"<C-Down>", ":resize +2<CR>", {silent = true}},
@@ -43,8 +53,10 @@ local mappings = {
     -- hop words
     {"f", ":HopWord<cr>"},
     {"F", ":HopLine<cr>"},
+    {"<leader><leader>", ":HopChar1<cr>"},
     -- NvimTree
     {"<C-n>", ":NvimTreeToggle<CR>"},
+    {"<leader>n", ":NvimTreeFindFile<CR>"},
     -- lsp
     {"<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>"},
     -- lspsaga
@@ -56,11 +68,29 @@ local mappings = {
     {"gs", ":Lspsaga signature_help<cr>", {silent = true}},
     {"gr", ":Lspsaga rename<cr>", {silent = true}},
     {"gd", ":Lspsaga preview_definition<cr>", {silent = true}},
-    {"gl", ":Lspsaga show_line_diagnostics<cr>", {silent = true}}
+    {"gl", ":Lspsaga show_line_diagnostics<cr>", {silent = true}},
+    -- reload
+    {"<leader>vl", ":vsp $MYVIMRC<cr>"},
+    {"<leader>vk", ":vsp $HOME/.config/nvim/lua/keymaps.lua<cr>"},
+    {"<leader>vp", ":vsp $HOME/.config/nvim/lua/plugins.lua<cr>"},
+    {"<leader>vs", ":vsp $HOME/.config/nvim/lua/settings.lua<cr>"},
+    {"<leader>vr", ":Reload<cr>"},
+    -- Disable entering Ex mode
+    {"Q", "<Nop>"},
+    -- highlight search
+    {"//", ":nohlsearch<CR>"},
+    {"<leader>hl", ":set hlsearch! hlsearch?<CR>"},
+    -- trouble
+    {"<leader>xx", "<cmd>Trouble<cr>"},
+    {"<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>"},
+    {"<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>"},
+    {"<leader>xl", "<cmd>Trouble loclist<cr>"},
+    {"<leader>xq", "<cmd>Trouble quickfix<cr>"},
+    {"gR", "<cmd>Trouble lsp_references<cr>"}
   },
   t = {
     -- Terminal mode
-    -- Terminal window navigation
+    -- Tejrminal window navigation
     {"<C-h>", "<C-\\><C-N><C-w>h"},
     {"<C-j>", "<C-\\><C-N><C-w>j"},
     {"<C-k>", "<C-\\><C-N><C-w>k"},
@@ -77,7 +107,9 @@ local mappings = {
     -- hop words
     {"f", "<cmd>lua require'hop'.hint_words()<cr>"},
     -- lspsago
-    {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>", {silent = true}}
+    {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>", {silent = true}},
+    -- hop
+    {"<leader><leader>", ":HopChar1Visual<cr>"}
   },
   x = {}
 }

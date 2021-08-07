@@ -1,20 +1,32 @@
 vim.opt.mouse = "" -- disable mouse
 vim.opt.relativenumber = true
+vim.opt.ttyfast = true
+vim.opt.lazyredraw = true
 -- vim.opt.cursorline = true -- show the cursor line
 vim.opt.hidden = true
 vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
 -- vim.opt.clipboard = "unnamedplus" -- use system clipboard
-vim.opt.smartcase = true -- ignores case for search unless a capital is used in search
+vim.opt.incsearch = true --Lookahead as search pattern is specified
+vim.opt.ignorecase = true -- Ignore case in all searches...
+vim.opt.smartcase = true -- ...unless uppercase letters used
+vim.opt.hlsearch = true -- ...unless uppercase letters used
+
+-- indentation
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.cmd "autocmd FileType python set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType rust set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType haskell set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType c,cpp set tabstop=4|set shiftwidth=4"
+
 vim.opt.expandtab = true -- spaces instead of tabs
 vim.opt.number = true
 vim.opt.wrap = true
 vim.opt.textwidth = 80
 vim.opt.linebreak = true
 vim.opt.scrolloff = 10
-vim.opt.incsearch = true
 vim.opt.cmdheight = 2
 vim.opt.showmode = false
 vim.opt.numberwidth = 5 -- wider gutter
@@ -48,6 +60,8 @@ vim.g.tokyonight_sidebars = {"qf", "vista_kind", "terminal", "packer"}
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
 vim.g.tokyonight_colors = {hint = "orange", error = "#ff0000"}
 vim.cmd [[colorscheme tokyonight]]
+-- vim.g.material_style = "deep ocean"
+-- vim.cmd [[colorscheme material]]
 -- vim.cmd [[colorscheme embark]]
 
 -- highlight on yank
