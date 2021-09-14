@@ -10,6 +10,8 @@ require("lsp/luals")
 require("lsp/python")
 require("lsp/json")
 require("lsp/cpp")
+require("lsp/go")
+require("lsp/rust")
 
 -- Customization and appearance -----------------------------------------
 -- change gutter diagnostic symbols
@@ -27,7 +29,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, _, params, cli
     underline = true,
     virtual_text = {
       prefix = "🤯",
-      spacing = 4
+      spacing = 4,
+      -- Do NOT show inline diagnostics unless they are errors
+      severity_limit = "Error"
     },
     signs = true,
     update_in_insert = false

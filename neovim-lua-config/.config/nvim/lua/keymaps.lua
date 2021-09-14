@@ -8,6 +8,8 @@ local function register_mappings(mappings, default_options)
   end
 end
 
+vim.g.mapleader = " "
+
 local mappings = {
   i = {
     -- Insert mode
@@ -24,69 +26,84 @@ local mappings = {
     {";", "<C-w>"},
     {";;", "<C-w>w"},
     -- Better window movement
-    {"<C-h>", "<C-w>h", {silent = true}},
-    {"<C-j>", "<C-w>j", {silent = true}},
-    {"<C-k>", "<C-w>k", {silent = true}},
-    {"<C-l>", "<C-w>l", {silent = true}},
+    {"<C-h>", "<C-w>h"},
+    {"<C-j>", "<C-w>j"},
+    {"<C-k>", "<C-w>k"},
+    {"<C-l>", "<C-w>l"},
+    -- resize with arrows
+    {"<C-Up>", ":resize -2<CR>"},
+    {"<C-Down>", ":resize +2<CR>"},
+    {"<C-Left>", ":vertical resize -2<CR>"},
+    {"<C-Right>", ":vertical resize +2<CR>"},
     -- tab navigation
-    {"<leader>nt", ":tabnew<cr>"},
-    {"<leader>pp", ":tabprevious<cr>"},
-    {"<leader>nn", ":tabnext<cr>"},
+    -- {"<leader>nt", ":tabnew<cr>"},
+    -- {"<leader>pp", ":tabprevious<cr>"},
+    -- {"<leader>nn", ":tabnext<cr>"},
     -- {"<C-j>", "<C-w>j", {silent = true}},
     -- {"<C-k>", "<C-w>k", {silent = true}},
 
     -- Resize with arrows
-    {"<C-Up>", ":resize -2<CR>", {silent = true}},
-    {"<C-Down>", ":resize +2<CR>", {silent = true}},
-    {"<C-Left>", ":vertical resize -2<CR>", {silent = true}},
-    {"<C-Right>", ":vertical resize +2<CR>", {silent = true}},
+    -- {"<C-Up>", ":resize -2<CR>"},
+    -- {"<C-Down>", ":resize +2<CR>"},
+    -- {"<C-Left>", ":vertical resize -2<CR>"},
+    -- {"<C-Right>", ":vertical resize +2<CR>"},
     -- Telescope
     -- Ctrl + p fuzzy files
-    {"<C-p>", [[<cmd> lua require"telescope.builtin".find_files({ hidden = true })<CR>]]},
+    {"<C-p>", ":Telescope find_files<cr>"},
     {"<leader>ff", ":Telescope find_files<cr>"},
     {"<leader>fb", ":Telescope buffers<cr>"},
     {"<leader>b", ":Telescope buffers<cr>"},
     {"<leader>fs", ":Telescope live_grep<cr>"},
-    {"<leader>s", ":Telescope live_grep<cr>"},
+    {"<leader>k", ":Telescope keymaps<cr>"},
     -- Escape clears highlight after search
     {"<esc>", ":noh<cr><esc>"},
     -- hop words
     {"f", ":HopWord<cr>"},
     {"F", ":HopLine<cr>"},
-    {"<leader><leader>", ":HopChar1<cr>"},
+    {"<leader>,", ":HopChar1<cr>"},
     -- NvimTree
     {"<C-n>", ":NvimTreeToggle<CR>"},
     {"<leader>n", ":NvimTreeFindFile<CR>"},
     -- lsp
     {"<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>"},
+    {"<leader>gd", ":lua vim.lsp.buf.definition()<CR>"},
+    {"<leader>gi", ":lua vim.lsp.buf.implementation()<CR>"},
+    {"gs", ":lua vim.lsp.buf.signature_help()<CR>"},
+    {"K", ":lua vim.lsp.buf.hover()<CR>"},
+    -- {"<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>"},
+    {"<leader>p", ":Format<CR>"},
     -- lspsaga
-    {"gh", ":Lspsaga lsp_finder<cr>", {silent = true}},
-    {"<leader>ca", ":Lspsaga code_action<cr>", {silent = true}},
-    {"K", ":Lspsaga hover_doc<cr>", {silent = true}},
-    {"<C-f>", ':lua require("lspsaga.action").smart_scroll_with_saga(1)<cr>', {silent = true}},
-    {"<C-b>", ':lua require("lspsaga.action").smart_scroll_with_saga(-1)<cr>', {silent = true}},
-    {"gs", ":Lspsaga signature_help<cr>", {silent = true}},
-    {"gr", ":Lspsaga rename<cr>", {silent = true}},
-    {"gd", ":Lspsaga preview_definition<cr>", {silent = true}},
-    {"gl", ":Lspsaga show_line_diagnostics<cr>", {silent = true}},
+    {"gh", ":Lspsaga lsp_finder<cr>"},
+    {"<leader>ca", ":Lspsaga code_action<cr>"},
+    -- {"K", ":Lspsaga hover_doc<cr>"},
+    {"<C-f>", ':lua require("lspsaga.action").smart_scroll_with_saga(1)<cr>'},
+    {"<C-b>", ':lua require("lspsaga.action").smart_scroll_with_saga(-1)<cr>'},
+    -- {"gs", ":Lspsaga signature_help<cr>"},
+    {"gr", ":Lspsaga rename<cr>"},
+    {"gD", ":Lspsaga preview_definition<cr>"},
+    {"gl", ":Lspsaga show_line_diagnostics<cr>"},
+    {"C-f", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>"},
+    {"C-b", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>"},
+    {"]e", ":Lspsaga diagnostic_jump_next<CR>"},
+    {"[e", ":Lspsaga diagnostic_jump_prev<CR>"},
     -- reload
     {"<leader>vl", ":vsp $MYVIMRC<cr>"},
     {"<leader>vk", ":vsp $HOME/.config/nvim/lua/keymaps.lua<cr>"},
     {"<leader>vp", ":vsp $HOME/.config/nvim/lua/plugins.lua<cr>"},
     {"<leader>vs", ":vsp $HOME/.config/nvim/lua/settings.lua<cr>"},
+    {"<leader>vf", ":vsp $HOME/.config/nvim/lua/plugin/formatter.lua<cr>"},
     {"<leader>vr", ":Reload<cr>"},
     -- Disable entering Ex mode
     {"Q", "<Nop>"},
     -- highlight search
     {"//", ":nohlsearch<CR>"},
     {"<leader>hl", ":set hlsearch! hlsearch?<CR>"},
-    -- trouble
-    {"<leader>xx", "<cmd>Trouble<cr>"},
-    {"<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>"},
-    {"<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>"},
-    {"<leader>xl", "<cmd>Trouble loclist<cr>"},
-    {"<leader>xq", "<cmd>Trouble quickfix<cr>"},
-    {"gR", "<cmd>Trouble lsp_references<cr>"}
+    -- Tab switch buffer
+    {"<TAB>", ":bnext<CR>"},
+    {"<S-TAB>", ":bprevious<CR>"},
+    -- Other
+    {"<leader>q", ":bdelete<CR>"},
+    {"<leader>Q", ":BufOnly<CR>"}
   },
   t = {
     -- Terminal mode
@@ -107,14 +124,25 @@ local mappings = {
     -- hop words
     {"f", "<cmd>lua require'hop'.hint_words()<cr>"},
     -- lspsago
-    {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>", {silent = true}},
+    {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>"},
     -- hop
     {"<leader><leader>", ":HopChar1Visual<cr>"}
   },
-  x = {}
+  x = {
+    -- Move selected line / block of text in visual mode
+    {"K", ":move '<-2<CR>gv-gv"},
+    {"J", ":move '>+1<CR>gv-gv"}
+  }
 }
 
 register_mappings(mappings, {silent = true, noremap = true})
+
+local mappings_not_silent = {
+  n = {
+    {"<leader>s", ":Rg<space>"}
+  }
+}
+register_mappings(mappings_not_silent, {silent = false, noremap = true})
 
 -- S for search and replace in buffer
 vim.cmd "nnoremap S :%s//gi<Left><Left><Left>"

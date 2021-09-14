@@ -242,24 +242,26 @@ local comps = {
   }
 }
 
-local properties = {
-  force_inactive = {
-    filetypes = {
-      "NvimTree",
-      "dbui",
-      "packer",
-      "startify",
-      "fugitive",
-      "fugitiveblame"
-    },
-    buftypes = {"terminal"},
-    bufnames = {}
-  }
+local force_inactive = {
+  filetypes = {
+    "NvimTree",
+    "dbui",
+    "packer",
+    "startify",
+    "fugitive",
+    "fugitiveblame",
+    "qf",
+    "help"
+  },
+  buftypes = {"terminal"},
+  bufnames = {}
 }
 
 local components = {
-  left = {
-    active = {
+  -- active statusline
+  active = {
+    -- left section
+    {
       comps.vi_mode.left,
       comps.file.info,
       comps.git.branch,
@@ -267,17 +269,10 @@ local components = {
       comps.git.change,
       comps.git.remove
     },
-    inactive = {
-      comps.vi_mode.left,
-      comps.file.info
-    }
-  },
-  mid = {
-    active = {},
-    inactive = {}
-  },
-  right = {
-    active = {
+    -- mid section
+    {},
+    -- right section
+    {
       comps.diagnos.err,
       comps.diagnos.warn,
       comps.diagnos.hint,
@@ -288,17 +283,32 @@ local components = {
       comps.line_percentage,
       comps.scroll_bar,
       comps.vi_mode.right
+    }
+  },
+  -- inactive statusline
+  inactive = {
+    -- left section
+    {
+      comps.vi_mode.left,
+      comps.file.info
     },
-    inactive = {}
+    -- mid section
+    {},
+    -- right section
+    {}
   }
 }
 
 -- LuaFormatter on
 
-require "feline".setup {
-  default_bg = colors.bg,
-  default_fg = colors.fg,
-  components = components,
-  properties = properties,
-  vi_mode_colors = vi_mode_colors
-}
+require("feline").setup(
+  {
+    colors = {
+      fg = colors.fg,
+      bg = colors.bg
+    },
+    components = components,
+    force_inactive = force_inactive,
+    vi_mode_colors = vi_mode_colors
+  }
+)

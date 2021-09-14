@@ -10,7 +10,7 @@ require("lspconfig").tsserver.setup {
     "typescript.tsx"
   },
   cmd = {"typescript-language-server", "--stdio"},
-  -- I needed this to work on plain .js files
+  -- I needed this to work on plain .js file
   root_dir = function()
     return vim.loop.cwd()
   end,

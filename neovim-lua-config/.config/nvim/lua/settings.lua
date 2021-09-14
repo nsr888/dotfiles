@@ -15,13 +15,14 @@ vim.opt.hlsearch = true -- ...unless uppercase letters used
 -- indentation
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true -- spaces instead of tabs
 vim.cmd "autocmd FileType python set tabstop=4|set shiftwidth=4"
 vim.cmd "autocmd FileType rust set tabstop=4|set shiftwidth=4"
 vim.cmd "autocmd FileType haskell set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType c,cpp set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4|set noexpandtab"
+vim.cmd "autocmd FileType cpp set tabstop=4|set shiftwidth=4"
+vim.cmd "autocmd FileType c set tabstop=4|set shiftwidth=4|set noexpandtab"
 
-vim.opt.expandtab = true -- spaces instead of tabs
 vim.opt.number = true
 vim.opt.wrap = true
 vim.opt.textwidth = 80
@@ -45,8 +46,6 @@ vim.opt.mousemodel = "popup"
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
 
-vim.g.mapleader = " "
-
 -- close tags
 vim.g.closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx,*.js,*.tsx,*.vue"
 
@@ -68,4 +67,6 @@ vim.cmd [[colorscheme tokyonight]]
 vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]
 
 -- Vertically center document when entering insert mode
-vim.cmd [[autocmd InsertEnter * norm zz]]
+-- vim.cmd [[autocmd InsertEnter * norm zz]]
+-- python
+vim.g.python3_host_prog = "/usr/local/bin/python3"

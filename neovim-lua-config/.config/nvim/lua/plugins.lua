@@ -65,10 +65,18 @@ local function init()
   -- plugin reload
   use "famiu/nvim-reload"
 
-  -- tpope
-  use "tpope/vim-fugitive"
-  use "tpope/vim-surround"
-  use "tpope/vim-commentary"
+  -- Comment
+  use {
+    "terrortylor/nvim-comment",
+    event = "BufRead",
+    config = function()
+      local status_ok, nvim_comment = pcall(require, "nvim_comment")
+      if not status_ok then
+        return
+      end
+      nvim_comment.setup()
+    end
+  }
 
   -- plenary is required by gitsigns, telescope and nvim-reload
   -- lazy load so gitsigns doesn't abuse our startup time
@@ -86,25 +94,18 @@ local function init()
   -- lsp
   use {"neovim/nvim-lspconfig"}
   use {"ray-x/lsp_signature.nvim", event = "BufRead"}
-  use {
-    "kabouzeid/nvim-lspinstall",
-    config = function()
-      require("lsp")
-      -- ':command LspStart'
-      require "lspconfig"._root.commands.LspStart[1]()
-    end,
-    after = {"nvim-lspconfig", "lsp_signature.nvim"}
-  }
+  -- use {
+  --   "kabouzeid/nvim-lspinstall",
+  --   config = function()
+  --     require("lsp")
+  --     -- ':command LspStart'
+  --     require "lspconfig"._root.commands.LspStart[1]()
+  --   end,
+  --   after = {"nvim-lspconfig", "lsp_signature.nvim"}
+  -- }
   use {
     "glepnir/lspsaga.nvim",
     requires = {"neovim/nvim-lspconfig"}
-  }
-  use {
-    "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("trouble").setup {}
-    end
   }
 
   -- file tree
@@ -117,7 +118,7 @@ local function init()
   -- Telescope
   use {
     "nvim-telescope/telescope.nvim",
-    event = "BufRead",
+    event = "VimEnter",
     requires = {{"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"}},
     config = "require('plugin.telescope')"
   }
@@ -156,9 +157,7 @@ local function init()
   -- key bindings cheatsheet
   use {
     "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup {}
-    end,
+    config = "require('plugin.which_key')",
     event = "VimEnter"
   }
 
@@ -187,7 +186,6 @@ local function init()
 
   use "knubie/vim-kitty-navigator"
   use "alvan/vim-closetag"
-  -- use "jiangmiao/auto-pairs"
   use {"mhartington/formatter.nvim", config = "require('plugin.formatter')"}
   -- use "airblade/vim-gitgutter"
 
@@ -218,8 +216,82 @@ local function init()
   -- bufonly, close all buffers except current one
   use {"numtostr/BufOnly.nvim", cmd = "BufOnly"}
 
+  use {"simrat39/symbols-outline.nvim"}
+
   -- :TZMinimalist :TZFocus :TZAtaraxis
-  use "Pocco81/TrueZen.nvim"
+  -- use "Pocco81/TrueZen.nvim"
+
+  -- Lua
+  -- use {
+  --   "folke/twilight.nvim",
+  --   config = function()
+  --     require("twilight").setup {}
+  --   end
+  -- }
+
+  -- Search
+  -- use {"windwp/nvim-spectre"}
+
+  -- tpope
+  use "tpope/vim-fugitive"
+  use "tpope/vim-surround"
+  -- use "tpope/vim-commentary"
+
+  -- pairs
+  -- use "jiangmiao/auto-pairs"
+  -- use {
+  --   "steelsojka/pears.nvim",
+  --   -- event = 'InsertEnter',
+  --   config = function()
+  --     require("pears").setup()
+  --   end
+  -- }
+
+  -- Fzf
+  use {
+    "junegunn/fzf",
+    run = function()
+      vim.fn["fzf#install"]()
+    end,
+    event = {"BufReadPost"}
+  }
+  use {
+    "junegunn/fzf.vim",
+    requires = "junegunn/fzf",
+    after = {"nvim-bqf"}
+  }
+
+  -- Quickfix enhancements
+  use {
+    "kevinhwang91/nvim-bqf",
+    requires = {{"junegunn/fzf", opt = true}, {"junegunn/fzf.vim", opt = true}},
+    ft = {"qf"},
+    config = function()
+      require("bqf").setup {
+        auto_enable = true
+      }
+    end
+  }
+
+  -- Grepping
+  use {
+    "jremmen/vim-ripgrep",
+    cmd = {"Rg"}
+  }
+  use {
+    "mhinz/vim-grepper",
+    config = function()
+      vim.cmd [[
+        nmap gs <Plug>(GrepperOperator)
+        xmap gs <Plug>(GrepperOperator)
+      ]]
+    end,
+    cmd = {"Grepper", "<Plug>(GrepperOperator)"},
+    keys = {
+      {"n", "gs"},
+      {"x", "gs"}
+    }
+  }
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`
