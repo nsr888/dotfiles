@@ -12,6 +12,7 @@ require("lsp/json")
 require("lsp/cpp")
 require("lsp/go")
 require("lsp/rust")
+require("lsp/docker")
 
 -- Customization and appearance -----------------------------------------
 -- change gutter diagnostic symbols

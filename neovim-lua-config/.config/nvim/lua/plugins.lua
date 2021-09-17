@@ -292,6 +292,7 @@ local function init()
       {"x", "gs"}
     }
   }
+  use {"chr4/nginx.vim", opt = true, ft = "nginx"}
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

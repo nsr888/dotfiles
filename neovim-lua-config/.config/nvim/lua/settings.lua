@@ -22,6 +22,7 @@ vim.cmd "autocmd FileType haskell set tabstop=4|set shiftwidth=4"
 vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4|set noexpandtab"
 vim.cmd "autocmd FileType cpp set tabstop=4|set shiftwidth=4"
 vim.cmd "autocmd FileType c set tabstop=4|set shiftwidth=4|set noexpandtab"
+vim.cmd "autocmd FileType make,nginx set tabstop=4|set shiftwidth=4|set noexpandtab"
 
 vim.opt.number = true
 vim.opt.wrap = true
@@ -70,3 +71,8 @@ vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]
 -- vim.cmd [[autocmd InsertEnter * norm zz]]
 -- python
 vim.g.python3_host_prog = "/usr/local/bin/python3"
+
+-- set nginx file type for nginx highlight plugin "chr4/nginx.vim"
+vim.cmd "au BufNewFile,BufRead *.nginx set ft=nginx"
+vim.cmd "au BufNewFile,BufRead nginx*.conf set ft=nginx"
+vim.cmd "au BufNewFile,BufRead *nginx.conf set ft=nginx"
