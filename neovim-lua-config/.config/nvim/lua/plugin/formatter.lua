@@ -42,6 +42,7 @@ require("formatter").setup(
       scss = {prettier},
       markdown = {prettier},
       vue = {prettier},
+      -- htmldjango = {prettier},
       lua = {
         -- luafmt
         function()
@@ -65,7 +66,17 @@ require("formatter").setup(
         end
       },
       python = {black},
-      go = {gofmt}
+      go = {gofmt},
+      perl = {
+        -- perltidy
+        function()
+          return {
+            exe = "perltidy",
+            args = {"--standard-output"},
+            stdin = true
+          }
+        end
+      }
     }
   }
 )

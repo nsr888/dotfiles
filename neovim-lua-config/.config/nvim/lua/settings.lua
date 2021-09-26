@@ -71,6 +71,7 @@ vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]
 -- vim.cmd [[autocmd InsertEnter * norm zz]]
 -- python
 vim.g.python3_host_prog = "/usr/local/bin/python3"
+vim.g.python_host_prog = "/usr/bin/python"
 
 -- set nginx file type for nginx highlight plugin "chr4/nginx.vim"
 vim.cmd "au BufNewFile,BufRead *.nginx set ft=nginx"

@@ -293,6 +293,14 @@ local function init()
     }
   }
   use {"chr4/nginx.vim", opt = true, ft = "nginx"}
+  -- Grepping
+  use {
+    "dbsr/vimpy",
+    cmd = {"VimpyCheckLine"}
+  }
+  use {
+    "glench/vim-jinja2-syntax"
+  }
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

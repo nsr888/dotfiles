@@ -126,7 +126,9 @@ local mappings = {
     -- lspsago
     {"<leader>ca", "<C-U>Lspsaga range_code_action<cr>"},
     -- hop
-    {"<leader><leader>", ":HopChar1Visual<cr>"}
+    {"<leader><leader>", ":HopChar1Visual<cr>"},
+    -- Buffer Copy & Paste
+    {"<leader>cy", ":w! ~/.vimbuf<cr>"}
   },
   x = {
     -- Move selected line / block of text in visual mode
@@ -139,10 +141,11 @@ register_mappings(mappings, {silent = true, noremap = true})
 
 local mappings_not_silent = {
   n = {
-    {"<leader>s", ":Rg<space>"}
+    -- Rip grep search
+    {"<leader>s", ":Rg<space>"},
+    -- Buffer Copy
+    {"<leader>cy", ":.w! ~/.vimbuf"},
+    {"<leader>cp", ":r ~/.vimbuf<cr>"}
   }
 }
 register_mappings(mappings_not_silent, {silent = false, noremap = true})
-
--- S for search and replace in buffer
-vim.cmd "nnoremap S :%s//gi<Left><Left><Left>"

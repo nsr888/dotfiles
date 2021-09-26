@@ -42,6 +42,7 @@ vim.g.nvim_tree_side = "right"
 vim.g.nvim_tree_tab_open = 0
 vim.g.nvim_tree_width = 30
 vim.g.nvim_tree_hijack_cursor = 1
+vim.g.nvim_tree_disable_window_picker = 1
 
 -- Mostly default mappings
 local tree_cb = require "nvim-tree.config".nvim_tree_callback
