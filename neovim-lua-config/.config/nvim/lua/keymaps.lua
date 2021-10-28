@@ -66,10 +66,14 @@ local mappings = {
     {"<leader>n", ":NvimTreeFindFile<CR>"},
     -- lsp
     {"<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>"},
-    {"<leader>gd", ":lua vim.lsp.buf.definition()<CR>"},
-    {"<leader>gi", ":lua vim.lsp.buf.implementation()<CR>"},
-    {"gs", ":lua vim.lsp.buf.signature_help()<CR>"},
-    {"K", ":lua vim.lsp.buf.hover()<CR>"},
+    {"<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>"},
+    {"<leader>gd", "<cmd>lua vim.lsp.buf.decoration()<CR>"},
+    {"<leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>"},
+    {"<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<CR>"},
+    {"<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>"},
+    {"<leader>e", "<cmd>lua vim.lsp.buf.show_line_diagnostics()<CR>"},
+    {"gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>"},
+    {"K", "<cmd>lua vim.lsp.buf.hover()<CR>"},
     -- {"<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>"},
     {"<leader>p", ":Format<CR>"},
     -- lspsaga

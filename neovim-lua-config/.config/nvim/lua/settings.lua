@@ -6,6 +6,7 @@ vim.opt.lazyredraw = true
 vim.opt.hidden = true
 vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
+vim.opt.colorcolumn = "80"
 -- vim.opt.clipboard = "unnamedplus" -- use system clipboard
 vim.opt.incsearch = true --Lookahead as search pattern is specified
 vim.opt.ignorecase = true -- Ignore case in all searches...

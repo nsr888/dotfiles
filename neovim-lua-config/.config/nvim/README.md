@@ -1,5 +1,6 @@
 # Leaving the CoC behind.
 
+https://github.com/ibhagwan/nvim-lua
 https://github.com/bushblade/nvim
 
 A minimal set up for Nvim using native LSP with some sane defaults and settings.
