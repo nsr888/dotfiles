@@ -20,7 +20,7 @@ nvim-install:
 	ln -snf $(PWD)/nvim/lua ~/.config/nvim/lua
 
 prepare:
-	brew upgrade neovim git ripgrep
+	brew upgrade neovim git ripgrep fd bat exa
 	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
 deps-npm:
