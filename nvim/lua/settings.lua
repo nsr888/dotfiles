@@ -1,5 +1,5 @@
 vim.opt.mouse = "" -- disable mouse
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 vim.opt.ttyfast = true
 vim.opt.lazyredraw = true
 -- vim.opt.cursorline = true -- show the cursor line

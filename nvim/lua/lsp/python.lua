@@ -5,7 +5,7 @@ require "lspconfig".pylsp.setup(
   {
     enable = true,
     cmd = {"pylsp"},
-    cmd_env = {VIRTUAL_ENV = "/Users/anasyrov/Documents/21/social-network-parser"},
+    -- cmd_env = {VIRTUAL_ENV = "/Users/anasyrov/Documents/21/social-network-parser"},
     -- cmd = { 'pylsp', '-vvv', '--log-file', 'pylsp.log' },
     settings = {
       pylsp = {
@@ -31,13 +31,15 @@ require "lspconfig".pylsp.setup(
           pylint = {
             enabled = true,
             -- https://vald-phoenix.github.io/pylint-errors/
-            executable = "pylint"
-            -- args = {
-            --   "--disable " ..
-            --     "C0115," .. -- missing-class-docstring
-            --       "C0116," .. -- missing-function-docstring
-            --         "R0903" -- too-few-public-methods
-            -- }
+            executable = "pylint",
+            ignore = {},
+            args = {
+              "-d " ..
+                "C0115," .. -- missing-class-docstring
+                  "C0116," .. -- missing-function-docstring
+                    "R0903," .. -- too-few-public-methods
+                      "C0114" -- missing-module-docstring
+            }
           },
           pylsp_mypy = {
             -- enabled = true,

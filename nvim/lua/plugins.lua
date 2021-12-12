@@ -301,6 +301,7 @@ local function init()
   use {
     "glench/vim-jinja2-syntax"
   }
+  use {"ellisonleao/glow.nvim"}
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`
