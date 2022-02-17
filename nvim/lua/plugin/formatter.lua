@@ -1,3 +1,4 @@
+-- Examples: https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md
 -- Prettier function for formatter
 local prettier = function()
   return {
@@ -16,16 +17,16 @@ local clangd = function()
   }
 end
 
-local black = function()
-  return {
-    exe = "black",
-    args = {"--quiet", "-"},
-    stdin = true
-  }
+local function black()
+  return {exe = "black", args = {"--quiet", "-"}, stdin = true}
 end
 
 local function gofmt()
   return {exe = "gofumpt", args = {"-s"}, stdin = true}
+end
+
+local function gogci()
+  return {exe = "gci", args = {"print"}, stdin = true}
 end
 
 require("formatter").setup(
@@ -66,7 +67,7 @@ require("formatter").setup(
         end
       },
       python = {black},
-      go = {gofmt},
+      go = {gofmt, gogci},
       perl = {
         -- perltidy
         function()

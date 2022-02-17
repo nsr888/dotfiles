@@ -16,7 +16,7 @@ $ make nvim-install
 - Mac
 - Git
 - Make
-- Nvim (version >= 0.5)
+- Nvim (version >= 0.6)
 
 ## Inspiration
 

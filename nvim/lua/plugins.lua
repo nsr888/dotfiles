@@ -103,10 +103,12 @@ local function init()
   --   end,
   --   after = {"nvim-lspconfig", "lsp_signature.nvim"}
   -- }
-  use {
-    "glepnir/lspsaga.nvim",
-    requires = {"neovim/nvim-lspconfig"}
-  }
+  -- use {
+  --   "glepnir/lspsaga.nvim",
+  --   requires = {"neovim/nvim-lspconfig"}
+  -- }
+
+  use {"tami5/lspsaga.nvim", branch = "nvim6.0"}
 
   -- file tree
   use {
@@ -124,15 +126,28 @@ local function init()
   }
 
   use {
-    "jose-elias-alvarez/null-ls.nvim"
+    "jose-elias-alvarez/null-ls.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("null-ls").setup(
+        {
+          sources = {
+            require("null-ls").builtins.formatting.stylua,
+            require("null-ls").builtins.diagnostics.eslint,
+            require("null-ls").builtins.completion.spell
+          }
+        }
+      )
+    end
   }
 
-  -- TS utils
-  use {
-    "jose-elias-alvarez/nvim-lsp-ts-utils",
-    event = "BufRead",
-    requires = {{"jose-elias-alvarez/null-ls.nvim"}, {"nvim-lua/plenary.nvim"}}
-  }
+  --
+  --   -- TS utils
+  --   use {
+  --     "jose-elias-alvarez/nvim-lsp-ts-utils",
+  --     event = "BufRead",
+  --     requires = {{"jose-elias-alvarez/null-ls.nvim"}, {"nvim-lua/plenary.nvim"}}
+  --   }
 
   -- Theme
   use "folke/tokyonight.nvim"
@@ -174,12 +189,13 @@ local function init()
 
   -- fancy statusline
   -- TODO: causes splash screen to flash
-  use {
-    "famiu/feline.nvim",
-    requires = {"kyazdani42/nvim-web-devicons"},
-    config = "require'plugin.feline'",
-    event = "VimEnter"
-  }
+  -- use {
+  --   "famiu/feline.nvim",
+  --   tag = "v0.3.3",
+  --   requires = {"kyazdani42/nvim-web-devicons"},
+  --   config = "require'plugin.feline'",
+  --   event = "VimEnter"
+  -- }
 
   -- Autocomplete
   use {"hrsh7th/nvim-compe", config = "require('plugin.compe')"}

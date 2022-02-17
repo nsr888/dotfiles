@@ -51,11 +51,6 @@ end
 local lsp = require "feline.providers.lsp"
 local vi_mode_utils = require "feline.providers.vi_mode"
 
-local lsp_get_diag = function(str)
-  local count = vim.lsp.diagnostic.get_count(0, str)
-  return (count > 0) and " " .. count .. " " or ""
-end
-
 -- LuaFormatter off
 
 local comps = {
