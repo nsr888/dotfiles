@@ -1,0 +1,3 @@
+#include "@BASENAME@.hpp"
+
+@CURSOR@
