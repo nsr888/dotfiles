@@ -42,6 +42,9 @@ fpath=(~/.zsh $fpath)
 
 autoload -Uz compinit && compinit
 
+# CTRL+R enable history search with fzf, run:
+# brew install fzf
+# /usr/local/opt/fzf/install
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
