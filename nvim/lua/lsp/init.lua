@@ -1,11 +1,11 @@
 -- require all language server modules
 -- null-ls for tsutils plugin
 require("lsp/typescript")
-require("lsp/vue")
+-- require("lsp/vue")
 -- require("lsp/css")
 -- require("lsp/html")
 require("lsp/luals")
--- require("lsp/python")
+require("lsp/python")
 require("lsp/json")
 require("lsp/cpp")
 require("lsp/go")

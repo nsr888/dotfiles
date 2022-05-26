@@ -318,6 +318,9 @@ local function init()
     "glench/vim-jinja2-syntax"
   }
   use {"ellisonleao/glow.nvim"}
+  use {"aklt/plantuml-syntax"}
+  use {"tyru/open-browser.vim"}
+  use {"weirongxu/plantuml-previewer.vim"}
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

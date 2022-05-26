@@ -132,7 +132,8 @@ local mappings = {
     -- hop
     {"<leader><leader>", ":HopChar1Visual<cr>"},
     -- Buffer Copy & Paste
-    {"<leader>cy", ":w! ~/.vimbuf<cr>"}
+    {"<leader>cy", ":w! ~/.vimbuf<cr>"},
+    {"<leader>cp", ":r ~/.vimbuf<cr>"}
   },
   x = {
     -- Move selected line / block of text in visual mode

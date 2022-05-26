@@ -86,8 +86,8 @@ require "lspconfig".pylsp.setup(
           }
         }
       }
-    },
-    on_attach = require "lspconfig".common_on_attach
+    }
+    -- on_attach = require "lspconfig".common_on_attach
     -- on_attach = on_attach
   }
 )

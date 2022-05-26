@@ -21,6 +21,10 @@ local function black()
   return {exe = "black", args = {"--quiet", "-"}, stdin = true}
 end
 
+local function isort()
+  return {exe = "isort", args = {"--quiet", "-"}, stdin = true}
+end
+
 local function gofmt()
   return {exe = "gofumpt", args = {"-s"}, stdin = true}
 end
@@ -66,7 +70,7 @@ require("formatter").setup(
           }
         end
       },
-      python = {black},
+      python = {black, isort},
       go = {gofmt, gogci},
       perl = {
         -- perltidy
