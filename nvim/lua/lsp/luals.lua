@@ -1,38 +1,33 @@
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
+local fn = vim.fn
+local lspconfig = require("lspconfig")
 
--- By default, lua-language-server doesn't have a cmd set. This is because nvim-lspconfig does not
--- make assumptions about your path. You must add the following to your init.vim or init.lua to set
--- cmd to the absolute path ($HOME and ~ are not expanded) of your unzipped and compiled lua-language-server.
--- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#sumneko_lua
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require "lspconfig".sumneko_lua.setup {
-  cmd = {
-    vim.loop.os_homedir() .. "/lua-language-server/bin/macOS/lua-language-server",
-    "-E",
-    vim.loop.os_homedir() .. "/lua-language-server/main.lua"
-  },
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = "LuaJIT",
-        -- Setup your lua path
-        path = runtime_path
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {"vim"}
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true)
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false
-      }
-    }
-  }
-}
+-- settings for lua-language-server can be found on https://github.com/sumneko/lua-language-server/wiki/Settings .
+lspconfig.sumneko_lua.setup({
+	settings = {
+		Lua = {
+			runtime = {
+				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				-- Get the language server to recognize the `vim` global
+				globals = { "vim" },
+			},
+			workspace = {
+				-- Make the server aware of Neovim runtime files,
+				-- see also https://github.com/sumneko/lua-language-server/wiki/Libraries#link-to-workspace .
+				-- Lua-dev.nvim also has similar settings for sumneko lua, https://github.com/folke/lua-dev.nvim/blob/main/lua/lua-dev/sumneko.lua .
+				library = {
+					fn.stdpath("data") .. "/site/pack/packer/opt/emmylua-nvim",
+					fn.stdpath("config"),
+				},
+				maxPreload = 2000,
+				preloadFileSize = 50000,
+			},
+		},
+	},
+	capabilities = capabilities,
+})
