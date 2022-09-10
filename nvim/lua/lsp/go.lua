@@ -1,6 +1,17 @@
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+local on_attach = function(client, bufnr)
+	local function buf_set_keymap(...)
+		vim.api.nvim_buf_set_keymap(bufnr, ...)
+	end
+	local function buf_set_option(...)
+		vim.api.nvim_buf_set_option(bufnr, ...)
+	end
+
+	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+end
+
 -- Setup lspconfig.
 local nvim_lsp = require("lspconfig")
 
@@ -8,6 +19,7 @@ local nvim_lsp = require("lspconfig")
 -- GoLang
 nvim_lsp["gopls"].setup({
 	cmd = { "gopls" },
+	on_attach = on_attach,
 	capabilities = capabilities,
 	settings = {
 		gopls = {
