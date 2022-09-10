@@ -321,6 +321,7 @@ local function init()
   use {"aklt/plantuml-syntax"}
   use {"tyru/open-browser.vim"}
   use {"weirongxu/plantuml-previewer.vim"}
+  use {"rhysd/git-messenger.vim"}
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

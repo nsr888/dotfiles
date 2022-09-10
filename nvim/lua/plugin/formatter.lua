@@ -33,6 +33,10 @@ local function gogci()
   return {exe = "gci", args = {"print"}, stdin = true}
 end
 
+local function goimports()
+  return {exe = "goimports", stdin = true}
+end
+
 require("formatter").setup(
   {
     logging = false,
@@ -71,7 +75,7 @@ require("formatter").setup(
         end
       },
       python = {black, isort},
-      go = {gofmt, gogci},
+      go = {gofmt, gogci, goimports},
       perl = {
         -- perltidy
         function()
