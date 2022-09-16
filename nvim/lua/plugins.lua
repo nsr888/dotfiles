@@ -127,6 +127,18 @@ local function init()
 		end,
 	})
 
+	-- GitHub Copilot
+	use({
+		"github/copilot.vim",
+		config = function()
+			-- Avoid conflict with nvim-cmp's tab fallback
+			vim.g.copilot_no_tab_map = true
+			vim.g.copilot_assume_mapped = true
+			vim.g.copilot_tab_fallback = ""
+			vim.keymap.set("i", "<C-j>", [[copilot#Accept('')]], { noremap = true, silent = true, expr = true })
+		end,
+	})
+
 	-- use {"ray-x/lsp_signature.nvim",
 	--   config = function()
 	--     require "lsp_signature".setup {}
@@ -357,6 +369,7 @@ local function init()
 	-- use {"aklt/plantuml-syntax"}
 	-- use {"tyru/open-browser.vim"}
 	-- use {"weirongxu/plantuml-previewer.vim"}
+	use({ "rhysd/git-messenger.vim" })
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`
