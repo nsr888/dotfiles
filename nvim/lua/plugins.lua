@@ -168,12 +168,12 @@ local function init()
 	})
 
 	-- Telescope
-	-- use {
-	--   "nvim-telescope/telescope.nvim",
-	--   event = "VimEnter",
-	--   requires = {{"nvim-lua/popup.nvim"}, {"nvim-lua/plenary.nvim"}},
-	--   config = "require('config.telescope')"
-	-- }
+	use({
+		"nvim-telescope/telescope.nvim",
+		event = "VimEnter",
+		requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
+		config = "require('config.telescope')",
+	})
 
 	-- use {
 	--   "jose-elias-alvarez/null-ls.nvim",
@@ -205,12 +205,12 @@ local function init()
 	-- use {"dracula/vim", as = "dracula"}
 
 	-- Shows RGB colors
-	-- use {
-	--   "norcalli/nvim-colorizer.lua",
-	--   config = function()
-	--     require "colorizer".setup()
-	--   end
-	-- }
+	use({
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup()
+		end,
+	})
 
 	-- Treesitter
 	use({

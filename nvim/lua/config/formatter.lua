@@ -25,6 +25,10 @@ local function isort()
 	return { exe = "isort", args = { "--quiet", "-" }, stdin = true }
 end
 
+local function golines()
+	return { exe = "golines", args = { "--max-len=125" }, stdin = true }
+end
+
 local function gofmt()
 	return { exe = "gofumpt", args = { "-s" }, stdin = true }
 end
@@ -89,7 +93,7 @@ require("formatter").setup({
 			end,
 		},
 		python = { black, isort },
-		go = { gofmt, gogci },
+		go = { gofmt, gogci, golines },
 		perl = {
 			-- perltidy
 			function()
