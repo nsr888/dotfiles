@@ -1,7 +1,7 @@
 local fn = vim.fn
 local lspconfig = require("lspconfig")
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- settings for lua-language-server can be found on https://github.com/sumneko/lua-language-server/wiki/Settings .

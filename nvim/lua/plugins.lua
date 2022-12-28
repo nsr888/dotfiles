@@ -366,10 +366,28 @@ local function init()
 	--   "glench/vim-jinja2-syntax"
 	-- }
 	-- use {"ellisonleao/glow.nvim"}
-	-- use {"aklt/plantuml-syntax"}
-	-- use {"tyru/open-browser.vim"}
-	-- use {"weirongxu/plantuml-previewer.vim"}
+	use({ "aklt/plantuml-syntax" })
+	use({ "tyru/open-browser.vim" })
+	use({ "weirongxu/plantuml-previewer.vim" })
 	use({ "rhysd/git-messenger.vim" })
+
+	-- Markdown preview
+	-- install without yarn or npm
+	-- use({
+	-- 	"iamcco/markdown-preview.nvim",
+	-- 	run = function()
+	-- 		vim.fn["mkdp#util#install"]()
+	-- 	end,
+	-- })
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = "cd app && npm install",
+		setup = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+	})
+	use({ "fatih/vim-go", run = ":GoUpdateBinaries" })
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

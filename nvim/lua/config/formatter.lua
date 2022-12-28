@@ -34,7 +34,7 @@ local function gofmt()
 end
 
 local function gogci()
-	return { exe = "gci", args = { "print" }, stdin = true }
+	return { exe = "gci", args = { "print", "--skip-generated" }, stdin = true }
 end
 
 local util = require("formatter.util")
