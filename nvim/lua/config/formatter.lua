@@ -17,10 +17,12 @@ local clangd = function()
 	}
 end
 
+-- pip install black
 local function black()
 	return { exe = "black", args = { "--quiet", "-" }, stdin = true }
 end
 
+-- pip install isort
 local function isort()
 	return { exe = "isort", args = { "--quiet", "-" }, stdin = true }
 end
@@ -35,6 +37,10 @@ end
 
 local function gogci()
 	return { exe = "gci", args = { "print", "--skip-generated" }, stdin = true }
+end
+
+local function rustfmt()
+	return { exe = "rustfmt", args = { "--emit=stdout", "--edition 2021" }, stdin = true }
 end
 
 local util = require("formatter.util")
@@ -82,16 +88,7 @@ require("formatter").setup({
 		},
 		cpp = { clangd },
 		c = { clangd },
-		rust = {
-			-- Rustfmt
-			function()
-				return {
-					exe = "rustfmt",
-					args = { "--emit=stdout" },
-					stdin = true,
-				}
-			end,
-		},
+		rust = { rustfmt },
 		python = { black, isort },
 		go = { gofmt, gogci, golines },
 		perl = {

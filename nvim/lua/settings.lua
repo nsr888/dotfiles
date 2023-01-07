@@ -24,6 +24,8 @@ vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4|set noexpandtab"
 vim.cmd "autocmd FileType cpp set tabstop=4|set shiftwidth=4"
 vim.cmd "autocmd FileType c set tabstop=4|set shiftwidth=4|set noexpandtab"
 vim.cmd "autocmd FileType make,nginx set tabstop=4|set shiftwidth=4|set noexpandtab"
+-- rust
+vim.cmd "autocmd BufRead,BufNewFile Cargo.toml,Cargo.lock,*.rs compiler cargo"
 
 vim.opt.number = true
 vim.opt.wrap = true
