@@ -388,6 +388,16 @@ local function init()
 		ft = { "markdown" },
 	})
 	use({ "fatih/vim-go", run = ":GoUpdateBinaries" })
+	-- flutter
+	use({
+		"akinsho/flutter-tools.nvim",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"stevearc/dressing.nvim", -- optional for vim.ui.select
+		},
+	})
+	-- react native
+	use("dimaportenko/telescope-simulators.nvim")
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

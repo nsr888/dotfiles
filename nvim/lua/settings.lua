@@ -17,15 +17,15 @@ vim.opt.hlsearch = true -- ...unless uppercase letters used
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true -- spaces instead of tabs
-vim.cmd "autocmd FileType python set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType rust set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType haskell set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType go set tabstop=4|set shiftwidth=4|set noexpandtab"
-vim.cmd "autocmd FileType cpp set tabstop=4|set shiftwidth=4"
-vim.cmd "autocmd FileType c set tabstop=4|set shiftwidth=4|set noexpandtab"
-vim.cmd "autocmd FileType make,nginx set tabstop=4|set shiftwidth=4|set noexpandtab"
+vim.cmd("autocmd FileType python set tabstop=4|set shiftwidth=4")
+vim.cmd("autocmd FileType rust set tabstop=4|set shiftwidth=4")
+vim.cmd("autocmd FileType haskell set tabstop=4|set shiftwidth=4")
+vim.cmd("autocmd FileType go set tabstop=4|set shiftwidth=4|set noexpandtab")
+vim.cmd("autocmd FileType cpp set tabstop=4|set shiftwidth=4")
+vim.cmd("autocmd FileType c set tabstop=4|set shiftwidth=4|set noexpandtab")
+vim.cmd("autocmd FileType make,nginx set tabstop=4|set shiftwidth=4|set noexpandtab")
 -- rust
-vim.cmd "autocmd BufRead,BufNewFile Cargo.toml,Cargo.lock,*.rs compiler cargo"
+vim.cmd("autocmd BufRead,BufNewFile Cargo.toml,Cargo.lock,*.rs compiler cargo")
 
 vim.opt.number = true
 vim.opt.wrap = true
@@ -56,19 +56,19 @@ vim.g.closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx,*.js,*.tsx,*.vue"
 -- set colour scheme
 vim.g.tokyonight_style = "night"
 vim.g.tokyonight_italic_functions = true
-vim.g.tokyonight_sidebars = {"qf", "vista_kind", "terminal", "packer"}
+vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
 -- vim.g.tokyonight_transparent = true
 -- vim.g.tokyonight_dark_sidebar = false
 
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
-vim.g.tokyonight_colors = {hint = "orange", error = "#ff0000"}
-vim.cmd [[colorscheme tokyonight]]
+vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
+vim.cmd([[colorscheme tokyonight]])
 -- vim.g.material_style = "deep ocean"
 -- vim.cmd [[colorscheme material]]
 -- vim.cmd [[colorscheme embark]]
 
 -- highlight on yank
-vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]
+vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])
 
 -- Vertically center document when entering insert mode
 -- vim.cmd [[autocmd InsertEnter * norm zz]]
@@ -77,6 +77,6 @@ vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank()]]
 -- vim.g.python_host_prog = "/usr/bin/python"
 
 -- set nginx file type for nginx highlight plugin "chr4/nginx.vim"
-vim.cmd "au BufNewFile,BufRead *.nginx set ft=nginx"
-vim.cmd "au BufNewFile,BufRead nginx*.conf set ft=nginx"
-vim.cmd "au BufNewFile,BufRead *nginx.conf set ft=nginx"
+vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
+vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
+vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")

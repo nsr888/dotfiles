@@ -29,6 +29,9 @@ nvim_lsp["gopls"].setup({
 				shadow = true,
 			},
 			staticcheck = true,
+			env = {
+				GOFLAGS = "-tags=unittest,integration",
+			},
 		},
 	},
 	init_options = {

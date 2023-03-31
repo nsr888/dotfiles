@@ -52,3 +52,5 @@ autoload -Uz compinit && compinit
 source <(kubectl completion zsh)
 alias k=kubectl
 complete -F __start_kubectl k
+
+export PATH="/Users/$ROOT_USER_NAME/dotfiles/bin:$PATH"

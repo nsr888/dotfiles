@@ -1,6 +1,7 @@
 -- Examples: https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md
 -- Prettier function for formatter
-local prettier = function()
+-- npm install -g prettier
+local function prettier()
 	return {
 		exe = "prettier",
 		args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
@@ -8,7 +9,7 @@ local prettier = function()
 	}
 end
 
-local clangd = function()
+local function clangd()
 	return {
 		exe = "clang-format",
 		args = { "--assume-filename", vim.api.nvim_buf_get_name(0) },
@@ -36,11 +37,26 @@ local function gofmt()
 end
 
 local function gogci()
-	return { exe = "gci", args = { "print", "--skip-generated" }, stdin = true }
+	return { exe = "gci", args = { "print", "--skip-generated", "-s default" }, stdin = true }
 end
 
 local function rustfmt()
 	return { exe = "rustfmt", args = { "--emit=stdout", "--edition 2021" }, stdin = true }
+end
+
+-- go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+local function yamlfmt()
+	return { exe = "yamlfmt", args = { "-in" }, stdin = true }
+end
+
+-- brew install ghcup
+-- stack install stylish-haskell
+local function stylish_haskell()
+	return { exe = "stylish-haskell", stdin = true }
+end
+
+local function ocamlformat()
+	return { exe = "ocamlformat", stdin = true }
 end
 
 local util = require("formatter.util")
@@ -52,12 +68,14 @@ require("formatter").setup({
 		javacriptreact = { prettier },
 		javascript = { prettier },
 		typescript = { prettier },
+		svelte = { prettier },
 		json = { prettier },
 		html = { prettier },
 		css = { prettier },
 		scss = { prettier },
 		markdown = { prettier },
 		vue = { prettier },
+		yaml = { yamlfmt },
 		-- htmldjango = {prettier},
 		lua = {
 			-- "formatter.filetypes.lua" defines default configurations for the
@@ -101,6 +119,8 @@ require("formatter").setup({
 				}
 			end,
 		},
+		haskell = { stylish_haskell },
+		ocaml = { ocamlformat },
 	},
 })
 

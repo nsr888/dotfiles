@@ -2,15 +2,15 @@
 -- null-ls for tsutils plugin
 -- require("lsp/typescript")
 -- require("lsp/vue")
--- require("lsp/css")
--- require("lsp/html")
+require("lsp/frontend")
 require("lsp/luals")
 require("lsp/python")
--- require("lsp/json")
 require("lsp/cpp")
 require("lsp/go")
 require("lsp/yamlls")
 require("lsp/rust")
+require("lsp/ocaml")
+require("lsp/haskell")
 -- require("lspconfig").dockerls.setup {}
 -- require "lspconfig".bashls.setup {
 --   filetypes = {"sh", "zsh"} -- Added support to "zsh" files
