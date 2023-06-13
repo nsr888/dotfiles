@@ -26,9 +26,8 @@ require("nvim-treesitter.configs").setup({
 		"regex",
 		"haskell",
 		"ocaml",
-		"ocamllex",
 		"ocaml_interface",
-    "svelte",
+		"svelte",
 	}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 	ignore_install = {
 		"beancount",
@@ -55,6 +54,7 @@ require("nvim-treesitter.configs").setup({
 		"ledger",
 		"llvm",
 		"nix",
+		"ocamllex",
 		"pioasm",
 		"ql",
 		"r",

@@ -11,6 +11,7 @@ require("lsp/yamlls")
 require("lsp/rust")
 require("lsp/ocaml")
 require("lsp/haskell")
+require("lsp/bufls")
 -- require("lspconfig").dockerls.setup {}
 -- require "lspconfig".bashls.setup {
 --   filetypes = {"sh", "zsh"} -- Added support to "zsh" files

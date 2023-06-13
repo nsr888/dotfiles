@@ -108,7 +108,7 @@ require("formatter").setup({
 		c = { clangd },
 		rust = { rustfmt },
 		python = { black, isort },
-		go = { gofmt, gogci, golines },
+		go = { gogci, gofmt, golines },
 		perl = {
 			-- perltidy
 			function()

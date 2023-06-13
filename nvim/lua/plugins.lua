@@ -398,6 +398,23 @@ local function init()
 	})
 	-- react native
 	use("dimaportenko/telescope-simulators.nvim")
+	-- highlight todo comments
+	use({
+		"folke/todo-comments.nvim",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			require("todo-comments").setup({
+				-- your configuration comes here
+				-- or leave it empty to use the default settings
+				-- refer to the configuration section below
+				highlight = {
+					after = "", -- "fg" or "bg" or empty
+				},
+			})
+		end,
+	})
+	-- nvim tabs
+	use("nanozuki/tabby.nvim")
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`
