@@ -66,7 +66,6 @@ require("nvim-treesitter.configs").setup({
 		"teal",
 		"tlaplus",
 		"turtle",
-		"kotlin",
 		"latex",
 		"verilog",
 		"ruby",

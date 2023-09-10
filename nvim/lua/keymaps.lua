@@ -108,6 +108,13 @@ local mappings = {
 		-- Other
 		{ "<leader>q", ":bdelete<CR>" },
 		{ "<leader>Q", ":BufOnly<CR>" },
+		-- Flutter Developement
+		{ "<leader>Fa", "<cmd>FlutterRun<CR>" },
+		{ "<leader>Fq", "<cmd>FlutterQuit<CR>" },
+		{ "<leader>Fr", "<cmd>FlutterReload<CR>" },
+		{ "<leader>FR", "<cmd>FlutterRestart<CR>" },
+		{ "<leader>FD", "<cmd>FlutterVisualDebug<CR>" },
+		{ "<leader>FF", "<cmd>FlutterCopyProfilerUrl<CR>" },
 	},
 	t = {
 		-- Terminal mode

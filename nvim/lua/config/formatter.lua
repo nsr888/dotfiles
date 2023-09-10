@@ -29,7 +29,7 @@ local function isort()
 end
 
 local function golines()
-	return { exe = "golines", args = { "--max-len=125" }, stdin = true }
+	return { exe = "golines", args = { "--max-len=120", "--base-formatter=gofumpt" }, stdin = true }
 end
 
 local function gofmt()
@@ -57,6 +57,13 @@ end
 
 local function ocamlformat()
 	return { exe = "ocamlformat", stdin = true }
+end
+
+local function latexindent()
+	return { exe = "latexindent", args = {
+		"-g",
+		"/dev/null",
+	}, stdin = true }
 end
 
 local util = require("formatter.util")
@@ -121,6 +128,7 @@ require("formatter").setup({
 		},
 		haskell = { stylish_haskell },
 		ocaml = { ocamlformat },
+		tex = { latexindent },
 	},
 })
 

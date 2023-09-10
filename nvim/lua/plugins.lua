@@ -250,7 +250,7 @@ local function init()
 	-- use "knubie/vim-kitty-navigator"
 	-- use "alvan/vim-closetag"
 	use({ "mhartington/formatter.nvim", config = "require('config.formatter')" })
-	-- use "airblade/vim-gitgutter"
+	use("airblade/vim-gitgutter")
 
 	use({
 		"phaazon/hop.nvim",
@@ -296,7 +296,7 @@ local function init()
 	-- use {"windwp/nvim-spectre"}
 
 	-- tpope
-	-- use "tpope/vim-fugitive"
+	use("tpope/vim-fugitive")
 	-- use "tpope/vim-surround"
 
 	-- use "tpope/vim-commentary"
@@ -397,7 +397,7 @@ local function init()
 		},
 	})
 	-- react native
-	use("dimaportenko/telescope-simulators.nvim")
+	-- use("dimaportenko/telescope-simulators.nvim")
 	-- highlight todo comments
 	use({
 		"folke/todo-comments.nvim",
