@@ -279,7 +279,7 @@ local function init()
 	-- bufonly, close all buffers except current one
 	use({ "numtostr/BufOnly.nvim", cmd = "BufOnly" })
 
-	use({ "simrat39/symbols-outline.nvim" })
+	-- use({ "simrat39/symbols-outline.nvim" })
 
 	-- :TZMinimalist :TZFocus :TZAtaraxis
 	-- use "Pocco81/TrueZen.nvim"
@@ -387,7 +387,7 @@ local function init()
 		end,
 		ft = { "markdown" },
 	})
-	use({ "fatih/vim-go", run = ":GoUpdateBinaries" })
+	-- use({ "fatih/vim-go", run = ":GoUpdateBinaries" })
 	-- flutter
 	use({
 		"akinsho/flutter-tools.nvim",
@@ -415,6 +415,8 @@ local function init()
 	})
 	-- nvim tabs
 	use("nanozuki/tabby.nvim")
+	-- nvim marks
+	use({ "chentoast/marks.nvim", config = "require('config.marks')" })
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

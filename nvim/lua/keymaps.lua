@@ -72,7 +72,7 @@ local mappings = {
 		{ "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<CR>" },
 		{ "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>" },
 		{ "<leader>e", "<cmd>lua vim.lsp.buf.show_line_diagnostics()<CR>" },
-		{ "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>" },
+		{ "<leader>k", "<cmd>lua vim.lsp.buf.signature_help()<CR>" },
 		{ "K", "<cmd>lua vim.lsp.buf.hover()<CR>" },
 		-- {"<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>"},
 		{ "<leader>p", ":Format<CR>" },
@@ -82,7 +82,7 @@ local mappings = {
 		-- {"K", ":Lspsaga hover_doc<cr>"},
 		{ "<C-f>", ':lua require("lspsaga.action").smart_scroll_with_saga(1)<cr>' },
 		{ "<C-b>", ':lua require("lspsaga.action").smart_scroll_with_saga(-1)<cr>' },
-		-- {"gs", ":Lspsaga signature_help<cr>"},
+		-- { "<leader>sh", ":Lspsaga signature_help<cr>" },
 		{ "gr", ":Lspsaga rename<cr>" },
 		{ "gD", ":Lspsaga preview_definition<cr>" },
 		{ "gl", ":Lspsaga show_line_diagnostics<cr>" },
@@ -115,6 +115,8 @@ local mappings = {
 		{ "<leader>FR", "<cmd>FlutterRestart<CR>" },
 		{ "<leader>FD", "<cmd>FlutterVisualDebug<CR>" },
 		{ "<leader>FF", "<cmd>FlutterCopyProfilerUrl<CR>" },
+		{ "<leader>y", '"+y' }, -- Copy to clipboard
+		{ "<leader>Y", 'gg"+yG' }, -- Copy whole document to clipboard
 	},
 	t = {
 		-- Terminal mode
@@ -141,6 +143,7 @@ local mappings = {
 		-- Buffer Copy & Paste
 		{ "<leader>cy", ":w! ~/.vimbuf<cr>" },
 		{ "<leader>cp", ":r ~/.vimbuf<cr>" },
+		{ "<leader>y", '"+y' }, -- Copy to clipboard
 	},
 	x = {
 		-- Move selected line / block of text in visual mode

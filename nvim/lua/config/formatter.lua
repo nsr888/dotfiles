@@ -33,6 +33,10 @@ local function golines()
 end
 
 local function gofmt()
+	return { exe = "gofmt", args = { "-s" }, stdin = true }
+end
+
+local function gofumpt()
 	return { exe = "gofumpt", args = { "-s" }, stdin = true }
 end
 
@@ -115,7 +119,7 @@ require("formatter").setup({
 		c = { clangd },
 		rust = { rustfmt },
 		python = { black, isort },
-		go = { gogci, gofmt, golines },
+		go = { gofmt }, -- go = { gogci, gofumpt, golines },
 		perl = {
 			-- perltidy
 			function()

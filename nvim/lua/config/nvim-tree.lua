@@ -60,8 +60,8 @@ require("nvim-tree").setup({
 	on_attach = on_attach,
 	disable_netrw = true,
 	hijack_netrw = false,
-	open_on_setup = false,
-	ignore_ft_on_setup = {},
+	-- open_on_setup = false,
+	-- ignore_ft_on_setup = {},
 	open_on_tab = false,
 	hijack_cursor = false,
 	update_cwd = false,
@@ -74,10 +74,10 @@ require("nvim-tree").setup({
 		ignore_list = {},
 	},
 	view = {
-		width = 30,
+		width = 60,
 		side = "right",
-		mappings = {
-			custom_only = false,
-		},
+		-- mappings = {
+		-- 	custom_only = false,
+		-- },
 	},
 })

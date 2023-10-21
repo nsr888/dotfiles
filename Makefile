@@ -4,7 +4,7 @@ vim-basic:
 
 alacritty:
 	mkdir -p ~/.config/alacritty
-	ln -sf $(PWD)/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+	ln -sf $(PWD)/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 
 goinfre:
 	# Make link ~/.docker -> /goinfre/ksinistr/docker

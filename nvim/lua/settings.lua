@@ -7,7 +7,6 @@ vim.opt.hidden = true
 vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
 vim.opt.colorcolumn = "80"
--- vim.opt.clipboard = "unnamedplus" -- use system clipboard
 vim.opt.incsearch = true --Lookahead as search pattern is specified
 vim.opt.ignorecase = true -- Ignore case in all searches...
 vim.opt.smartcase = true -- ...unless uppercase letters used
@@ -62,7 +61,7 @@ vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
 
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
 vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
-vim.cmd([[colorscheme tokyonight]])
+-- vim.cmd([[colorscheme tokyonight]])
 -- vim.g.material_style = "deep ocean"
 -- vim.cmd [[colorscheme material]]
 -- vim.cmd [[colorscheme embark]]
@@ -80,3 +79,5 @@ vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])
 vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
 vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
 vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
+
+-- vim.opt.clipboard = "unnamedplus" -- use system clipboard

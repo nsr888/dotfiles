@@ -1,0 +1,9 @@
+pytest
+pynvim
+python-lsp-server
+black
+flake8
+pycodestyle
+pyflakes
+pylint
+autopep8
