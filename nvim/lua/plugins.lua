@@ -105,11 +105,11 @@ local function init()
 			{ "hrsh7th/cmp-calc", module = "cmp_calc" },
 			{ "hrsh7th/cmp-emoji", module = "cmp_emoji" },
 			{ "saadparwaiz1/cmp_luasnip", module = "cmp_luasnip" },
-			{
-				"tzachar/cmp-tabnine",
-				run = "./install.sh",
-				module = "cmp_tabnine",
-			},
+			-- {
+			-- 	"tzachar/cmp-tabnine",
+			-- 	run = "./install.sh",
+			-- 	module = "cmp_tabnine",
+			-- },
 			{ "rafamadriz/friendly-snippets", module = "friendly-snippets" },
 			{
 				"L3MON4D3/LuaSnip",

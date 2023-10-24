@@ -29,16 +29,6 @@ install_deb_packages()
 
 }
 
-install_python_packages()
-{
-    for pack in $(cat "$SCRIPTDIR/python_packages"); do
-        sleep 1
-        echo "Installing $pack"
-        pip3 install $pack --user
-        sleep 1
-    done
-}
-
 setup_neovim()
 {
     cd $HOME/Downloads/
@@ -64,13 +54,17 @@ setup_fonts(){
 
 setup_go()
 {
+    GOVERSION='1.21.1'
     cd $HOME/Downloads/
-    wget -O "go.tar.gz" "https://go.dev/dl/go1.21.1.linux-amd64.tar.gz"
+    wget -O "go.tar.gz" "https://go.dev/dl/go${GOVERSION}.linux-$(dpkg --print-architecture).tar.gz"
     sudo rm -rf /usr/local/go 
     sudo tar -C /usr/local -xzf go.tar.gz
-    go env -w GOPATH=$HOME/go
-    echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> ~/.bashrc
-    source ${HOME}/.bashrc
+    mkdir -p $HOME/go/{bin,pkg,src}
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
+    echo 'export GOPATH=$HOME/go' >> ~/.profile
+    echo 'export GOBIN=$GOPATH/bin' >> ~/.profile
+    echo 'export PATH=$PATH:$GOBIN' >> ~/.profile
+    source ${HOME}/.profile
     cd $HOME
 }
 
@@ -119,13 +113,12 @@ install_cargo_packages()
   # echo 'export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig' >> ~/.bashrc
   source "${HOME}/.bashrc"
   cargo install stylua
-  cargo install alacritty
 }
 
 setup_kubectl()
 {
   cd $HOME/Downloads/
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   kubectl version --client
   echo 'source <(kubectl completion bash)' >>~/.bashrc
@@ -157,10 +150,11 @@ setup_docker()
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
+# TODO: replace to open lens setup
 setup_lens()
 {
   curl -fsSL https://downloads.k8slens.dev/keys/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/lens-archive-keyring.gpg > /dev/null
-  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
   sudo apt update
   sudo apt install lens
 }
@@ -175,18 +169,18 @@ setup_discord()
     cd $HOME
 }
 
-setup_alacritty()
-{
-    cd $HOME/Downloads/
-    git clone https://github.com/jwilm/alacritty.git
-    cd alacritty
-    cargo build --release
-    sudo cp target/release/alacritty /usr/local/bin
-    sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
-    sudo desktop-file-install extra/linux/Alacritty.desktop
-    sudo update-desktop-database
-    cd $HOME
-}
+# setup_alacritty()
+# {
+#     cd $HOME/Downloads/
+#     git clone https://github.com/jwilm/alacritty.git
+#     cd alacritty
+#     cargo build --release
+#     sudo cp target/release/alacritty /usr/local/bin
+#     sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+#     sudo desktop-file-install extra/linux/Alacritty.desktop
+#     sudo update-desktop-database
+#     cd $HOME
+# }
 
 setup_calibre()
 {
@@ -196,7 +190,7 @@ setup_calibre()
 setup_vscode()
 {
   cd $HOME/Downloads/
-  wget -O "vscode.deb" "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+  wget -O "vscode.deb" "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"
   # sudo apt install ./vscode.deb
   # If you're on an older Linux distribution, you will need to run this instead:
   sudo dpkg -i "vscode.deb"
@@ -215,7 +209,6 @@ setup_bashrc()
 
 # Integrity checks
 [ -f $SCRIPTDIR/apt_packages ] || (echo "The apt packages file is not there!" && exit 1)
-[ -f $SCRIPTDIR/python_packages ] || (echo "The python packages file is not there!" && exit 1)
 
 
 # Setup basic system
@@ -226,7 +219,6 @@ setup_bashrc()
 
 
 # install_deb_packages
-install_python_packages
 
 # Setup basic application
 
@@ -238,7 +230,6 @@ install_python_packages
 # setup_lua_language_server
 # install_cargo_packages
 # setup_kubectl
-# setup_alacritty
 
 
 # Setup essenital applications

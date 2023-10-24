@@ -10,23 +10,23 @@ require("cmp_calc")
 require("cmp_emoji")
 require("cmp_luasnip")
 
-local tabnine = require("cmp_tabnine")
-tabnine:setup({
-	-- max_lines = 100,
-	-- max_num_results = 5,
-	-- sort = true,
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = "..",
-	ignored_file_types = {
-		-- default is not to ignore
-		-- uncomment to ignore in lua:
-		lua = true,
-	},
-	show_prediction_strength = false,
-})
+-- local tabnine = require("cmp_tabnine")
+-- tabnine:setup({
+-- 	-- max_lines = 100,
+-- 	-- max_num_results = 5,
+-- 	-- sort = true,
+-- 	max_lines = 1000,
+-- 	max_num_results = 20,
+-- 	sort = true,
+-- 	run_on_every_keystroke = true,
+-- 	snippet_placeholder = "..",
+-- 	ignored_file_types = {
+-- 		-- default is not to ignore
+-- 		-- uncomment to ignore in lua:
+-- 		lua = true,
+-- 	},
+-- 	show_prediction_strength = false,
+-- })
 
 local kind_icons = {
 	Text = "",
@@ -91,7 +91,7 @@ cmp.setup({
 				calc = "[Calc]",
 				emoji = "[Emoji]",
 				luasnip = "[LuaSnip]",
-				cmp_tabnine = "[TN]",
+				-- cmp_tabnine = "[TN]",
 			})[entry.source.name]
 
 			if entry.source.name == "cmp_tabnine" then
@@ -153,7 +153,7 @@ cmp.setup({
 	sorting = {
 		priority_weight = 2,
 		comparators = {
-			require("cmp_tabnine.compare"),
+			-- require("cmp_tabnine.compare"),
 			compare.offset,
 			compare.exact,
 			compare.score,

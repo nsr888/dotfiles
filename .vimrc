@@ -13,7 +13,6 @@ set expandtab
 
 " use relative numbers for all lines except the current line
 set number                     " Show current line number
-set relativenumber             " Show relative line numbers
 
 set nocompatible
 set autoindent

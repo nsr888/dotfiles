@@ -10,7 +10,7 @@ style = "Bold"
 
 [font.normal]
 family = "FiraCode Nerd Font"
-style = "Retina"
+style = "Regular"
 
 # [[keyboard.bindings]]
 # chars = ";"
