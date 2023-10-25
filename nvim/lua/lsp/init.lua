@@ -45,7 +45,7 @@ local handlers = {
 }
 
 -- Do not forget to use the on_attach function
-require("lspconfig").myserver.setup({ handlers = handlers })
+-- require("lspconfig").myserver.setup({ handlers = handlers })
 
 -- To instead override globally
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -55,7 +55,7 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
-require("lspconfig").myservertwo.setup({})
+-- require("lspconfig").myservertwo.setup({})
 
 ------------------
 -- Customizing how diagnostics are displayed

@@ -23,7 +23,7 @@ fzf
 jq
 python3-pytest
 python3-pynvim
-python3-python-lsp-server
+python3-pylsp
 python3-black
 python3-flake8
 python3-pycodestyle
