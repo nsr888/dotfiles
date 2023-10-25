@@ -68,10 +68,23 @@ setup_go()
     cd $HOME
 }
 
+setup_lua_language_server()
+{
+    LUALANGSERVERVERSION='3.7.0'
+    cd $HOME/Downloads/
+    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-$(dpkg --print-architecture).tar.gz"
+    mkdir -p $HOME/lua-language-server
+    tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
+    echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
+    source ${HOME}/.profile
+    cd $HOME
+}
+
 install_go_packages()
 {
     go install golang.org/x/tools/gopls@latest
     go install github.com/nametake/golangci-lint-langserver@latest
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
     go install github.com/daixiang0/gci@latest
     go install mvdan.cc/gofumpt@latest
     go install github.com/segmentio/golines@latest
@@ -84,6 +97,7 @@ setup_fzf()
     [-d "$HOME/.fzf" ] || rm -rf "$HOME/.fzf"
     git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
     $HOME/.fzf/install --key-bindings --no-completion --update-rc
+    source "${HOME}/.bashrc"
 }
 
 setup_npm()
@@ -227,7 +241,7 @@ setup_bashrc()
 # setup_go
 # install_go_packages
 # setup_npm
-# setup_lua_language_server
+setup_lua_language_server
 # install_cargo_packages
 # setup_kubectl
 
@@ -240,6 +254,7 @@ setup_bashrc()
 # setup_calibre
 # setup_vscode
 # setup_bashrc
+# setup_fzf
 
 # Sourcing the new dot files
 
