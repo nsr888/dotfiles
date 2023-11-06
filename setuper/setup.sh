@@ -7,6 +7,8 @@ DIR=$SCRIPTDIR/..
 
 install_deb_packages()
 {
+    sudo apt purge firefox-esr
+    sudo apt purge neovim
     sudo apt-get update
 
     for pack in $(cat "$SCRIPTDIR/apt_packages"); do
@@ -26,7 +28,7 @@ install_deb_packages()
 
     echo "Removing unnecessary packages"
     sudo apt autoremove -y
-
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 }
 
 setup_neovim()
@@ -42,12 +44,24 @@ setup_neovim()
     git config --global core.editor "nvim"
 }
 
+setup_flatpak()
+{
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    for pack in $(cat "$SCRIPTDIR/flatpak_packages"); do
+        echo "Installing '$pack'"
+        [ dpkg -s "$pack" ] && continue
+        flatpak install -y --noninteractive flathub $pack
+        sleep 1
+    done
+}
+
 setup_fonts(){
     cd $HOME/Downloads/
     wget -O "fira.zip" "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip"
     unzip -o fira.zip -d $HOME/Downloads/fira
     mkdir -p ~/.fonts
-    cp -f $HOME/Downloads/fira/FiraCodeNerdFont-Regular.ttf ~/.fonts/
+    cp -f $HOME/Downloads/fira/FiraCodeNerdFontMono-Regular.ttf ~/.fonts/
+    cp -f $HOME/Downloads/fira/FiraCodeNerdFontMono-Bold.ttf ~/.fonts/
     fc-cache -f -v
     cd $HOME
 }
@@ -142,76 +156,6 @@ setup_kubectl()
   cd $HOME
 }
 
-# https://gist.github.com/matthew01lokiet/3775469acf8137621b42e9d059695c2c
-setup_docker()
-{
-  sudo apt-get remove docker docker-engine docker.io containerd runc
-  sudo apt-get update
-  sudo apt-get install -y \
-      ca-certificates \
-      curl \
-      gnupg \
-      lsb-release
-  sudo rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  sudo apt-get update
-  sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-  sudo usermod -a -G docker $USER
-  sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-$(uname -m)" -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-}
-
-# TODO: replace to open lens setup
-setup_lens()
-{
-  curl -fsSL https://downloads.k8slens.dev/keys/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/lens-archive-keyring.gpg > /dev/null
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
-  sudo apt update
-  sudo apt install lens
-}
-
-setup_discord()
-{
-    cd $HOME/Downloads/
-    sudo apt-get install ninja-build gettext cmake unzip curl
-    wget -O "discord.deb" "https://discordapp.com/api/download?platform=linux&format=deb"
-    sudo dpkg -i "discord.deb"
-    sudo apt-get -f install -y
-    cd $HOME
-}
-
-# setup_alacritty()
-# {
-#     cd $HOME/Downloads/
-#     git clone https://github.com/jwilm/alacritty.git
-#     cd alacritty
-#     cargo build --release
-#     sudo cp target/release/alacritty /usr/local/bin
-#     sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
-#     sudo desktop-file-install extra/linux/Alacritty.desktop
-#     sudo update-desktop-database
-#     cd $HOME
-# }
-
-setup_calibre()
-{
-  sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-}
-
-setup_vscode()
-{
-  cd $HOME/Downloads/
-  wget -O "vscode.deb" "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"
-  # sudo apt install ./vscode.deb
-  # If you're on an older Linux distribution, you will need to run this instead:
-  sudo dpkg -i "vscode.deb"
-  sudo apt-get -f install -y
-  cd $HOME
-}
-
 setup_bashrc()
 {
   git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
@@ -233,6 +177,8 @@ setup_bashrc()
 
 
 # install_deb_packages
+# setup_fzf
+setup_flatpak
 
 # Setup basic application
 
@@ -241,20 +187,14 @@ setup_bashrc()
 # setup_go
 # install_go_packages
 # setup_npm
-setup_lua_language_server
+# setup_lua_language_server
 # install_cargo_packages
 # setup_kubectl
 
 
 # Setup essenital applications
 
-# setup_docker
-# setup_lens
-# setup_discord
-# setup_calibre
-# setup_vscode
 # setup_bashrc
-# setup_fzf
 
 # Sourcing the new dot files
 

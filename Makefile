@@ -1,10 +1,11 @@
 # Inspiration: https://github.com/mokevnin/dotfiles/blob/master/Makefile
-vim-basic:
-	ln -sf $(PWD)/vim/vimrc ~/.vimrc
+vim:
+	ln -sf $(PWD)/.vimrc ~/.vimrc
 
 alacritty:
 	mkdir -p ~/.config/alacritty
 	ln -sf $(PWD)/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
+	ln -sf $(PWD)/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
 
 goinfre:
 	# Make link ~/.docker -> /goinfre/ksinistr/docker
@@ -55,4 +56,4 @@ deps-nvim:
 deps-bash:
 	bash-language-server
 
-.PHONY: vim-basic alacritty goinfre nvim-install prepare deps-npm deps-go deps-lua deps-pip deps-sql deps-vue deps-nvim deps-bash
+.PHONY: vim alacritty goinfre nvim-install prepare deps-npm deps-go deps-lua deps-pip deps-sql deps-vue deps-nvim deps-bash
