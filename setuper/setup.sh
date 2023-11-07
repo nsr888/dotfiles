@@ -68,28 +68,19 @@ setup_fonts(){
 
 setup_go()
 {
-    GOVERSION='1.21.1'
+    GOVERSION='1.21.3'
     cd $HOME/Downloads/
     wget -O "go.tar.gz" "https://go.dev/dl/go${GOVERSION}.linux-$(dpkg --print-architecture).tar.gz"
     sudo rm -rf /usr/local/go 
-    sudo tar -C /usr/local -xzf go.tar.gz
-    mkdir -p $HOME/go/{bin,pkg,src}
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
-    echo 'export GOPATH=$HOME/go' >> ~/.profile
-    echo 'export GOBIN=$GOPATH/bin' >> ~/.profile
-    echo 'export PATH=$PATH:$GOBIN' >> ~/.profile
-    source ${HOME}/.profile
-    cd $HOME
-}
-
-setup_lua_language_server()
-{
-    LUALANGSERVERVERSION='3.7.0'
-    cd $HOME/Downloads/
-    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-$(dpkg --print-architecture).tar.gz"
-    mkdir -p $HOME/lua-language-server
-    tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
-    echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
+    sudo rm -rf $HOME/go 
+    mkdir -p $HOME/src/go/{bin,pkg,src}
+    tar -C $HOME -xzf go.tar.gz
+    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.profile
+    echo 'export GOROOT=$HOME/go' >> ~/.profile
+    echo 'export GOPATH=$HOME/src/go' >> ~/.profile
+    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.bash_profile
+    echo 'export GOROOT=$HOME/go' >> ~/.bash_profile
+    echo 'export GOPATH=$HOME/src/go' >> ~/.bash_profile
     source ${HOME}/.profile
     cd $HOME
 }
@@ -103,6 +94,18 @@ install_go_packages()
     go install mvdan.cc/gofumpt@latest
     go install github.com/segmentio/golines@latest
     go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+}
+
+setup_lua_language_server()
+{
+    LUALANGSERVERVERSION='3.7.0'
+    cd $HOME/Downloads/
+    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-$(dpkg --print-architecture).tar.gz"
+    mkdir -p $HOME/lua-language-server
+    tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
+    echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
+    source ${HOME}/.profile
+    cd $HOME
 }
 
 setup_fzf()
@@ -165,6 +168,18 @@ setup_bashrc()
   echo 'fi' >> ~/.bashrc
 }
 
+setup_finish()
+{
+    cat << EOF
+    Add these lines to your settings.json in VSCode:
+    "terminal.integrated.shellArgs.linux": ["-l"],
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "go.gopath": "/home/dsw/src/go",
+    "go.goroot": "/home/dsw/go",
+    "go.inferGopath": true,
+    EOF
+}
+
 # Integrity checks
 [ -f $SCRIPTDIR/apt_packages ] || (echo "The apt packages file is not there!" && exit 1)
 
@@ -176,25 +191,26 @@ setup_bashrc()
 ###########################################
 
 
-# install_deb_packages
-# setup_fzf
+install_deb_packages
+setup_fzf
 setup_flatpak
 
 # Setup basic application
 
-# setup_neovim
-# setup_fonts
-# setup_go
-# install_go_packages
-# setup_npm
-# setup_lua_language_server
-# install_cargo_packages
-# setup_kubectl
+setup_neovim
+setup_fonts
+setup_go
+install_go_packages
+setup_npm
+setup_lua_language_server
+install_cargo_packages
+setup_kubectl
 
 
-# Setup essenital applications
+# Finish setup
 
-# setup_bashrc
+setup_bashrc
+setup_finish
 
 # Sourcing the new dot files
 
