@@ -11,7 +11,6 @@ python3-pip
 python3-venv
 nodejs
 npm
-rustc
 cargo
 pkgconf
 libfontconfig1-dev

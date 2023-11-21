@@ -7,7 +7,6 @@ DIR=$SCRIPTDIR/..
 
 install_deb_packages()
 {
-    sudo apt purge firefox-esr
     sudo apt purge neovim
     sudo apt-get update
 
@@ -37,7 +36,7 @@ setup_neovim()
     git clone https://github.com/neovim/neovim
     cd neovim && git checkout v0.9.2
     make CMAKE_BUILD_TYPE=RelWithDebInfo
-    cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb
+    cd build && cpack -G DEB && sudo dpkg -i --force-overwrite nvim-linux64.deb
     cd $HOME
     echo 'alias vi="nvim"' >> ~/.bashrc
     ln -snf $DIR/nvim ~/.config/nvim
@@ -100,7 +99,7 @@ setup_lua_language_server()
 {
     LUALANGSERVERVERSION='3.7.0'
     cd $HOME/Downloads/
-    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-$(dpkg --print-architecture).tar.gz"
+    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-x64.tar.gz"
     mkdir -p $HOME/lua-language-server
     tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
     echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
@@ -138,6 +137,11 @@ setup_npm()
   npm install -g yaml-language-server
 }
 
+install_rustc()
+{
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs  | sh -s -- -y
+}
+
 install_cargo_packages()
 {
   echo 'export PATH=$PATH:$HOME/.cargo/bin' >> ~/.bashrc
@@ -149,7 +153,7 @@ install_cargo_packages()
 setup_kubectl()
 {
   cd $HOME/Downloads/
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl"
   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   kubectl version --client
   echo 'source <(kubectl completion bash)' >>~/.bashrc
@@ -168,21 +172,8 @@ setup_bashrc()
   echo 'fi' >> ~/.bashrc
 }
 
-setup_finish()
-{
-    cat << EOF
-    Add these lines to your settings.json in VSCode:
-    "terminal.integrated.shellArgs.linux": ["-l"],
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "go.gopath": "/home/dsw/src/go",
-    "go.goroot": "/home/dsw/go",
-    "go.inferGopath": true,
-    EOF
-}
-
 # Integrity checks
 [ -f $SCRIPTDIR/apt_packages ] || (echo "The apt packages file is not there!" && exit 1)
-
 
 # Setup basic system
 
@@ -203,6 +194,7 @@ setup_go
 install_go_packages
 setup_npm
 setup_lua_language_server
+install_rustc
 install_cargo_packages
 setup_kubectl
 
@@ -210,7 +202,6 @@ setup_kubectl
 # Finish setup
 
 setup_bashrc
-setup_finish
 
 # Sourcing the new dot files
 
