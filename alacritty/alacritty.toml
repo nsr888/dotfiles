@@ -12,15 +12,15 @@ style = "Bold"
 family = "FiraCode Nerd Font"
 style = "Regular"
 
-# [[keyboard.bindings]]
-# chars = ";"
-# key = 43
-# mods = "Control"
-#
-# [[keyboard.bindings]]
-# chars = "\u001B[118;1u"
-# key = 47
-# mods = "Control"
+[[keyboard.bindings]]
+chars = ";"
+key = 43
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001B[118;1u"
+key = 47
+mods = "Control"
 
 [selection]
 save_to_clipboard = true

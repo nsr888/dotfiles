@@ -1,0 +1,52 @@
+tap "homebrew/core"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+
+# Binaries
+brew 'cmake'
+brew 'bat'
+brew 'fd'
+brew 'coreutils' # Those that come with macOS are outdated
+brew 'git'
+brew 'grep'
+brew 'ripgrep'
+brew 'jq'
+brew 'mas' # Mac App Store manager
+brew 'python'
+brew 'rust'
+brew 'stylua'
+brew 'lua-language-server'
+brew 'go@1.21'
+brew 'htop'
+
+# Development
+brew 'imagemagick'
+brew 'protobuf'
+
+# set arguments for all 'brew install --cask' commands
+cask_args appdir: "/Applications", require_sha: true
+
+# Apps
+cask 'discord'
+cask 'docker'
+cask 'firefox'
+cask 'slack'
+cask 'dbeaver-community'
+cask 'the-unarchiver'
+cask 'visual-studio-code'
+cask 'sublime-text'
+cask 'zoom'
+cask 'keepassxc'
+cask 'balenaetcher'
+cask 'calibre'
+cask 'spectacle'
+cask 'openlens'
+# cask 'telegram'
+cask 'mactex-no-gui' # Full TeX Live distribution without GUI applications
+
+# Fonts
+cask 'font-fira-code-nerd-font'
+
+# VSCode extensions
+vscode "golang.go"
+vscode "vscodevim.vim"
