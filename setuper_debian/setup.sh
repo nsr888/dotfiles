@@ -34,7 +34,7 @@ setup_neovim()
 {
     cd $HOME/Downloads/
     git clone https://github.com/neovim/neovim
-    cd neovim && git checkout v0.9.2
+    cd neovim && git checkout v0.9.4
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     cd build && cpack -G DEB && sudo dpkg -i --force-overwrite nvim-linux64.deb
     cd $HOME
@@ -103,7 +103,9 @@ setup_lua_language_server()
     mkdir -p $HOME/lua-language-server
     tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
     echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
+    echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.bashrc
     source ${HOME}/.profile
+    source ${HOME}/.bashrc
     cd $HOME
 }
 
@@ -182,26 +184,26 @@ setup_bashrc()
 ###########################################
 
 
-install_deb_packages
-setup_fzf
-setup_flatpak
+# install_deb_packages
+# setup_fzf
+# setup_flatpak
 
 # Setup basic application
 
 setup_neovim
-setup_fonts
-setup_go
-install_go_packages
-setup_npm
-setup_lua_language_server
-install_rustc
-install_cargo_packages
-setup_kubectl
+# setup_fonts
+# setup_go
+# install_go_packages
+# setup_npm
+# setup_lua_language_server
+# install_rustc
+# install_cargo_packages
+# setup_kubectl
 
 
 # Finish setup
 
-setup_bashrc
+# setup_bashrc
 
 # Sourcing the new dot files
 

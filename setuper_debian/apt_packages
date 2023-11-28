@@ -32,3 +32,4 @@ flatpak
 gnome-software-plugin-flatpak
 docker.io
 protobuf-compiler
+htop
