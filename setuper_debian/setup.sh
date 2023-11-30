@@ -174,6 +174,14 @@ setup_bashrc()
   echo 'fi' >> ~/.bashrc
 }
 
+install_sublime()
+{
+  wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
+  echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+  sudo apt-get update
+  sudo apt-get install sublime-text
+}
+
 # Integrity checks
 [ -f $SCRIPTDIR/apt_packages ] || (echo "The apt packages file is not there!" && exit 1)
 
@@ -184,26 +192,26 @@ setup_bashrc()
 ###########################################
 
 
-# install_deb_packages
-# setup_fzf
-# setup_flatpak
+install_deb_packages
+setup_fzf
+setup_flatpak
 
 # Setup basic application
 
 setup_neovim
-# setup_fonts
-# setup_go
-# install_go_packages
-# setup_npm
-# setup_lua_language_server
-# install_rustc
-# install_cargo_packages
-# setup_kubectl
-
+setup_fonts
+setup_go
+install_go_packages
+setup_npm
+setup_lua_language_server
+install_rustc
+install_cargo_packages
+setup_kubectl
+install_sublime
 
 # Finish setup
 
-# setup_bashrc
+setup_bashrc
 
 # Sourcing the new dot files
 

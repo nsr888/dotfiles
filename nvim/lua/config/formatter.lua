@@ -41,7 +41,7 @@ local function gofumpt()
 end
 
 local function gogci()
-	return { exe = "gci", args = { "print", "--skip-generated", "-s default" }, stdin = true }
+	return { exe = "gci", args = { "print", "--skip-generated", "-s standart", "-s default" }, stdin = true }
 end
 
 local function rustfmt()
@@ -84,7 +84,7 @@ require("formatter").setup({
 		html = { prettier },
 		css = { prettier },
 		scss = { prettier },
-		markdown = { prettier },
+		-- markdown = { prettier },
 		vue = { prettier },
 		yaml = { yamlfmt },
 		-- htmldjango = {prettier},

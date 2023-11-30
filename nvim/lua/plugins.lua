@@ -417,6 +417,13 @@ local function init()
 	use("nanozuki/tabby.nvim")
 	-- nvim marks
 	use({ "chentoast/marks.nvim", config = "require('config.marks')" })
+	use({
+		"ruifm/gitlinker.nvim",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			require("config.gitlinker")
+		end,
+	})
 end
 
 -- called from 'lua/autocmd.lua' at `VimEnter`

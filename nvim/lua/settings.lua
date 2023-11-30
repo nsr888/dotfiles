@@ -80,4 +80,4 @@ vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
 vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
 vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
 
--- vim.opt.clipboard = "unnamedplus" -- use system clipboard
+vim.opt.clipboard = "unnamedplus" -- use system clipboard

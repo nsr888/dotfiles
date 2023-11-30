@@ -33,3 +33,6 @@ gnome-software-plugin-flatpak
 docker.io
 protobuf-compiler
 htop
+wl-clipboard
+transmission
+vlc
