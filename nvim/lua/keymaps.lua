@@ -117,6 +117,12 @@ local mappings = {
 		{ "<leader>FF", "<cmd>FlutterCopyProfilerUrl<CR>" },
 		{ "<leader>y", '"+y' }, -- Copy to clipboard
 		{ "<leader>Y", 'gg"+yG' }, -- Copy whole document to clipboard
+		-- neotest
+		{ "<leader>tt", "<cmd>lua require'neotest'.run.run()<cr>" }, -- Test nearest
+		{ "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>" }, -- Test file
+		{ "<leader>td", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>" }, -- Debug test
+		{ "<leader>ts", "<cmd>lua require('neotest').run.stop()<cr>" }, -- Test stop
+		{ "<leader>ta", "<cmd>lua require('neotest').run.attach()<cr>" }, -- Attach test
 	},
 	t = {
 		-- Terminal mode

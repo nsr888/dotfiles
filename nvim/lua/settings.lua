@@ -6,7 +6,7 @@ vim.opt.lazyredraw = true
 vim.opt.hidden = true
 vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "100"
 vim.opt.incsearch = true --Lookahead as search pattern is specified
 vim.opt.ignorecase = true -- Ignore case in all searches...
 vim.opt.smartcase = true -- ...unless uppercase letters used
@@ -80,4 +80,4 @@ vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
 vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
 vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
 
-vim.opt.clipboard = "unnamedplus" -- use system clipboard
+vim.g["plantuml_previewer#debug_mode"] = 1 -- plantuml plugin setup

@@ -29,7 +29,7 @@ local function isort()
 end
 
 local function golines()
-	return { exe = "golines", args = { "--max-len=120", "--base-formatter=gofumpt" }, stdin = true }
+	return { exe = "golines", args = { "--max-len=120" }, stdin = true }
 end
 
 local function gofmt()
@@ -41,7 +41,27 @@ local function gofumpt()
 end
 
 local function gogci()
-	return { exe = "gci", args = { "print", "--skip-generated", "-s standart", "-s default" }, stdin = true }
+	return {
+		exe = "gci",
+		args = {
+			"print",
+			"--skip-generated",
+			"-s",
+			"standard",
+			"-s",
+			"default",
+			"-s",
+			"'prefix(github.com/inDriver)'",
+			"-s",
+			"'prefix(github.com/inDriver/survey,github.com/inDriver/review-api)'",
+			"--custom-order",
+		},
+		stdin = true,
+	}
+end
+
+local function goimports()
+	return { exe = "goimports", args = { "-local", "github.com/inDrive" }, stdin = true }
 end
 
 local function rustfmt()
@@ -119,7 +139,7 @@ require("formatter").setup({
 		c = { clangd },
 		rust = { rustfmt },
 		python = { black, isort },
-		go = { gofmt }, -- go = { gogci, gofumpt, golines },
+		go = { gofumpt, gogci, goimports },
 		perl = {
 			-- perltidy
 			function()

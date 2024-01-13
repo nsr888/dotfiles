@@ -54,7 +54,7 @@ local function init()
 	-- plugin reload
 	-- use "famiu/nvim-reload"
 
-	-- Comment
+	-- toggle comments by keybindings gcc
 	use({
 		"terrortylor/nvim-comment",
 		event = "BufRead",
@@ -168,12 +168,12 @@ local function init()
 	})
 
 	-- Telescope
-	use({
-		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
-		requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
-		config = "require('config.telescope')",
-	})
+	-- use({
+	-- 	"nvim-telescope/telescope.nvim",
+	-- 	event = "VimEnter",
+	-- 	requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
+	-- 	config = "require('config.telescope')",
+	-- })
 
 	-- use {
 	--   "jose-elias-alvarez/null-ls.nvim",
@@ -252,6 +252,7 @@ local function init()
 	use({ "mhartington/formatter.nvim", config = "require('config.formatter')" })
 	use("airblade/vim-gitgutter")
 
+	-- fast move around code
 	use({
 		"phaazon/hop.nvim",
 		as = "hop",
@@ -389,13 +390,13 @@ local function init()
 	})
 	-- use({ "fatih/vim-go", run = ":GoUpdateBinaries" })
 	-- flutter
-	use({
-		"akinsho/flutter-tools.nvim",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"stevearc/dressing.nvim", -- optional for vim.ui.select
-		},
-	})
+	-- use({
+	-- 	"akinsho/flutter-tools.nvim",
+	-- 	requires = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"stevearc/dressing.nvim", -- optional for vim.ui.select
+	-- 	},
+	-- })
 	-- react native
 	-- use("dimaportenko/telescope-simulators.nvim")
 	-- highlight todo comments
@@ -414,7 +415,7 @@ local function init()
 		end,
 	})
 	-- nvim tabs
-	use("nanozuki/tabby.nvim")
+	-- use("nanozuki/tabby.nvim")
 	-- nvim marks
 	use({ "chentoast/marks.nvim", config = "require('config.marks')" })
 	use({
@@ -422,6 +423,35 @@ local function init()
 		requires = "nvim-lua/plenary.nvim",
 		config = function()
 			require("config.gitlinker")
+		end,
+	})
+
+	use({
+		"nvim-neotest/neotest",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-neotest/neotest-go",
+		},
+		config = function()
+			-- get neotest namespace (api call creates or returns namespace)
+			local neotest_ns = vim.api.nvim_create_namespace("neotest")
+			vim.diagnostic.config({
+				virtual_text = {
+					format = function(diagnostic)
+						local message =
+							diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+						return message
+					end,
+				},
+			}, neotest_ns)
+			require("neotest").setup({
+				-- your neotest config here
+				adapters = {
+					require("neotest-go"),
+				},
+			})
 		end,
 	})
 end

@@ -12,6 +12,32 @@ local on_attach = function(client, bufnr)
 	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
+-- see if the file exists
+function FileExists(file)
+	local f = io.open(file, "rb")
+	if f then
+		f:close()
+	end
+	return f ~= nil
+end
+
+-- Get the value of the module name from go.mod in PWD
+function GetGoModuleName()
+	if not FileExists("go.mod") then
+		return nil
+	end
+	for line in io.lines("go.mod") do
+		if vim.startswith(line, "module") then
+			local items = vim.split(line, " ")
+			local module_name = vim.trim(items[2])
+			return module_name
+		end
+	end
+	return nil
+end
+
+local goModule = GetGoModuleName()
+
 -- Setup lspconfig.
 local nvim_lsp = require("lspconfig")
 
@@ -32,6 +58,7 @@ nvim_lsp["gopls"].setup({
 			env = {
 				GOFLAGS = "-tags=unittest,integration",
 			},
+			["local"] = goModule,
 		},
 	},
 	init_options = {
