@@ -90,6 +90,14 @@ local function latexindent()
 	}, stdin = true }
 end
 
+local function sleeksql()
+	return {
+		exe = "sleek",
+		args = {},
+		stdin = false,
+	}
+end
+
 local util = require("formatter.util")
 
 require("formatter").setup({
@@ -153,6 +161,7 @@ require("formatter").setup({
 		haskell = { stylish_haskell },
 		ocaml = { ocamlformat },
 		tex = { latexindent },
+		sql = { sleeksql },
 	},
 })
 

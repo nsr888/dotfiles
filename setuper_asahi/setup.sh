@@ -5,40 +5,47 @@
 SCRIPTDIR=$(dirname "$(readlink -f "$0")")
 DIR=$SCRIPTDIR/..
 
-install_deb_packages()
+install_packages()
 {
-    sudo apt purge neovim
-    sudo apt-get update
+    sudo dnf check-update
 
-    for pack in $(cat "$SCRIPTDIR/apt_packages"); do
-
+    for pack in $(cat "$SCRIPTDIR/dnf_packages"); do
         echo "Installing '$pack'"
-
-        [ dpkg -s "$pack" ] && continue
-        sudo apt-get install -y $pack
+        sudo dnf install -y $pack
         
         sleep 1
-
     done
 
     echo "Updating and upgrading packages"
-    sudo apt-get update -y
-    sudo apt-get upgrade -y
+    sudo dnf check-update -y
+    sudo dnf upgrade -y
 
     echo "Removing unnecessary packages"
-    sudo apt autoremove -y
+    sudo dnf autoremove -y
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+}
+
+setup_docker()
+{
+	sudo dnf install -y dnf-plugins-core
+	sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+	sudo dnf install -y docker-ce docker-ce-cli containerd.io
+	sudo systemctl start docker
+	sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
+	newgrp docker
 }
 
 setup_neovim()
 {
+    sudo dnf remove neovim
     cd $HOME/Downloads/
     git clone https://github.com/neovim/neovim
     cd neovim && git checkout v0.9.4
     make CMAKE_BUILD_TYPE=RelWithDebInfo
-    cd build && cpack -G DEB && sudo dpkg -i --force-overwrite nvim-linux64.deb
+    sudo make install
     cd $HOME
-    echo 'alias vi="nvim"' >> ~/.bashrc
+    echo 'alias vim="/usr/bin/vi"' >> ~/.bashrc
+    echo 'alias vi="/usr/local/bin/nvim"' >> ~/.bashrc
     ln -snf $DIR/nvim ~/.config/nvim
     git config --global core.editor "nvim"
 }
@@ -48,7 +55,6 @@ setup_flatpak()
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     for pack in $(cat "$SCRIPTDIR/flatpak_packages"); do
         echo "Installing '$pack'"
-        [ dpkg -s "$pack" ] && continue
         flatpak install -y --noninteractive flathub $pack
         sleep 1
     done
@@ -67,20 +73,17 @@ setup_fonts(){
 
 setup_go()
 {
-    GOVERSION='1.21.3'
+    local GOVERSION=$1
     cd $HOME/Downloads/
-    wget -O "go.tar.gz" "https://go.dev/dl/go${GOVERSION}.linux-$(dpkg --print-architecture).tar.gz"
+    wget -O "go.tar.gz" "https://go.dev/dl/go${GOVERSION}.linux-arm64.tar.gz"
     sudo rm -rf /usr/local/go 
-    sudo rm -rf $HOME/go 
+    mkdir -p $HOME/go${GOVERSION}
     mkdir -p $HOME/src/go/{bin,pkg,src}
-    tar -C $HOME -xzf go.tar.gz
-    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.profile
-    echo 'export GOROOT=$HOME/go' >> ~/.profile
-    echo 'export GOPATH=$HOME/src/go' >> ~/.profile
-    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.bash_profile
-    echo 'export GOROOT=$HOME/go' >> ~/.bash_profile
-    echo 'export GOPATH=$HOME/src/go' >> ~/.bash_profile
-    source ${HOME}/.profile
+    tar -C $HOME/go${GOVERSION} -xzf go.tar.gz
+    echo "export PATH=$HOME/src/go/bin:$HOME/go${GOVERSION}/go/bin:$PATH" >> ~/.profile_go${GOVERSION}
+    echo "export GOPATH=$HOME/src/go" >> ~/.profile_go${GOVERSION}
+    echo "export GOROOT=$HOME/go${GOVERSION}/go" >> ~/.profile_go${GOVERSION}
+    echo "source ~/.profile_go${GOVERSION}" >> ~/.bashrc
     cd $HOME
 }
 
@@ -99,7 +102,7 @@ setup_lua_language_server()
 {
     LUALANGSERVERVERSION='3.7.0'
     cd $HOME/Downloads/
-    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-x64.tar.gz"
+    wget -O "lua-language-server.tar.gz" "https://github.com/LuaLS/lua-language-server/releases/download/${LUALANGSERVERVERSION}/lua-language-server-${LUALANGSERVERVERSION}-linux-arm64.tar.gz"
     mkdir -p $HOME/lua-language-server
     tar -C $HOME/lua-language-server -xzf lua-language-server.tar.gz
     echo 'export PATH=$PATH:$HOME/lua-language-server/bin' >> ~/.profile
@@ -112,7 +115,7 @@ setup_lua_language_server()
 setup_fzf()
 {
     echo "Cloning 'https://github.com/junegunn/fzf'"
-    [-d "$HOME/.fzf" ] || rm -rf "$HOME/.fzf"
+    rm -rf "$HOME/.fzf"
     git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
     $HOME/.fzf/install --key-bindings --no-completion --update-rc
     source "${HOME}/.bashrc"
@@ -147,7 +150,6 @@ install_rustc()
 install_cargo_packages()
 {
   echo 'export PATH=$PATH:$HOME/.cargo/bin' >> ~/.bashrc
-  # echo 'export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig' >> ~/.bashrc
   source "${HOME}/.bashrc"
   cargo install stylua
   cargo install sleek
@@ -156,7 +158,7 @@ install_cargo_packages()
 setup_kubectl()
 {
   cd $HOME/Downloads/
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl"
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
   kubectl version --client
   echo 'source <(kubectl completion bash)' >>~/.bashrc
@@ -168,23 +170,21 @@ setup_kubectl()
 
 setup_bashrc()
 {
-  git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
-  echo 'if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then' >> ~/.bashrc
-  echo '    GIT_PROMPT_ONLY_IN_REPO=1' >> ~/.bashrc
-  echo '    source $HOME/.bash-git-prompt/gitprompt.sh' >> ~/.bashrc
-  echo 'fi' >> ~/.bashrc
+  # git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+  # echo 'if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then' >> ~/.bashrc
+  # echo '    GIT_PROMPT_ONLY_IN_REPO=1' >> ~/.bashrc
+  # echo '    source $HOME/.bash-git-prompt/gitprompt.sh' >> ~/.bashrc
+  # echo 'fi' >> ~/.bashrc
+  echo "export PROMPT_COMMAND='history -a'" >> ~/.bashrc
 }
 
-install_sublime()
+setup_vimrc()
 {
-  wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
-  echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-  sudo apt-get update
-  sudo apt-get install sublime-text
+  cp ../.vimrc ~/
 }
 
 # Integrity checks
-[ -f $SCRIPTDIR/apt_packages ] || (echo "The apt packages file is not there!" && exit 1)
+[ -f $SCRIPTDIR/dnf_packages ] || (echo "The dnf packages file is not there!" && exit 1)
 
 # Setup basic system
 
@@ -193,22 +193,24 @@ install_sublime()
 ###########################################
 
 
-install_deb_packages
-setup_fzf
-setup_flatpak
+# install_packages
+# setup_docker
+# setup_fzf
+# setup_flatpak
 
 # Setup basic application
 
-setup_neovim
-setup_fonts
-setup_go
-install_go_packages
-setup_npm
-setup_lua_language_server
-install_rustc
-install_cargo_packages
-setup_kubectl
-install_sublime
+# setup_neovim
+# setup_fonts
+# setup_go "1.20.13"
+# setup_go "1.21.3"
+# install_go_packages
+# setup_npm
+# setup_lua_language_server
+# install_rustc
+# install_cargo_packages
+# setup_kubectl
+# setup_vimrc
 
 # Finish setup
 
@@ -216,10 +218,8 @@ setup_bashrc
 
 # Sourcing the new dot files
 
-source "${HOME}/.profile"
-
+source "${HOME}/.bash_profile"
 source "${HOME}/.bashrc"
-
 
 ###########################################
 ###### The installation is ready ##########

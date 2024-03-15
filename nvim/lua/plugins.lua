@@ -298,7 +298,7 @@ local function init()
 
 	-- tpope
 	use("tpope/vim-fugitive")
-	-- use "tpope/vim-surround"
+	use("tpope/vim-surround")
 
 	-- use "tpope/vim-commentary"
 
@@ -383,9 +383,6 @@ local function init()
 	use({
 		"iamcco/markdown-preview.nvim",
 		run = "cd app && npm install",
-		setup = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
 		ft = { "markdown" },
 	})
 	-- use({ "fatih/vim-go", run = ":GoUpdateBinaries" })

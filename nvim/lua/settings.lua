@@ -3,6 +3,7 @@ vim.opt.mouse = "" -- disable mouse
 vim.opt.ttyfast = true
 vim.opt.lazyredraw = true
 -- vim.opt.cursorline = true -- show the cursor line
+
 vim.opt.hidden = true
 vim.o.undofile = true -- no undo file
 -- vim.opt.cursorcolumn = true -- show the cursor column
@@ -79,5 +80,3 @@ vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])
 vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
 vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
 vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
-
-vim.g["plantuml_previewer#debug_mode"] = 1 -- plantuml plugin setup
