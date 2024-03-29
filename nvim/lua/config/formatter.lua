@@ -112,7 +112,7 @@ require("formatter").setup({
 		html = { prettier },
 		css = { prettier },
 		scss = { prettier },
-		-- markdown = { prettier },
+		markdown = { prettier },
 		vue = { prettier },
 		yaml = { yamlfmt },
 		-- htmldjango = {prettier},

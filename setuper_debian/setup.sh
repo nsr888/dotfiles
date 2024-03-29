@@ -32,11 +32,13 @@ install_deb_packages()
 
 setup_neovim()
 {
+    rm -rf $HOME/Downloads/neovim
     cd $HOME/Downloads/
     git clone https://github.com/neovim/neovim
-    cd neovim && git checkout v0.9.4
+    cd neovim && git checkout v0.9.5
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     cd build && cpack -G DEB && sudo dpkg -i --force-overwrite nvim-linux64.deb
+    rm -rf $HOME/Downloads/neovim
     cd $HOME
     echo 'alias vi="nvim"' >> ~/.bashrc
     ln -snf $DIR/nvim ~/.config/nvim
@@ -191,7 +193,6 @@ install_sublime()
 ###########################################
 ###### The installation begins # ##########
 ###########################################
-
 
 install_deb_packages
 setup_fzf
