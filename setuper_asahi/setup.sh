@@ -80,9 +80,9 @@ setup_go()
     mkdir -p $HOME/go${GOVERSION}
     mkdir -p $HOME/src/go/{bin,pkg,src}
     tar -C $HOME/go${GOVERSION} -xzf go.tar.gz
-    echo "export PATH=$HOME/src/go/bin:$HOME/go${GOVERSION}/go/bin:$PATH" >> ~/.profile_go${GOVERSION}
-    echo "export GOPATH=$HOME/src/go" >> ~/.profile_go${GOVERSION}
-    echo "export GOROOT=$HOME/go${GOVERSION}/go" >> ~/.profile_go${GOVERSION}
+    echo "export PATH=\$HOME/src/go/bin:\$HOME/go${GOVERSION}/go/bin:\$PATH" > ~/.profile_go${GOVERSION}
+    echo "export GOPATH=\$HOME/src/go" >> ~/.profile_go${GOVERSION}
+    echo "export GOROOT=\$HOME/go${GOVERSION}/go" >> ~/.profile_go${GOVERSION}
     echo "source ~/.profile_go${GOVERSION}" >> ~/.bashrc
     cd $HOME
 }
@@ -204,6 +204,7 @@ setup_vimrc()
 # setup_fonts
 # setup_go "1.20.13"
 # setup_go "1.21.3"
+setup_go "1.22.2"
 # install_go_packages
 # setup_npm
 # setup_lua_language_server
@@ -214,12 +215,11 @@ setup_vimrc()
 
 # Finish setup
 
-setup_bashrc
+# setup_bashrc
 
 # Sourcing the new dot files
 
-source "${HOME}/.bash_profile"
-source "${HOME}/.bashrc"
+source "${HOME}/.profile"
 
 ###########################################
 ###### The installation is ready ##########
