@@ -28,6 +28,7 @@ require("nvim-treesitter.configs").setup({
 		"ocaml",
 		"ocaml_interface",
 		"svelte",
+		"kotlin",
 	}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 	ignore_install = {
 		"beancount",

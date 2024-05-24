@@ -1,6 +1,7 @@
 # Inspiration: https://github.com/mokevnin/dotfiles/blob/master/Makefile
 vim:
 	ln -sf $(PWD)/.vimrc ~/.vimrc
+	ln -sf $(PWD)/.vimrc ~/.ideavimrc
 
 alacritty:
 	mkdir -p ~/.config/alacritty

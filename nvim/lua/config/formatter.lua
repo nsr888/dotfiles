@@ -29,7 +29,7 @@ local function isort()
 end
 
 local function golines()
-	return { exe = "golines", args = { "--max-len=120" }, stdin = true }
+	return { exe = "golines", args = { "--max-len=163" }, stdin = true }
 end
 
 local function gofmt()
@@ -147,7 +147,7 @@ require("formatter").setup({
 		c = { clangd },
 		rust = { rustfmt },
 		python = { black, isort },
-		go = { gofumpt, gogci, goimports },
+		go = { gofumpt, gogci, goimports, golines },
 		perl = {
 			-- perltidy
 			function()
