@@ -1,7 +1,3 @@
-require "plugins"
-require "settings"
-require "keymaps"
-
--- run some vim script from lua
--- vim.cmd([[command! Hello lua print('Hello')]])
-vim.cmd([[colorscheme tokyonight]])
+require("config.lazy")
+require("settings")
+require("keymaps")

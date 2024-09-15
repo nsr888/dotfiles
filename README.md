@@ -7,16 +7,14 @@ This is my neovim configuration.
 ```bash
 $ git clone git@github.com:nsr888/dotfiles.git ~/dotfiles
 $ cd ~/dotfiles
-$ make prepare
 $ make nvim-install
 ```
 
 ## Requirements
 
-- Mac
-- Git
-- Make
-- Nvim (version >= 0.6)
+- Linux/Mac
+- git, ripgrep, fd
+- Nvim (version >= 0.9)
 
 ## Inspiration
 

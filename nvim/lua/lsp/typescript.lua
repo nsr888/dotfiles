@@ -1,6 +1,6 @@
 -- JavaScript and TypeScript -------------------------------
 
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
 	filetypes = {
 		"javascript",
 		"javascriptreact",

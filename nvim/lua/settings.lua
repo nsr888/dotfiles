@@ -61,11 +61,8 @@ vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
 -- vim.g.tokyonight_dark_sidebar = false
 
 -- Change the "hint" color to the "orange" color, and make the "error" color bright red
+vim.cmd([[colorscheme tokyonight]])
 vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
--- vim.cmd([[colorscheme tokyonight]])
--- vim.g.material_style = "deep ocean"
--- vim.cmd [[colorscheme material]]
--- vim.cmd [[colorscheme embark]]
 
 -- highlight on yank
 vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])

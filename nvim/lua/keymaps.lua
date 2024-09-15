@@ -8,8 +8,6 @@ local function register_mappings(mappings, default_options)
 	end
 end
 
-vim.g.mapleader = " "
-
 local mappings = {
 	i = {
 		-- Insert mode
@@ -49,21 +47,14 @@ local mappings = {
 		-- {"<C-Right>", ":vertical resize +2<CR>"},
 		-- Telescope
 		-- Ctrl + p fuzzy files
-		{ "<C-p>", ":Telescope find_files<cr>" },
-		{ "<leader>ff", ":Telescope find_files<cr>" },
-		{ "<leader>fb", ":Telescope buffers<cr>" },
-		{ "<leader>b", ":Telescope buffers<cr>" },
-		{ "<leader>fs", ":Telescope live_grep<cr>" },
-		{ "<leader>k", ":Telescope keymaps<cr>" },
+		-- { "<C-p>", ":Telescope find_files<cr>" },
+		-- { "<leader>ff", ":Telescope find_files<cr>" },
+		-- { "<leader>fb", ":Telescope buffers<cr>" },
+		-- { "<leader>b", ":Telescope buffers<cr>" },
+		-- { "<leader>fs", ":Telescope live_grep<cr>" },
+		-- { "<leader>k", ":Telescope keymaps<cr>" },
 		-- Escape clears highlight after search
 		{ "<esc>", ":noh<cr><esc>" },
-		-- hop words
-		{ "f", ":HopWord<cr>" },
-		{ "F", ":HopLine<cr>" },
-		{ "<leader>,", ":HopChar1<cr>" },
-		-- NvimTree
-		{ "<C-n>", ":NvimTreeToggle<CR>" },
-		{ "<leader>n", ":NvimTreeFindFile<CR>" },
 		-- lsp
 		{ "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>" },
 		{ "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>" },
