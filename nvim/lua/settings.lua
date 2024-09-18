@@ -77,3 +77,7 @@ vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])
 vim.cmd("au BufNewFile,BufRead *.nginx set ft=nginx")
 vim.cmd("au BufNewFile,BufRead nginx*.conf set ft=nginx")
 vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
+
+vim.cmd([[highlight! CursorLineNr ctermfg=NONE ctermbg=NONE cterm=NONE guifg=NONE guibg=NONE gui=NONE]])
+-- vim.o.cursorline = true
+-- vim.o.cursorlineopt = "number"

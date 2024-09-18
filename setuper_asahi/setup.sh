@@ -129,8 +129,11 @@ setup_npm()
 	export NVM_DIR="$HOME/.nvm"
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-	nvm install v18.17.1
-	nvm use v18.17.1
+  # node 16 too old for copilot, but 16.20 used on my work
+	# nvm install v16.20.0
+	# nvm use v16.20.0
+  nvm install v18.17.1
+  nvm use v18.17.1
 	npm install -g typescript typescript-language-server
 	npm install -g eslint_d eslint prettier
 	npm install -g vscode-langservers-extracted
@@ -202,8 +205,13 @@ setup_vimrc()
 
 # setup_neovim
 # setup_fonts
+# setup_go "1.19"
 # setup_go "1.20.13"
 # setup_go "1.21.3"
+# setup_go "1.21.10"
+# setup_go "1.22.1"
+# setup_go "1.22.3"
+setup_go "1.22.6"
 # install_go_packages
 # setup_npm
 # setup_lua_language_server

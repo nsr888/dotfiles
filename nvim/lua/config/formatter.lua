@@ -4,7 +4,7 @@
 local function prettier()
 	return {
 		exe = "prettier",
-		args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
+		args = { "--bracket-same-line", "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
 		stdin = true,
 	}
 end
@@ -53,7 +53,7 @@ local function gogci()
 			"-s",
 			"'prefix(github.com/inDriver)'",
 			"-s",
-			"'prefix(github.com/inDriver/survey,github.com/inDriver/review-api)'",
+			"localmodule",
 			"--custom-order",
 		},
 		stdin = true,
