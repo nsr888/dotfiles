@@ -99,3 +99,4 @@ require("lspconfig").pylsp.setup({
 })
 
 -- require "lspconfig".pyright.setup {}
+require("lspconfig").ruff.setup({})
