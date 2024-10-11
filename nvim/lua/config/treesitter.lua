@@ -2,6 +2,8 @@ require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"c",
 		"lua",
+		"vim",
+		"query",
 		"go",
 		"gomod",
 		"gowork",
@@ -17,7 +19,6 @@ require("nvim-treesitter.configs").setup({
 		"html",
 		"css",
 		"markdown",
-		"vim",
 		"yaml",
 		"toml",
 		"jq",
@@ -71,6 +72,7 @@ require("nvim-treesitter.configs").setup({
 		"ruby",
 		"yang",
 		"zig",
+		"query",
 	}, -- List of parsers to ignore installing
 	highlight = {
 		enable = true, -- false will disable the whole extension

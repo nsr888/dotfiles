@@ -170,20 +170,20 @@ setup_fonts(){
 ###### The installation begins # ##########
 ###########################################
 
-# install_packages
-# setup_neovim
-# setup_flatpak
-# setup_docker
-# setup_bashrc
-# setup_vimrc
-# setup_asdf
-# setup_asdf_plugins
-# setup_asdf_golang
-# setup_asdf_golangci
-# setup_asdf_nodejs
-# setup_gitprompt
-# setup_kubectl
-# setup_cargo_packages
+install_packages
+setup_neovim
+setup_flatpak
+setup_docker
+setup_bashrc
+setup_vimrc
+setup_asdf
+setup_asdf_plugins
+setup_asdf_golang
+setup_asdf_golangci
+setup_asdf_nodejs
+setup_gitprompt
+setup_kubectl
+setup_cargo_packages
 setup_fonts
 
 # Sourcing the new dot files

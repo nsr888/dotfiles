@@ -81,3 +81,6 @@ vim.cmd("au BufNewFile,BufRead *nginx.conf set ft=nginx")
 vim.cmd([[highlight! CursorLineNr ctermfg=NONE ctermbg=NONE cterm=NONE guifg=NONE guibg=NONE gui=NONE]])
 -- vim.o.cursorline = true
 -- vim.o.cursorlineopt = "number"
+-- set clipboard=unnamed,unnamedplus
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0

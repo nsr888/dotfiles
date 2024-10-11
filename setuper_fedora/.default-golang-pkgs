@@ -1,6 +1,6 @@
 golang.org/x/tools/gopls@latest
 github.com/nametake/golangci-lint-langserver@latest
 github.com/daixiang0/gci@latest
-mvdan.cc/gofumpt@latest
+mvdan.cc/gofumpt@v0.6.0
 github.com/segmentio/golines@latest
 github.com/google/yamlfmt/cmd/yamlfmt@latest
