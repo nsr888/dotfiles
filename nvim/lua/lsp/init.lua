@@ -16,18 +16,18 @@ require("lsp/eslint")
 -- require("lsp/haskell")
 -- require("lsp/bufls")
 -- require("lsp/flutter")
-require("lspconfig").dockerls.setup {}
-require "lspconfig".bashls.setup {
- filetypes = {"sh", "zsh"} -- Added support to "zsh" files
-}
-require("lspconfig").graphql.setup {}
-require("lspconfig").html.setup {}
-require("lspconfig").htmx.setup {}
-require("lspconfig").jqls.setup {}
-require("lspconfig").jsonls.setup {}
-require("lspconfig").ltex.setup {}
-require("lspconfig").markdown_oxide.setup {}
-require("lspconfig").yamlls.setup {}
+require("lspconfig").dockerls.setup({})
+require("lspconfig").bashls.setup({
+	filetypes = { "sh", "zsh" }, -- Added support to "zsh" files
+})
+require("lspconfig").graphql.setup({})
+require("lspconfig").html.setup({})
+-- require("lspconfig").htmx.setup {} -- htmx
+require("lspconfig").jqls.setup({})
+require("lspconfig").jsonls.setup({})
+-- require("lspconfig").ltex.setup({}) -- latex
+require("lspconfig").markdown_oxide.setup({})
+require("lspconfig").yamlls.setup({})
 
 -- Customization and appearance -----------------------------------------
 -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization

@@ -31,5 +31,4 @@ return {
 
 	-- react native
 	-- use("dimaportenko/telescope-simulators.nvim")
-
 }

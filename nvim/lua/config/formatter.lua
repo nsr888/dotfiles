@@ -29,7 +29,7 @@ local function isort()
 end
 
 local function golines()
-	return { exe = "golines", args = { "--max-len=120" }, stdin = true }
+	return { exe = "golines", args = { "--max-len=80" }, stdin = true }
 end
 
 local function gofmt()
@@ -38,6 +38,10 @@ end
 
 local function gofumpt()
 	return { exe = "gofumpt", args = { "-s" }, stdin = true }
+end
+
+local function shfmt()
+	return { exe = "shfmt", args = { "-i", "2", "-ci" }, stdin = true }
 end
 
 local function gogci()
@@ -148,6 +152,7 @@ require("formatter").setup({
 		rust = { rustfmt },
 		python = { black, isort },
 		go = { gofumpt, gogci, goimports },
+		-- go = { gofumpt, gogci, goimports, golines },
 		perl = {
 			-- perltidy
 			function()
@@ -162,6 +167,7 @@ require("formatter").setup({
 		ocaml = { ocamlformat },
 		tex = { latexindent },
 		sql = { sleeksql },
+		sh = { shfmt },
 	},
 })
 
