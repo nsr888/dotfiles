@@ -28,6 +28,7 @@ require("lspconfig").jsonls.setup({})
 -- require("lspconfig").ltex.setup({}) -- latex
 require("lspconfig").markdown_oxide.setup({})
 require("lspconfig").yamlls.setup({})
+require("lsp/zig")
 
 -- Customization and appearance -----------------------------------------
 -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization
