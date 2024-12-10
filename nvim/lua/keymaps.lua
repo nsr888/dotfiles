@@ -12,6 +12,7 @@ local mappings = {
 	i = {
 		-- Insert mode
 		{ "jk", "<ESC>" },
+		{ "см", "<ESC>" },
 		-- Terminal window navigation
 		{ "<C-h>", "<C-\\><C-N><C-w>h" },
 		{ "<C-j>", "<C-\\><C-N><C-w>j" },
