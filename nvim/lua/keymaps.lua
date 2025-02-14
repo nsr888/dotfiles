@@ -68,7 +68,7 @@ local mappings = {
 		-- {"<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>"},
 		{ "<leader>p", ":Format<CR>" },
 		-- lspsaga
-		{ "gh", ":Lspsaga lsp_finder<cr>" },
+		{ "gh", ":Lspsaga finder<cr>" },
 		{ "<leader>ca", ":Lspsaga code_action<cr>" },
 		-- {"K", ":Lspsaga hover_doc<cr>"},
 		{ "<C-f>", ':lua require("lspsaga.action").smart_scroll_with_saga(1)<cr>' },
@@ -114,6 +114,9 @@ local mappings = {
 		{ "<leader>td", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>" }, -- Debug test
 		{ "<leader>ts", "<cmd>lua require('neotest').run.stop()<cr>" }, -- Test stop
 		{ "<leader>ta", "<cmd>lua require('neotest').run.attach()<cr>" }, -- Attach test
+		{ "<localleader>t", ':echo "Hello, world!"<cr>' },
+		{ "<leader>cl", ":CodeCompanion<CR>" },
+		{ "<leader>cc", ":CodeCompanionChat<CR>" },
 	},
 	t = {
 		-- Terminal mode
@@ -141,6 +144,8 @@ local mappings = {
 		{ "<leader>cy", ":w! ~/.vimbuf<cr>" },
 		{ "<leader>cp", ":r ~/.vimbuf<cr>" },
 		{ "<leader>y", '"+y' }, -- Copy to clipboard
+		{ "<localleader>ce", ":CodeCompanion /expert<cr>" },
+		{ "<localleader>ct", ":CodeCompanion /gotest<cr>" },
 	},
 	x = {
 		-- Move selected line / block of text in visual mode
@@ -192,7 +197,7 @@ vim.keymap.set("n", "<leader>2", function()
 	harpoon:list():select(2)
 end)
 vim.keymap.set("n", "<leader>3", function()
-  harpoon:list():select(3)
+	harpoon:list():select(3)
 end)
 vim.keymap.set("n", "<leader>4", function()
 	harpoon:list():select(4)

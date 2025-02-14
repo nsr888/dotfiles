@@ -1,7 +1,6 @@
 return {
 	-- { "echasnovski/mini.nvim", version = false },
 	{ "github/copilot.vim", lazy = false },
-	{ "tami5/lspsaga.nvim", branch = "main" },
 
 	{ "christianchiarulli/nvcode-color-schemes.vim", lazy = true },
 

@@ -4,6 +4,7 @@
 
 SCRIPTDIR=$(dirname "$(readlink -f "$0")")
 DIR=$SCRIPTDIR/..
+NEOVIM_VERSION=0.10.3
 
 install_packages()
 {
@@ -27,16 +28,18 @@ install_packages()
 setup_neovim()
 {
     sudo dnf remove neovim
-    cd $HOME/Downloads/
+    cd "$HOME"/Downloads/ || exit
+    rm -rf "$HOME"/Downloads/neovim
     git clone https://github.com/neovim/neovim
-    cd neovim && git checkout v0.9.4
+    cd neovim && git checkout v$NEOVIM_VERSION
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     sudo make install
-    cd $HOME
+    cd "$HOME" || exit
     echo 'alias vim="/usr/bin/vi"' >> ~/.bashrc
     echo 'alias vi="/usr/local/bin/nvim"' >> ~/.bashrc
-    ln -snf $DIR/nvim ~/.config/nvim
+    ln -snf "$DIR"/nvim ~/.config/nvim
     git config --global core.editor "nvim"
+    rm -rf "$HOME"/Downloads/neovim
 }
 
 setup_flatpak()
@@ -170,25 +173,25 @@ setup_fonts(){
 ###### The installation begins # ##########
 ###########################################
 
-install_packages
+# install_packages
 setup_neovim
-setup_flatpak
-setup_docker
-setup_bashrc
-setup_vimrc
-setup_asdf
-setup_asdf_plugins
-setup_asdf_golang
-setup_asdf_golangci
-setup_asdf_nodejs
-setup_gitprompt
-setup_kubectl
-setup_cargo_packages
-setup_fonts
+# setup_flatpak
+# setup_docker
+# setup_bashrc
+# setup_vimrc
+# setup_asdf
+# setup_asdf_plugins
+# setup_asdf_golang
+# setup_asdf_golangci
+# setup_asdf_nodejs
+# setup_gitprompt
+# setup_kubectl
+# setup_cargo_packages
+# setup_fonts
 
 # Sourcing the new dot files
 
-source "${HOME}/.bash_profile"
+# source "${HOME}/.bash_profile"
 source "${HOME}/.bashrc"
 
 ###########################################

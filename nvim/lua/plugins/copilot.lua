@@ -1,6 +1,6 @@
 return {
 	"CopilotC-Nvim/CopilotChat.nvim",
-	branch = "canary",
+	branch = "main",
 	lazy = false,
 	dependencies = {
 		"github/copilot.vim",
@@ -17,13 +17,13 @@ return {
 			end
 		end, {})
 	end,
-	keys = {
-		{
-			"<leader>cc",
-			function()
-				vim.cmd("CopilotChatQuick")
-			end,
-			desc = "Quick Chat",
-		},
-	},
+	-- keys = {
+	-- 	{
+	-- 		"<leader>cc",
+	-- 		function()
+	-- 			vim.cmd("CopilotChatQuick")
+	-- 		end,
+	-- 		desc = "Quick Chat",
+	-- 	},
+	-- },
 }
