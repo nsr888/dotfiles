@@ -58,6 +58,7 @@ require("codecompanion").setup({
 						return "I want you to act as a senior "
 							.. context.filetype
 							.. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
+							.. "Don't reply on this message, just wait for the questions."
 					end,
 				},
 				{
