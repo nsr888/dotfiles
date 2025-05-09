@@ -38,6 +38,30 @@ require("codecompanion").setup({
 				},
 			})
 		end,
+		llama3 = function()
+			return require("codecompanion.adapters").extend("ollama", {
+				name = "llama3",
+				schema = {
+					model = {
+						default = "llama3.2:3b",
+						choices = {
+							"mistral:7b",
+							"starcoder2:7b",
+							"codellama:7b",
+							"qwen2.5-coder:7b",
+							"deepseek-r1:7b",
+							"llama3.2:3b",
+						},
+					},
+					num_ctx = {
+						default = 16384,
+					},
+					num_predict = {
+						default = -1,
+					},
+				},
+			})
+		end,
 	},
 	prompt_library = {
 		["Code Expert"] = {

@@ -5,19 +5,19 @@ set termencoding=utf-8
 set encoding=UTF-8
 set fileformat=unix
 set textwidth=79
-" set default tabs
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
-set expandtab
+set noexpandtab      " Use actual tabs instead of spaces
+set copyindent       " Copy indent structure from previous line
+set preserveindent   " Preserve indent structure when reindenting
+set softtabstop=0    " Disable soft tabs (matches tabstop when 0)
+set shiftwidth=4     " Number of spaces for each indentation level
+set tabstop=4        " Number of spaces that a tab character represents
 
-" use relative numbers for all lines except the current line
-set number                     " Show current line number
+set number " Show current line number
 
 set nocompatible
 set autoindent
 set smartindent
-set cindent
+set nocindent        " Disable C-style indenting
 filetype indent off
 set colorcolumn=80
 
