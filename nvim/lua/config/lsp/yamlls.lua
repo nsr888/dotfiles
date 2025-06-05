@@ -1,4 +1,4 @@
-require("lspconfig").yamlls.setup({
+return {
 	filetypes = { "yaml", "yaml.docker-compose", "yml" },
 	settings = {
 		yaml = {
@@ -9,4 +9,4 @@ require("lspconfig").yamlls.setup({
 			},
 		},
 	},
-})
+}

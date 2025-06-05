@@ -4,7 +4,7 @@
 
 SCRIPTDIR=$(dirname "$(readlink -f "$0")")
 DIR=$SCRIPTDIR/..
-NEOVIM_VERSION=0.10.4
+NEOVIM_VERSION=0.11.2
 
 install_packages()
 {

@@ -5,7 +5,7 @@
 -- pip install pyls-isort
 -- pip install pyls-black
 
-require("lspconfig").pylsp.setup({
+return {
 	enable = true,
 	cmd = { "pylsp" },
 	-- cmd_env = {VIRTUAL_ENV = "/Users/anasyrov/Documents/21/social-network-parser"},
@@ -96,7 +96,4 @@ require("lspconfig").pylsp.setup({
 	},
 	-- on_attach = require "lspconfig".common_on_attach
 	-- on_attach = on_attach
-})
-
--- require "lspconfig".pyright.setup {}
-require("lspconfig").ruff.setup({})
+}

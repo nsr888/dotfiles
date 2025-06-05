@@ -1,6 +1,4 @@
--- JavaScript and TypeScript -------------------------------
-
-require("lspconfig").ts_ls.setup({
+return {
 	filetypes = {
 		"javascript",
 		"javascriptreact",
@@ -68,4 +66,4 @@ require("lspconfig").ts_ls.setup({
 		-- required to fix code action ranges
 		ts_utils.setup_client(client)
 	end,
-})
+}
