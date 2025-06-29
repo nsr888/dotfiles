@@ -22,10 +22,38 @@ require("codecompanion").setup({
 		chat = {
 			show_settings = true,
 		},
+		action_palette = {
+			width = 95,
+			height = 10,
+			prompt = "Prompt ", -- Prompt used for interactive LLM calls
+			provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+			opts = {
+				show_default_actions = true, -- Show the default actions in the action palette?
+				show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+			},
+		},
+		diff = {
+			enabled = true,
+			close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+			layout = "vertical", -- vertical|horizontal split for default provider
+			opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+			provider = "default", -- default|mini_diff
+		},
 	},
 	strategies = {
 		chat = {
 			adapter = "copilot",
+			-- adapter = "openrouter",
+			-- tools = {
+			-- 	opts = {
+			-- 		default_tools = {
+			-- 			"read_file",
+			-- 			"mcp",
+			-- 			"file_search",
+			-- 			"grep_search",
+			-- 		},
+			-- 	},
+			-- },
 		},
 		inline = {
 			adapter = "copilot",
@@ -34,16 +62,31 @@ require("codecompanion").setup({
 	adapters = {
 		copilot = function()
 			return require("codecompanion.adapters").extend("copilot", {
+				name = "copilot",
 				schema = {
 					model = {
-						default = "claude-3.5-sonnet",
-						choices = {
-							"gpt-4o",
-							"claude-3.5-sonnet",
-							"gemini-2.0-flash-001",
-							["o1"] = { opts = { stream = false } },
-							["o3-mini"] = { opts = { stream = false } },
-						},
+						default = "gpt-4.1",
+						-- default = "claude-3.7-sonnet",
+						-- default = "gpt-4o",
+					},
+					temperature = {
+						default = 0.0,
+					},
+				},
+			})
+		end,
+		openrouter = function()
+			return require("codecompanion.adapters").extend("openai_compatible", {
+				env = {
+					url = "https://openrouter.ai/api",
+					api_key = "OPENROUTER_API_KEY",
+					chat_url = "/v1/chat/completions",
+				},
+				schema = {
+					model = {
+						-- default = "anthropic/claude-3.7-sonnet",
+						-- default = "anthropic/claude-sonnet-4",
+						default = "deepseek/deepseek-r1-0528",
 					},
 				},
 			})
