@@ -65,8 +65,12 @@ require("codecompanion").setup({
 				schema = {
 					model = {
 						-- default = "deepseek/deepseek-r1-0528",
+						-- default = "moonshotai/kimi-k2",
 						default = "google/gemini-2.5-pro",
 					},
+					-- temperature = {
+					-- 	default = 0.6, -- default temperature for kimi-k2
+					-- },
 				},
 			})
 		end,
