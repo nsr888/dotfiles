@@ -5,16 +5,6 @@ local constants = {
 }
 
 require("codecompanion").setup({
-	extensions = {
-		mcphub = {
-			callback = "mcphub.extensions.codecompanion",
-			opts = {
-				show_result_in_chat = true, -- Show mcp tool results in chat
-				make_vars = true, -- Convert resources to #variables
-				make_slash_commands = true, -- Add prompts as /slash commands
-			},
-		},
-	},
 	opts = {
 		log_level = "DEBUG",
 	},
@@ -44,16 +34,6 @@ require("codecompanion").setup({
 		chat = {
 			adapter = "copilot",
 			-- adapter = "openrouter",
-			-- tools = {
-			-- 	opts = {
-			-- 		default_tools = {
-			-- 			"read_file",
-			-- 			"mcp",
-			-- 			"file_search",
-			-- 			"grep_search",
-			-- 		},
-			-- 	},
-			-- },
 		},
 		inline = {
 			adapter = "copilot",
@@ -65,9 +45,9 @@ require("codecompanion").setup({
 				name = "copilot",
 				schema = {
 					model = {
-						default = "gpt-4.1",
+						-- default = "gpt-4.1",
 						-- default = "claude-3.7-sonnet",
-						-- default = "gpt-4o",
+						default = "gemini-2.5-pro",
 					},
 					temperature = {
 						default = 0.0,
@@ -84,10 +64,28 @@ require("codecompanion").setup({
 				},
 				schema = {
 					model = {
-						-- default = "anthropic/claude-3.7-sonnet",
-						-- default = "anthropic/claude-sonnet-4",
-						default = "deepseek/deepseek-r1-0528",
+						-- default = "deepseek/deepseek-r1-0528",
+						default = "google/gemini-2.5-pro",
 					},
+				},
+			})
+		end,
+		gemini = function()
+			return require("codecompanion.adapters").extend("gemini", {
+				name = "gemini",
+				schema = {
+					model = {
+						default = "gemini-2.5-pro",
+					},
+					num_ctx = {
+						default = 8192,
+					},
+					num_predict = {
+						default = -1,
+					},
+				},
+				env = {
+					api_key = "GEMINI_API_KEY",
 				},
 			})
 		end,
@@ -166,50 +164,12 @@ require("codecompanion").setup({
 			prompts = {
 				{
 					role = constants.SYSTEM_ROLE,
-					content = [[I want you to act as a senior golang developer.
-I will give you specific go code and you must write unit tests for it.
-When generating unit tests, follow these steps:
-1. Identify the purpose of the function or module to be tested.
-2. List the edge cases and typical use cases that should be covered in the tests and share the plan with the user.
-3. Write table tests for each test case.
-4. Use `github.com/stretchr/testify/mock` package to mock dependencies only when it's necessary.
-5. Use `github.com/stretchr/testify/assert` package to validate results.
-6. Use following structure for table tests:
-```go
-  typr args struct { // inputs to test cases
-    value1 Type
-    ...
-  }
-  mocks sturct {
-    svc Type
-    ...
-  }
-  results struct { // expected result
-    error   error // must be validated throught errors.Is()
-    result  Type
-    wantErr bool // used only in case when error type can't be determine
-  },
-	tests := []struct {
-		name   string
-		args   args
-		result result
-	}{
-    ...
-  }
-
-	for _, tt := range tests {
-		tt := tt
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-      ...
-		})
-	}
-```
-5. Ensure the tests cover:
-      - Success cases
-      - Edge cases
-      - Error handling (if applicable)
-6. Provide the generated unit tests in a clear and organized manner without additional explanations or chat.]],
+					content = function(context)
+						return "I want you to act as a senior Go "
+							.. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
+							.. "@mcp Use from memory bank programming/go-test-guidelines.md if available."
+							.. "Don't reply on this message, just wait for the questions."
+					end,
 				},
 				{
 					role = "user",
@@ -217,7 +177,12 @@ When generating unit tests, follow these steps:
 						local text =
 							require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
 
-						return "I have the following code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n"
+						return "@mcp Use go test guidelines from memory bank, try to find go-test-guidelines in memory bank.\n\n"
+							.. "I have the following code:\n\n```"
+							.. context.filetype
+							.. "\n"
+							.. text
+							.. "\n```\n\n"
 					end,
 					opts = {
 						contains_code = true,

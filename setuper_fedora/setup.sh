@@ -54,9 +54,18 @@ setup_flatpak()
 
 setup_docker()
 {
+  sudo dnf install -y iptables-legacy
+  sudo alternatives --set iptables    /usr/sbin/iptables-legacy
+  sudo systemctl restart firewalld
+
 	sudo dnf install -y dnf-plugins-core
-	sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+  sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
 	sudo dnf install -y docker-ce docker-ce-cli containerd.io
+
+  # Change the default bridge network 172.17 to use a specific subnet 192.168
+  # This is needed to avoid conflicts with the cloudwarp vpn
+  echo '{ "bip": "192.168.100.1/24" }' | sudo tee /etc/docker/daemon.json
+
 	sudo systemctl start docker
 	sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
 	newgrp docker
@@ -95,53 +104,55 @@ setup_kubectl()
   cd $HOME
 }
 
-setup_asdf()
+setup_goenv()
 {
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
-  echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-  echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+  # Installing Go
+  cd $HOME/Downloads/
+  git clone https://github.com/go-nv/goenv.git ~/.goenv
+  echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
+  echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
   source "${HOME}/.bashrc"
-  asdf plugin add asdf-plugin-manager https://github.com/asdf-community/asdf-plugin-manager.git
-  asdf plugin update asdf-plugin-manager v1.3.1
-  asdf install asdf-plugin-manager 1.3.1
-  # Install specific version
-  asdf install asdf-plugin-manager 1.3.1
-  # Set a version globally (on your ~/.tool-versions file)
-  asdf global asdf-plugin-manager 1.3.1
-  # Now asdf-plugin-manager command is available
-  asdf-plugin-manager version
+  cd $HOME
+  goenv install 1.23.6
+  goenv global 1.23.6
+}
+
+setup_gopackages()
+{
+  # Installing additional Go tools
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.63.4
+  go install github.com/nametake/golangci-lint-langserver@latest
+  go install golang.org/x/tools/gopls@latest
+  go install github.com/daixiang0/gci@latest
+  go install mvdan.cc/gofumpt@latest
+  go install github.com/segmentio/golines@latest
+  go install github.com/google/yamlfmt/cmd/yamlfmt@latest
   source "${HOME}/.bashrc"
 }
 
-setup_asdf_plugins()
+setup_nvm()
 {
-  # Copy plugins-versions
-  cp .plugin-versions ~/
-  # Add all plugins according to .plugin-versions file
-  asdf-plugin-manager add-all
-  source "${HOME}/.bashrc"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	source "${HOME}/.bashrc"
+	nvm install lts/jod
+	nvm install v16.20.0
+	nvm use lts/jod
+  echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+  echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
+	source "${HOME}/.bashrc"
 }
 
-setup_asdf_golang()
+setup_node_packages()
 {
-  cp .default-golang-pkgs ~/
-  asdf install golang 1.22.5
-  asdf global golang 1.22.5
-  source "${HOME}/.bashrc"
-}
-
-setup_asdf_golangci()
-{
-  asdf install golangci-lint 1.61.0
-  asdf global golangci-lint 1.61.0
-  source "${HOME}/.bashrc"
-}
-
-setup_asdf_nodejs()
-{
-  asdf install nodejs 16.20.0
-  asdf install nodejs 18.17.1
-  asdf global nodejs 18.17.1
+	npm install -g typescript typescript-language-server
+	npm install -g eslint_d eslint prettier
+	npm install -g vscode-langservers-extracted
+	npm install -g dockerfile-language-server-nodejs
+	npm install -g sql-cli
+	npm install -g bash-language-server
+  npm install -g yarn
+  npm install -g yaml-language-server
 }
 
 setup_gitprompt()
@@ -174,16 +185,15 @@ setup_fonts(){
 ###########################################
 
 # install_packages
-setup_neovim
+# setup_neovim
 # setup_flatpak
 # setup_docker
 # setup_bashrc
 # setup_vimrc
-# setup_asdf
-# setup_asdf_plugins
-# setup_asdf_golang
-# setup_asdf_golangci
-# setup_asdf_nodejs
+# setup_goenv
+# setup_gopackages
+# setup_nvm
+# setup_node_packages
 # setup_gitprompt
 # setup_kubectl
 # setup_cargo_packages

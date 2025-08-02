@@ -87,7 +87,4 @@ vim.g.loaded_perl_provider = 0
 -- Enable debug log only when needed
 -- vim.lsp.set_log_level("debug")
 vim.lsp.set_log_level("off")
-if vim.fn.has("nvim-0.5.1") == 1 then
-	require("vim.lsp.log").set_format_func(vim.inspect)
-end
 vim.g.copilot_filetypes = { markdown = false }
