@@ -106,6 +106,8 @@ setup_kubectl()
 
 setup_goenv()
 {
+  echo 'export GOPATH="$HOME/go"' >> ~/.bashrc
+  echo 'export GOMODCACHE="$GOPATH/pkg/mod"' >> ~/.bashrc
   # Installing Go
   cd $HOME/Downloads/
   git clone https://github.com/go-nv/goenv.git ~/.goenv
