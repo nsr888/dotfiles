@@ -177,6 +177,29 @@ setup_fonts(){
     cd $HOME
 }
 
+setup_bashhistory()
+{
+  # Use a heredoc for cleaner multi-line appends
+  cat <<'EOF' >> ~/.bashrc
+
+# --- Enhanced Bash History ---
+# Don't store duplicates or commands starting with a space.
+# Erase all previous duplicate lines from history.
+export HISTCONTROL=ignoreboth:erasedups
+# Set a very large history size.
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+# Add timestamps to history entries.
+export HISTTIMEFORMAT="%F %T "
+# Append to the history file, don't overwrite it.
+shopt -s histappend
+# After each command, append to the history file and reread it,
+# which shares history across all open terminals.
+export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
+# --- End Enhanced Bash History ---
+EOF
+}
+
 # Integrity checks
 [ -f $SCRIPTDIR/dnf_packages ] || (echo "The dnf packages file is not there!" && exit 1)
 
@@ -200,6 +223,7 @@ setup_fonts(){
 # setup_kubectl
 # setup_cargo_packages
 # setup_fonts
+# setup_bashhistory
 
 # Sourcing the new dot files
 
