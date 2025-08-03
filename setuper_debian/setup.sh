@@ -4,6 +4,7 @@
 
 SCRIPTDIR=$(dirname "$(readlink -f "$0")")
 DIR=$SCRIPTDIR/..
+NEOVIM_VERSION=0.11.2
 
 install_deb_packages()
 {
@@ -32,17 +33,19 @@ install_deb_packages()
 
 setup_neovim()
 {
-    rm -rf $HOME/Downloads/neovim
-    cd $HOME/Downloads/
+    sudo apt remove neovim
+    cd "$HOME"/Downloads/ || exit
+    rm -rf "$HOME"/Downloads/neovim
     git clone https://github.com/neovim/neovim
-    cd neovim && git checkout v0.9.5
+    cd neovim && git checkout v$NEOVIM_VERSION
     make CMAKE_BUILD_TYPE=RelWithDebInfo
-    cd build && cpack -G DEB && sudo dpkg -i --force-overwrite nvim-linux64.deb
-    rm -rf $HOME/Downloads/neovim
-    cd $HOME
-    echo 'alias vi="nvim"' >> ~/.bashrc
-    ln -snf $DIR/nvim ~/.config/nvim
+    sudo make install
+    cd "$HOME" || exit
+    echo 'alias vim="/usr/bin/vi"' >> ~/.bashrc
+    echo 'alias vi="/usr/local/bin/nvim"' >> ~/.bashrc
+    ln -snf "$DIR"/nvim ~/.config/nvim
     git config --global core.editor "nvim"
+    rm -rf "$HOME"/Downloads/neovim
 }
 
 setup_flatpak()
@@ -67,36 +70,90 @@ setup_fonts(){
     cd $HOME
 }
 
+setup_goenv()
+{
+  echo 'export GOPATH="$HOME/go"' >> ~/.bashrc
+  echo 'export GOMODCACHE="$GOPATH/pkg/mod"' >> ~/.bashrc
+  # Installing Go
+  cd $HOME/Downloads/
+  git clone https://github.com/go-nv/goenv.git ~/.goenv
+  echo 'export GOENV_ROOT="$HOME/.goenv"' >> ~/.bashrc
+  echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ~/.bashrc
+  source "${HOME}/.bashrc"
+  cd $HOME
+}
+
 setup_go()
 {
-    GOVERSION='1.21.3'
-    cd $HOME/Downloads/
-    wget -O "go.tar.gz" "https://go.dev/dl/go${GOVERSION}.linux-$(dpkg --print-architecture).tar.gz"
-    sudo rm -rf /usr/local/go 
-    sudo rm -rf $HOME/go 
-    mkdir -p $HOME/src/go/{bin,pkg,src}
-    tar -C $HOME -xzf go.tar.gz
-    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.profile
-    echo 'export GOROOT=$HOME/go' >> ~/.profile
-    echo 'export GOPATH=$HOME/src/go' >> ~/.profile
-    echo 'export PATH=$HOME/src/go/bin:$HOME/go/bin:$PATH' >> ~/.bash_profile
-    echo 'export GOROOT=$HOME/go' >> ~/.bash_profile
-    echo 'export GOPATH=$HOME/src/go' >> ~/.bash_profile
-    source ${HOME}/.profile
-    cd $HOME
+  goenv install 1.23.6
+  goenv global 1.23.6
 }
 
-install_go_packages()
+setup_gopackages()
 {
-    go install golang.org/x/tools/gopls@latest
-    go install github.com/nametake/golangci-lint-langserver@latest
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-    go install github.com/daixiang0/gci@latest
-    go install mvdan.cc/gofumpt@latest
-    go install github.com/segmentio/golines@latest
-    go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+  # Installing additional Go tools
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.63.4
+  go install github.com/nametake/golangci-lint-langserver@latest
+  go install golang.org/x/tools/gopls@latest
+  go install github.com/daixiang0/gci@latest
+  go install mvdan.cc/gofumpt@latest
+  go install github.com/segmentio/golines@latest
+  go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+  source "${HOME}/.bashrc"
 }
 
+setup_nvm()
+{
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	source "${HOME}/.bashrc"
+}
+
+setup_node()
+{
+  echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+  echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
+	source "${HOME}/.bashrc"
+	nvm install --lts
+	nvm install v16.20.0
+	nvm use --lts
+	source "${HOME}/.bashrc"
+}
+
+setup_node_packages()
+{
+	npm install -g typescript typescript-language-server
+	npm install -g eslint_d eslint prettier
+	npm install -g vscode-langservers-extracted
+	npm install -g dockerfile-language-server-nodejs
+	npm install -g sql-cli
+	npm install -g bash-language-server
+  npm install -g yarn
+  npm install -g yaml-language-server
+}
+
+setup_bashhistory()
+{
+  # Use a heredoc for cleaner multi-line appends
+  cat <<'EOF' >> ~/.bashrc
+
+# --- Enhanced Bash History ---
+# Don't store duplicates or commands starting with a space.
+# Erase all previous duplicate lines from history.
+export HISTCONTROL=ignoreboth:erasedups
+# Set a very large history size.
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+# Add timestamps to history entries.
+export HISTTIMEFORMAT="%F %T "
+# Append to the history file, don't overwrite it.
+shopt -s histappend
+# After each command, append to the history file and reread it,
+# which shares history across all open terminals.
+export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
+# --- End Enhanced Bash History ---
+EOF
+}
 setup_lua_language_server()
 {
     LUALANGSERVERVERSION='3.7.0'
@@ -118,27 +175,6 @@ setup_fzf()
     git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
     $HOME/.fzf/install --key-bindings --no-completion --update-rc
     source "${HOME}/.bashrc"
-}
-
-setup_npm()
-{
-	# update node
-	sudo wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-	source "${HOME}/.bashrc"
-	export NVM_DIR="$HOME/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-	nvm install v18.17.1
-	nvm use v18.17.1
-	npm install -g typescript typescript-language-server
-	npm install -g eslint_d eslint prettier
-	npm install -g vscode-langservers-extracted
-	npm install -g dockerfile-language-server-nodejs
-	npm install -g sql-cli
-	npm install -g vls #vue
-	npm install -g bash-language-server
-  npm install -g yarn
-  npm install -g yaml-language-server
 }
 
 install_rustc()
@@ -194,26 +230,27 @@ install_sublime()
 ###### The installation begins # ##########
 ###########################################
 
-install_deb_packages
-setup_fzf
-setup_flatpak
+# install_deb_packages
+# setup_fzf
+# setup_flatpak
 
 # Setup basic application
 
-setup_neovim
-setup_fonts
-setup_go
-install_go_packages
-setup_npm
-setup_lua_language_server
-install_rustc
-install_cargo_packages
-setup_kubectl
-install_sublime
-
-# Finish setup
-
-setup_bashrc
+# setup_fonts
+# setup_lua_language_server
+# install_rustc
+# install_cargo_packages
+# setup_kubectl
+# install_sublime
+# setup_bashrc
+# setup_neovim
+# setup_bashhistory
+# setup_goenv
+# setup_go
+# setup_gopackages
+# setup_nvm
+# setup_node
+# setup_node_packages
 
 # Sourcing the new dot files
 
