@@ -1,3 +1,5 @@
+local providers = require("codecompanion.providers")
+
 local constants = {
 	LLM_ROLE = "llm",
 	USER_ROLE = "user",
@@ -23,100 +25,157 @@ require("codecompanion").setup({
 			},
 		},
 		diff = {
+			-- Default provider: Commands: do/dp (obtain/put), Exit: :diffoff, :q
+			-- Mini-diff: Inline changes with colors, Nav: Commands: =a/=A (apply hunk/all)
+			-- Use gda to accept, gdr to reject changes (auto-exits when all changes handled)
 			enabled = true,
 			close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
 			layout = "vertical", -- vertical|horizontal split for default provider
-			opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
-			provider = "default", -- default|mini_diff
+			opts = {
+				"internal",
+				"filler",
+				"closeoff",
+				"algorithm:histogram",
+				"indent-heuristic",
+				"followwrap",
+				"linematch:120",
+			},
+			provider = providers.diff,
+			diff_signs = {
+				signs = {
+					text = "▌", -- Sign text for normal changes
+					reject = "✗", -- Sign text for rejected changes in super_diff
+					highlight_groups = {
+						addition = "DiagnosticOk",
+						deletion = "DiagnosticError",
+						modification = "DiagnosticWarn",
+					},
+				},
+				-- Super Diff options
+				icons = {
+					accepted = " ",
+					rejected = " ",
+				},
+				colors = {
+					accepted = "DiagnosticOk",
+					rejected = "DiagnosticError",
+				},
+			},
 		},
 	},
 	strategies = {
 		chat = {
-			adapter = "copilot",
+			adapter = "anthropic",
+			-- adapter = "copilot",
 			-- adapter = "openrouter",
 		},
 		inline = {
-			adapter = "copilot",
+			adapter = "anthropic",
+			keymaps = {
+				accept_change = {
+					modes = { n = "gda" }, -- Remember this as DiffAccept
+				},
+				reject_change = {
+					modes = { n = "gdr" }, -- Remember this as DiffReject
+				},
+				always_accept = {
+					modes = { n = "gdy" }, -- Remember this as DiffYolo
+				},
+			},
 		},
 	},
 	adapters = {
-		copilot = function()
-			return require("codecompanion.adapters").extend("copilot", {
-				name = "copilot",
-				schema = {
-					model = {
-						-- default = "gpt-4.1",
-						-- default = "claude-3.7-sonnet",
-						default = "gemini-2.5-pro",
-					},
-					temperature = {
-						default = 0.0,
-					},
-				},
-			})
-		end,
-		openrouter = function()
-			return require("codecompanion.adapters").extend("openai_compatible", {
-				env = {
-					url = "https://openrouter.ai/api",
-					api_key = "OPENROUTER_API_KEY",
-					chat_url = "/v1/chat/completions",
-				},
-				schema = {
-					model = {
-						-- default = "deepseek/deepseek-r1-0528",
-						-- default = "moonshotai/kimi-k2",
-						default = "google/gemini-2.5-pro",
-					},
-					-- temperature = {
-					-- 	default = 0.6, -- default temperature for kimi-k2
-					-- },
-				},
-			})
-		end,
-		gemini = function()
-			return require("codecompanion.adapters").extend("gemini", {
-				name = "gemini",
-				schema = {
-					model = {
-						default = "gemini-2.5-pro",
-					},
-					num_ctx = {
-						default = 8192,
-					},
-					num_predict = {
-						default = -1,
-					},
-				},
-				env = {
-					api_key = "GEMINI_API_KEY",
-				},
-			})
-		end,
-		llama3 = function()
-			return require("codecompanion.adapters").extend("ollama", {
-				name = "llama3",
-				schema = {
-					model = {
-						default = "llama3.2:3b",
-						choices = {
-							"mistral:7b",
-							"starcoder2:7b",
-							"codellama:7b",
-							"qwen2.5-coder:7b",
-							"deepseek-r1:7b",
-							"llama3.2:3b",
+		http = {
+			copilot = function()
+				return require("codecompanion.adapters.http").extend("copilot", {
+					name = "copilot",
+					schema = {
+						model = {
+							-- default = "gpt-4.1",
+							-- default = "claude-3.7-sonnet",
+							default = "gemini-2.5-pro",
+						},
+						temperature = {
+							default = 0.0,
 						},
 					},
-					num_ctx = {
-						default = 16384,
+				})
+			end,
+			openrouter = function()
+				return require("codecompanion.adapters.http").extend("openai_compatible", {
+					env = {
+						url = "https://openrouter.ai/api",
+						api_key = "OPENROUTER_API_KEY",
+						chat_url = "/v1/chat/completions",
 					},
-					num_predict = {
-						default = -1,
+					schema = {
+						model = {
+							-- default = "deepseek/deepseek-r1-0528",
+							-- default = "moonshotai/kimi-k2",
+							default = "google/gemini-2.5-pro",
+						},
+						-- temperature = {
+						-- 	default = 0.6, -- default temperature for kimi-k2
+						-- },
 					},
-				},
-			})
-		end,
+				})
+			end,
+			gemini = function()
+				return require("codecompanion.adapters.http").extend("gemini", {
+					name = "gemini",
+					schema = {
+						model = {
+							default = "gemini-2.5-pro",
+						},
+						num_ctx = {
+							default = 8192,
+						},
+						num_predict = {
+							default = -1,
+						},
+					},
+					env = {
+						api_key = "GEMINI_API_KEY",
+					},
+				})
+			end,
+			llama3 = function()
+				return require("codecompanion.adapters.http").extend("ollama", {
+					name = "llama3",
+					schema = {
+						model = {
+							default = "llama3.2:3b",
+							choices = {
+								"mistral:7b",
+								"starcoder2:7b",
+								"codellama:7b",
+								"qwen2.5-coder:7b",
+								"deepseek-r1:7b",
+								"llama3.2:3b",
+							},
+						},
+						num_ctx = {
+							default = 16384,
+						},
+						num_predict = {
+							default = -1,
+						},
+					},
+				})
+			end,
+			anthropic = function()
+				return require("codecompanion.adapters.http").extend("anthropic", {
+					env = {
+						api_key = "ANTHROPIC_API_KEY",
+					},
+					schema = {
+						model = {
+							default = "claude-sonnet-4-20250514",
+						},
+					},
+				})
+			end,
+		},
 	},
 	prompt_library = {
 		["Code Expert"] = {
