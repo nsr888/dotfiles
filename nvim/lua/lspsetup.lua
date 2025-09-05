@@ -47,3 +47,4 @@ vim.lsp.config("yamlls", require("config.lsp.yamlls"))
 -- enable manually installed LSP servers
 vim.lsp.enable("gopls")
 vim.lsp.enable("golangci_lint_ls")
+vim.lsp.enable("nil_ls")

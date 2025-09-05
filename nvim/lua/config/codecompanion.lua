@@ -68,9 +68,9 @@ require("codecompanion").setup({
 	strategies = {
 		chat = {
 			-- adapter = "anthropic",
-			adapter = "copilot",
-			-- adapter = "openrouter",
 			-- adapter = "copilot",
+			-- adapter = "openrouter",
+			adapter = "copilot",
 			-- adapter = "chutes",
 		},
 		inline = {
@@ -96,15 +96,15 @@ require("codecompanion").setup({
 					name = "copilot",
 					schema = {
 						model = {
-							default = "gpt-5-mini",
+							-- default = "gpt-5-mini",
 							-- default = "gpt-4.1",
 							-- default = "grok-code-fast-1",
 							-- default = "claude-3.7-sonnet",
-							-- default = "gemini-2.5-pro",
+							default = "gemini-2.5-pro",
 						},
-						temperature = {
-							default = 0.0,
-						},
+						-- temperature = {
+						-- 	default = 0.0,
+						-- },
 					},
 				})
 			end,
@@ -178,6 +178,20 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							default = "claude-sonnet-4-20250514",
+						},
+					},
+				})
+			end,
+			chutes = function()
+				return require("codecompanion.adapters.http").extend("openai_compatible", {
+					env = {
+						api_key = "CHUTES_CODECOMPANION_API_KEY",
+						url = "https://llm.chutes.ai",
+						chat_url = "/v1/chat/completions",
+					},
+					schema = {
+						model = {
+							default = "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
 						},
 					},
 				})
@@ -304,7 +318,7 @@ require("codecompanion").setup({
 						max_num = { chunk = -1, document = -1 },
 						default_num = { chunk = 50, document = 10 },
 						include_stderr = false,
-						use_lsp = false,
+						use_lsp = true,
 						no_duplicate = true,
 						chunk_mode = false,
 						---@type VectorCode.CodeCompanion.SummariseOpts

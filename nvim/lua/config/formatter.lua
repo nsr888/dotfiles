@@ -85,6 +85,10 @@ local function yamlfmt()
 	return { exe = "yamlfmt", args = { "-in" }, stdin = true }
 end
 
+local function nixfmt()
+	return { exe = "nixfmt", args = {}, stdin = true }
+end
+
 -- brew install ghcup
 -- stack install stylish-haskell
 local function stylish_haskell()
@@ -127,6 +131,7 @@ require("formatter").setup({
 		markdown = { prettier },
 		vue = { prettier },
 		yaml = { yamlfmt },
+		nix = { nixfmt },
 		-- htmldjango = {prettier},
 		lua = {
 			-- "formatter.filetypes.lua" defines default configurations for the

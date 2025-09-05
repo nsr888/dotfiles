@@ -33,6 +33,8 @@ require("lazy").setup({
 		{ import = "plugins" },
 	},
 	-- Configure any other settings here. See the documentation for more details.
+	-- Write the lockfile to a writable location (not $XDG_CONFIG_HOME).
+	lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
 	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "tokyonight" } },
 	-- automatically check for plugin updates
