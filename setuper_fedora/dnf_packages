@@ -42,3 +42,4 @@ bison
 dpkg
 direnv
 luarocks
+python3-devel

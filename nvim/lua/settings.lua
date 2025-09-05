@@ -88,3 +88,4 @@ vim.g.loaded_perl_provider = 0
 -- vim.lsp.set_log_level("debug")
 vim.lsp.set_log_level("off")
 vim.g.copilot_filetypes = { markdown = false }
+vim.g.copilot_enabled = true
