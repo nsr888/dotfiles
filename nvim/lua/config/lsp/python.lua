@@ -12,6 +12,7 @@ return {
 	-- cmd = { 'pylsp', '-vvv', '--log-file', 'pylsp.log' },
 	settings = {
 		pylsp = {
+			single_file_support = false,
 			configurationSources = { "flake8" },
 			plugins = {
 				flake8 = {

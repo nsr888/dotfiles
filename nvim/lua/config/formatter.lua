@@ -28,6 +28,14 @@ local function isort()
 	return { exe = "isort", args = { "--quiet", "-" }, stdin = true }
 end
 
+local function ruff_format()
+	return {
+		exe = "ruff",
+		args = { "format", "--stdin-filename", vim.api.nvim_buf_get_name(0), "-" },
+		stdin = true,
+	}
+end
+
 local function golines()
 	return { exe = "golines", args = { "--max-len=80" }, stdin = true }
 end
@@ -150,12 +158,13 @@ require("formatter").setup({
 		cpp = { clangd },
 		c = { clangd },
 		rust = { rustfmt },
-		python = { black, isort },
+		-- python = { black, isort },
+		python = { ruff_format },
 		go = {
 			gofumpt,
 			gogci,
 			goimports,
-			-- golines,
+			golines,
 		},
 		perl = {
 			-- perltidy

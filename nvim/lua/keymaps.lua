@@ -117,6 +117,7 @@ local mappings = {
 		{ "<localleader>t", ':echo "Hello, world!"<cr>' },
 		{ "<leader>cl", ":CodeCompanion<CR>" },
 		{ "<leader>cc", ":CodeCompanionChat<CR>" },
+		{ "<leader>ct", ":CodeCompanionAction<CR>" },
 	},
 	t = {
 		-- Terminal mode

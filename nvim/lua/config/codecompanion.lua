@@ -42,6 +42,7 @@ require("codecompanion").setup({
 				"linematch:120",
 			},
 			provider = providers.diff,
+			-- provider = "mini_diff", -- default|mini_diff
 			diff_signs = {
 				signs = {
 					text = "▌", -- Sign text for normal changes
@@ -69,6 +70,8 @@ require("codecompanion").setup({
 			-- adapter = "anthropic",
 			adapter = "copilot",
 			-- adapter = "openrouter",
+			-- adapter = "copilot",
+			-- adapter = "chutes",
 		},
 		inline = {
 			-- adapter = "anthropic",
@@ -93,8 +96,8 @@ require("codecompanion").setup({
 					name = "copilot",
 					schema = {
 						model = {
-							-- default = "gpt-4.1",
 							default = "gpt-5-mini",
+							-- default = "gpt-4.1",
 							-- default = "grok-code-fast-1",
 							-- default = "claude-3.7-sonnet",
 							-- default = "gemini-2.5-pro",
@@ -182,6 +185,24 @@ require("codecompanion").setup({
 		},
 	},
 	prompt_library = {
+		["Buffer Chat"] = {
+			strategy = "chat",
+			description = "Chat with current buffer auto-attached (pinned)",
+			opts = {
+				mapping = "<Leader>ce",
+				modes = { "n" },
+				short_name = "buf", -- use :CodeCompanion /buf
+				-- user_prompt = true, -- ask for your message each time
+				auto_submit = false,
+			},
+			prompts = {
+				{
+					role = "user",
+					content = "#{buffer}{watch} ",
+					opts = { contains_code = true },
+				},
+			},
+		},
 		["Code Expert"] = {
 			strategy = "chat",
 			description = "Get some special advice from an LLM",
