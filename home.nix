@@ -29,7 +29,7 @@ lib.mkMerge [
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      autosuggestion.enable = true;
+      autosuggestion.enable = false;
       syntaxHighlighting.enable = true;
 
       shellAliases = {
@@ -44,32 +44,51 @@ lib.mkMerge [
       };
 
       initContent = ''
-        # Ensure .zprofile is always sourced, even in non-login shells
-        if [ -f "$HOME/.zprofile" ]; then
-          source "$HOME/.zprofile"
-        fi
+            # Ensure .zprofile is always sourced, even in non-login shells
+            if [ -f "$HOME/.zprofile" ]; then
+              source "$HOME/.zprofile"
+            fi
 
-        # Enable zsh-git-prompt
-        source ${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh
-        ZSH_GIT_PROMPT_FORCE_BLANK=1
+            # Enable zsh-git-prompt
+            source ${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh
+            ZSH_GIT_PROMPT_FORCE_BLANK=1
 
-        # Set the prompt
-        export PROMPT='%n@%m:%~ $(git_super_status)%# '
+            # Set the prompt
+            export PROMPT='%n@%m:%~ $(git_super_status)%# '
 
-        # kubectl completion for zsh
-        if command -v kubectl >/dev/null 2>&1; then
-          source <(kubectl completion zsh)
-          alias k=kubectl
-          compdef _kubectl k
-        fi
+            # kubectl completion for zsh
+            if command -v kubectl >/dev/null 2>&1; then
+              source <(kubectl completion zsh)
+              alias k=kubectl
+              compdef _kubectl k
+            fi
 
-        # History
-        setopt hist_ignore_all_dups
-        setopt hist_save_no_dups
-        setopt hist_ignore_dups
-        export HISTSIZE=1000000
-        export SAVEHIST=1000000
-        export HISTTIMEFORMAT="%F %T "
+            # History
+            setopt hist_ignore_all_dups
+            setopt hist_save_no_dups
+            setopt hist_ignore_dups
+            export HISTSIZE=1000000
+            export SAVEHIST=1000000
+            export HISTTIMEFORMAT="%F %T "
+
+            setopt extended_history          # save timestamp & duration
+            setopt inc_append_history        # write as you go
+            setopt share_history             # share across sessions
+            setopt hist_ignore_all_dups
+            setopt hist_save_no_dups
+            setopt hist_ignore_dups
+            setopt hist_ignore_space         # commands starting with space aren't saved
+            setopt hist_reduce_blanks
+            setopt hist_verify               # don't auto-execute from history
+
+            # ---------- Small QoL ----------
+            setopt auto_cd                   # `..` or a path jumps there
+            setopt no_beep
+            setopt interactive_comments      # allow comments in interactive shell
+            setopt no_nomatch                # wildcards that match nothing don't error
+
+            # Optional: bind Ctrl-Backspace to delete-word (often handy)
+            bindkey '^H' backward-kill-word
       '';
     };
 
@@ -111,7 +130,11 @@ lib.mkMerge [
       # Plugins can be added through flakes/xdg.configFile, keeping base setup
     };
 
-    programs.fzf.enable = true;
+    programs.fzf = {
+      enable = true;
+      enableZshIntegration = true; # ^R history / ^T files / Alt-C cd
+    };
+
     programs.bat.enable = true;
     programs.eza.enable = true;
 
@@ -243,7 +266,9 @@ lib.mkMerge [
             y = 5;
           };
           dynamic_padding = true;
-          startup_mode = "Maximized";
+          startup_mode = "Windowed";
+          decorations = "Full";
+          resize_increments = true;
         };
         font = {
           size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
