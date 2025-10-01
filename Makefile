@@ -57,3 +57,11 @@ deps-bash:
 	bash-language-server
 
 .PHONY: vim alacritty goinfre nvim-install prepare deps-npm deps-go deps-lua deps-pip deps-sql deps-vue deps-nvim deps-bash
+
+.PHONY: nix-linux
+nix-linux:
+	nix run github:nix-community/home-manager/release-24.05 -- switch --flake .#artur-linux
+
+.PHONY: nix-macos
+nix-macos:
+	nix run github:nix-community/home-manager/release-24.05 -- switch --flake .#artur-macos

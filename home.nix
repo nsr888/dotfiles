@@ -244,7 +244,6 @@ lib.mkMerge [
           };
           dynamic_padding = true;
           startup_mode = "Maximized";
-          decorations = "none";
         };
         font = {
           size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
