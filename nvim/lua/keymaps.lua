@@ -1,9 +1,23 @@
 local function register_mappings(mappings, default_options)
 	for mode, mode_mappings in pairs(mappings) do
 		for _, mapping in pairs(mode_mappings) do
-			local options = #mapping == 3 and table.remove(mapping) or default_options
-			local prefix, cmd = unpack(mapping)
-			pcall(vim.api.nvim_set_keymap, mode, prefix, cmd, options)
+			-- mapping formats supported:
+			-- { lhs, rhs }
+			-- { lhs, rhs, opts }
+			-- { lhs, rhs, "Description" }               -- convenience: pass desc as 3rd string
+			-- { lhs, rhs, { desc = "Description", ...}} -- full opts with desc
+			local lhs, rhs, third = mapping[1], mapping[2], mapping[3]
+			local opts = vim.deepcopy(default_options or {})
+
+			if type(third) == "string" then
+				opts.desc = third
+			elseif type(third) == "table" then
+				for k, v in pairs(third) do
+					opts[k] = v
+				end
+			end
+
+			pcall(vim.keymap.set, mode, lhs, rhs, opts)
 		end
 	end
 end
@@ -178,31 +192,55 @@ vim.api.nvim_set_keymap("n", "<leader>tmp", ":-tabmove<CR>", { noremap = true })
 -- move current tab to next position
 vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
 
+-- Harpoon keymaps
 local harpoon = require("harpoon")
-
--- REQUIRED
 harpoon:setup()
--- REQUIRED
-
-vim.keymap.set("n", "<leader>a", function()
-	harpoon:list():add()
-end)
-vim.keymap.set("n", "<C-e>", function()
-	harpoon.ui:toggle_quick_menu(harpoon:list())
-end)
-
-vim.keymap.set("n", "<leader>1", function()
-	harpoon:list():select(1)
-end)
-vim.keymap.set("n", "<leader>2", function()
-	harpoon:list():select(2)
-end)
-vim.keymap.set("n", "<leader>3", function()
-	harpoon:list():select(3)
-end)
-vim.keymap.set("n", "<leader>4", function()
-	harpoon:list():select(4)
-end)
+register_mappings({
+	n = {
+		{
+			"<leader>ha",
+			function()
+				harpoon:list():add()
+			end,
+			"Harpoon: add file",
+		},
+		{
+			"<leader>hm",
+			function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end,
+			"Harpoon: menu",
+		},
+		{
+			"<leader>h1",
+			function()
+				harpoon:list():select(1)
+			end,
+			"Harpoon: file 1",
+		},
+		{
+			"<leader>h2",
+			function()
+				harpoon:list():select(2)
+			end,
+			"Harpoon: file 2",
+		},
+		{
+			"<leader>h3",
+			function()
+				harpoon:list():select(3)
+			end,
+			"Harpoon: file 3",
+		},
+		{
+			"<leader>h4",
+			function()
+				harpoon:list():select(4)
+			end,
+			"Harpoon: file 4",
+		},
+	},
+}, { silent = true, noremap = true })
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-S-P>", function()

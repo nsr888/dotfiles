@@ -25,7 +25,7 @@ require("mason-lspconfig").setup({
 		-- npm install -g eslint_d eslint prettier
 		"graphql",
 		"html",
-		"htmx",
+		-- "htmx",
 		"jqls",
 		"jsonls",
 		"ltex",
