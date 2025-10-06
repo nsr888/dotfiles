@@ -9,14 +9,15 @@
 let
   user = "anasyrov";
   homeDir = "/home/${user}";
+  npmGlobal = "${config.home.homeDirectory}/.npm-global";
 in
 lib.mkMerge [
   {
     # Tie to HM version we started with
     home.stateVersion = "25.05";
 
-    home.username = user;
-    home.homeDirectory = homeDir;
+    home.username = lib.mkDefault user;
+    home.homeDirectory = lib.mkDefault homeDir;
 
     # Allow proprietary packages (Postman, Chrome, etc.)
     nixpkgs.config.allowUnfree = true;
@@ -29,7 +30,7 @@ lib.mkMerge [
     programs.zsh = {
       enable = true;
       enableCompletion = true;
-      autosuggestion.enable = false;
+      autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
       shellAliases = {
@@ -44,51 +45,60 @@ lib.mkMerge [
       };
 
       initContent = ''
-            # Ensure .zprofile is always sourced, even in non-login shells
-            if [ -f "$HOME/.zprofile" ]; then
-              source "$HOME/.zprofile"
-            fi
+        # Ensure .zprofile is always sourced, even in non-login shells
+        if [ -f "$HOME/.zprofile" ]; then
+          source "$HOME/.zprofile"
+        fi
 
-            # Enable zsh-git-prompt
-            source ${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh
-            ZSH_GIT_PROMPT_FORCE_BLANK=1
+        # Enable zsh-git-prompt
+        source ${pkgs.zsh-git-prompt}/share/zsh-git-prompt/zshrc.sh
+        ZSH_GIT_PROMPT_FORCE_BLANK=1
 
-            # Set the prompt
-            export PROMPT='%n@%m:%~ $(git_super_status)%# '
+        # Set the prompt
+        export PROMPT='%n@%m:%~ $(git_super_status)%# '
 
-            # kubectl completion for zsh
-            if command -v kubectl >/dev/null 2>&1; then
-              source <(kubectl completion zsh)
-              alias k=kubectl
-              compdef _kubectl k
-            fi
+        # kubectl completion for zsh
+        if command -v kubectl >/dev/null 2>&1; then
+          source <(kubectl completion zsh)
+          alias k=kubectl
+          compdef _kubectl k
+        fi
 
-            # History
-            setopt hist_ignore_all_dups
-            setopt hist_save_no_dups
-            setopt hist_ignore_dups
-            export HISTSIZE=1000000
-            export SAVEHIST=1000000
-            export HISTTIMEFORMAT="%F %T "
+        # History
+        setopt hist_ignore_all_dups
+        setopt hist_save_no_dups
+        setopt hist_ignore_dups
+        export HISTSIZE=1000000
+        export SAVEHIST=1000000
+        export HISTTIMEFORMAT="%F %T "
 
-            setopt extended_history          # save timestamp & duration
-            setopt inc_append_history        # write as you go
-            setopt share_history             # share across sessions
-            setopt hist_ignore_all_dups
-            setopt hist_save_no_dups
-            setopt hist_ignore_dups
-            setopt hist_ignore_space         # commands starting with space aren't saved
-            setopt hist_reduce_blanks
-            setopt hist_verify               # don't auto-execute from history
+        setopt extended_history          # save timestamp & duration
+        setopt inc_append_history        # write as you go
+        setopt share_history             # share across sessions
+        setopt hist_ignore_all_dups
+        setopt hist_save_no_dups
+        setopt hist_ignore_dups
+        setopt hist_ignore_space         # commands starting with space aren't saved
+        setopt hist_reduce_blanks
+        setopt hist_verify               # don't auto-execute from history
 
-            # ---------- Small QoL ----------
-            setopt auto_cd                   # `..` or a path jumps there
-            setopt no_beep
-            setopt interactive_comments      # allow comments in interactive shell
-            setopt no_nomatch                # wildcards that match nothing don't error
+        # ---------- Small QoL ----------
+        setopt auto_cd                   # `..` or a path jumps there
+        setopt no_beep
+        setopt interactive_comments      # allow comments in interactive shell
+        setopt no_nomatch                # wildcards that match nothing don't error
 
-            # Optional: bind Ctrl-Backspace to delete-word (often handy)
-            bindkey '^H' backward-kill-word
+        # Optional: bind Ctrl-Backspace to delete-word (often handy)
+        bindkey '^H' backward-kill-word
+        bindkey "^A" vi-beginning-of-line
+        bindkey "^E" vi-end-of-line
+
+        llm_cli(){
+            emulate -L zsh
+            zle -M "$(llm -m claude-3.5-sonnet -t cli $BUFFER)"
+        }
+        zle -N llm_cli
+        bindkey '\t\t' llm_cli
       '';
     };
 
@@ -100,10 +110,6 @@ lib.mkMerge [
       PAGER = "less -FRX";
       LANG = "en_US.UTF-8";
 
-      GOPATH = "$HOME/go";
-      GOMODCACHE = "$GOPATH/pkg/mod";
-      GOROOT = "${pkgs.go}/share/go";
-      GOBIN = "$GOPATH/bin";
       PATH = "$PATH:$GOPATH/bin:$GOROOT/bin";
       FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'";
       KUBECONFIG = "$HOME/.kube/config";
@@ -139,21 +145,36 @@ lib.mkMerge [
     programs.eza.enable = true;
 
     # Alacritty config via HM module (more convenient than just package)
-    # programs.alacritty = {
-    #   enable = true;
-    #   settings = {
-    #     env = { TERM = "xterm-256color"; };
-    #     window.padding = { x = 3; y = 3; };
-    #     window.dynamic_padding = true;
-    #     window.startup_mode = "Maximized";
-    #     window.opacity = 0.97;
-    #     font = {
-    #       size = 16.0;
-    #       bold = { family = "IosevkaTerm Nerd Font"; style = "Bold"; };
-    #       normal = { family = "IosevkaTerm Nerd Font"; style = "Regular"; };
-    #     };
-    #   };
-    # };
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        env = {
+          TERM = "xterm-256color";
+        };
+        window = {
+          opacity = 1.0;
+          padding = {
+            x = 5;
+            y = 5;
+          };
+          dynamic_padding = true;
+          startup_mode = "Windowed";
+          decorations = "Full";
+          resize_increments = true;
+        };
+        font = {
+          size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
+          bold = {
+            family = "IosevkaTerm Nerd Font";
+            style = "Bold";
+          };
+          normal = {
+            family = "IosevkaTerm Nerd Font";
+            style = "Regular";
+          };
+        };
+      };
+    };
 
     # direnv (if you use it)
     programs.direnv = {
@@ -196,6 +217,7 @@ lib.mkMerge [
         nodePackages.dockerfile-language-server-nodejs
         nodePackages.yaml-language-server
         nodePackages.yarn
+        nodePackages.prettier
 
         # Go and tools (some tools may be missing in 24.05)
         go
@@ -223,12 +245,12 @@ lib.mkMerge [
         # telegram-desktop
         keepassxc
         # dbeaver-bin
-        chromium
+        # chromium #linux-only
         # postman        # unfree
 
         # Media / misc
-        vlc
-        transmission_3
+        # vlc #linux-only
+        # transmission_3 #linux-only
 
         # Fonts (nerdfonts option)
         pkgs.nerd-fonts.iosevka-term
@@ -237,6 +259,8 @@ lib.mkMerge [
         zsh-git-prompt
 
         vectorcode
+        k9s
+        ripgrep
 
       ]
       # ++ [ unstablePkgs.vectorcode ]
@@ -246,6 +270,15 @@ lib.mkMerge [
         # flatpak/gnome-software-plugin-flatpak — better at system level
       ];
 
+    home.sessionPath = [ "${npmGlobal}/bin" ];
+
+    # do the install with an explicit prefix so it never touches /nix/store
+    home.activation.installClaudeCode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "${npmGlobal}"
+      "${pkgs.nodejs}/bin/npm" --userconfig "$HOME/.npmrc" \
+        --prefix "${npmGlobal}" -g install @anthropic-ai/claude-code
+    '';
+
     ############################################
     # Configs (XDG)
     ############################################
@@ -253,35 +286,35 @@ lib.mkMerge [
     xdg.configFile = {
       # Your Neovim config, if stored next to the flake
       "nvim".source = ./nvim;
-      # Example: alacritty.yml, if not using HM module for alacritty
-      # Manage alacritty config via xdg.configFile to avoid conflicts
-      "alacritty/alacritty.yml".source = (pkgs.formats.yaml { }).generate "alacritty.yml" {
-        env = {
-          TERM = "xterm-256color";
-        };
-        window = {
-          opacity = 1.0;
-          padding = {
-            x = 5;
-            y = 5;
-          };
-          dynamic_padding = true;
-          startup_mode = "Windowed";
-          decorations = "Full";
-          resize_increments = true;
-        };
-        font = {
-          size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
-          bold = {
-            family = "IosevkaTerm Nerd Font";
-            style = "Bold";
-          };
-          normal = {
-            family = "IosevkaTerm Nerd Font";
-            style = "Regular";
-          };
-        };
-      };
+      #   # Example: alacritty.yml, if not using HM module for alacritty
+      #   # Manage alacritty config via xdg.configFile to avoid conflicts
+      #   "alacritty/alacritty.yml".source = (pkgs.formats.yaml { }).generate "alacritty.yml" {
+      #     env = {
+      #       TERM = "xterm-256color";
+      #     };
+      #     window = {
+      #       opacity = 1.0;
+      #       padding = {
+      #         x = 5;
+      #         y = 5;
+      #       };
+      #       dynamic_padding = true;
+      #       startup_mode = "Windowed";
+      #       decorations = "Full";
+      #       resize_increments = true;
+      #     };
+      #     font = {
+      #       size = if pkgs.stdenv.isLinux then 14.0 else 18.0;
+      #       bold = {
+      #         family = "IosevkaTerm Nerd Font";
+      #         style = "Bold";
+      #       };
+      #       normal = {
+      #         family = "IosevkaTerm Nerd Font";
+      #         style = "Regular";
+      #       };
+      #     };
+      #   };
     };
   }
 
@@ -289,11 +322,25 @@ lib.mkMerge [
   (lib.mkIf pkgs.stdenv.isLinux {
     # example:
     # home.packages = [ pkgs.wl-clipboard ];
+    home.sessionVariables = {
+      GOPATH = "$HOME/go";
+      GOMODCACHE = "$GOPATH/pkg/mod";
+      GOROOT = "${pkgs.go}/share/go";
+      GOBIN = "$GOPATH/bin";
+    };
   })
 
   # macOS specific:
   (lib.mkIf pkgs.stdenv.isDarwin {
     # example:
     # home.sessionVariables.PATH = "$PATH:/opt/homebrew/bin";
+    home.sessionVariables = {
+      GOPATH = "$HOME/go";
+      GOMODCACHE = "$HOME/Library/Caches/go/mod";
+      GOROOT = "${pkgs.go}/share/go";
+      GOBIN = "$HOME/go/bin";
+      # optional: unify build cache too
+      GOCACHE = "$HOME/Library/Caches/go-build";
+    };
   })
 ]

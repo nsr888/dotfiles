@@ -101,7 +101,7 @@
       homeConfigurations = {
         # Pick one of these when running `home-manager switch --flake .#<name>`
         artur-linux = mkHome "x86_64-linux" "anasyrov";
-        artur-macos = mkHome "aarch64-darwin" "anasyrov";
+        artur-macos = mkHome "aarch64-darwin" "arturnasyrov";
       };
     };
 }

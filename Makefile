@@ -60,8 +60,8 @@ deps-bash:
 
 .PHONY: nix-linux
 nix-linux:
-	nix run github:nix-community/home-manager/release-24.05 -- switch --flake .#artur-linux
+	nix run github:nix-community/home-manager/release-25.05 -- switch --flake .#artur-linux
 
 .PHONY: nix-macos
 nix-macos:
-	nix run github:nix-community/home-manager/release-24.05 -- switch --flake .#artur-macos
+	nix run github:nix-community/home-manager/release-25.05 -- switch --flake .#artur-macos
