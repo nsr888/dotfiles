@@ -10,6 +10,44 @@ let
   user = "anasyrov";
   homeDir = "/home/${user}";
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
+
+  # Overlay for custom Go packages
+  go-overlay = self: super: {
+    go_1_23 = unstablePkgs.go_1_23;
+    golangci-lint_1_63_4 = super.buildGoModule {
+      pname = "golangci-lint";
+      version = "1.63.4";
+
+      src = super.fetchFromGitHub {
+        owner = "golangci";
+        repo = "golangci-lint";
+        rev = "v${self.golangci-lint_1_63_4.version}";
+        hash = "sha256-7nIo6Nuz8KLuQlT7btjnTRFpOl+KVd30v973HRKzh08=";
+      };
+
+      vendorHash = "sha256-atr4HMxoPEfGeaNlHqwTEAcvgbSyzgCe262VUg3J86c=";
+
+      subPackages = [ "." ];
+
+      ldflags = [
+        "-s"
+        "-w"
+        "-X main.version=${self.golangci-lint_1_63_4.version}"
+        "-X main.commit=unknown"
+        "-X main.date=unknown"
+      ];
+
+      meta = with super.lib; {
+        description = "Fast linters runner for Go";
+        homepage = "https://golangci-lint.run/";
+        license = licenses.gpl3Only;
+        maintainers = with maintainers; [ ];
+      };
+    };
+  };
+
+  # Apply the overlay
+  customPkgs = pkgs.extend go-overlay;
 in
 lib.mkMerge [
   {
@@ -194,7 +232,6 @@ lib.mkMerge [
         unzip
         wget
         gnumake
-        gcc
         ninja
         pkg-config
 
@@ -220,8 +257,8 @@ lib.mkMerge [
         nodePackages.prettier
 
         # Go and tools (some tools may be missing in 24.05)
-        go
-        golangci-lint
+        (customPkgs.go_1_23)
+        (customPkgs.golangci-lint_1_63_4)
         gopls
         gofumpt
         # gci golines yamlfmt — check in your nixpkgs branch, can be added via nixpkgs-unstable overlay if needed
@@ -268,6 +305,7 @@ lib.mkMerge [
         # Only Linux specific (if you want to separate)
         # pipewire — system service, NOT installed in user profile
         # flatpak/gnome-software-plugin-flatpak — better at system level
+        gcc
       ];
 
     home.sessionPath = [ "${npmGlobal}/bin" ];
@@ -284,37 +322,7 @@ lib.mkMerge [
     ############################################
     xdg.enable = true;
     xdg.configFile = {
-      # Your Neovim config, if stored next to the flake
       "nvim".source = ./nvim;
-      #   # Example: alacritty.yml, if not using HM module for alacritty
-      #   # Manage alacritty config via xdg.configFile to avoid conflicts
-      #   "alacritty/alacritty.yml".source = (pkgs.formats.yaml { }).generate "alacritty.yml" {
-      #     env = {
-      #       TERM = "xterm-256color";
-      #     };
-      #     window = {
-      #       opacity = 1.0;
-      #       padding = {
-      #         x = 5;
-      #         y = 5;
-      #       };
-      #       dynamic_padding = true;
-      #       startup_mode = "Windowed";
-      #       decorations = "Full";
-      #       resize_increments = true;
-      #     };
-      #     font = {
-      #       size = if pkgs.stdenv.isLinux then 14.0 else 18.0;
-      #       bold = {
-      #         family = "IosevkaTerm Nerd Font";
-      #         style = "Bold";
-      #       };
-      #       normal = {
-      #         family = "IosevkaTerm Nerd Font";
-      #         style = "Regular";
-      #       };
-      #     };
-      #   };
     };
   }
 
@@ -325,7 +333,7 @@ lib.mkMerge [
     home.sessionVariables = {
       GOPATH = "$HOME/go";
       GOMODCACHE = "$GOPATH/pkg/mod";
-      GOROOT = "${pkgs.go}/share/go";
+      GOROOT = "${customPkgs.go_1_23}/share/go";
       GOBIN = "$GOPATH/bin";
     };
   })
@@ -337,10 +345,10 @@ lib.mkMerge [
     home.sessionVariables = {
       GOPATH = "$HOME/go";
       GOMODCACHE = "$HOME/Library/Caches/go/mod";
-      GOROOT = "${pkgs.go}/share/go";
+      GOROOT = "${customPkgs.go_1_23}/share/go";
       GOBIN = "$HOME/go/bin";
-      # optional: unify build cache too
       GOCACHE = "$HOME/Library/Caches/go-build";
+      LD = "/usr/bin/ld";
     };
   })
 ]
