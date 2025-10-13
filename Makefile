@@ -1,67 +1,57 @@
-# Inspiration: https://github.com/mokevnin/dotfiles/blob/master/Makefile
+.PHONY: vim
 vim:
 	ln -sf $(PWD)/.vimrc ~/.vimrc
 
-alacritty:
-	mkdir -p ~/.config/alacritty
-	ln -sf $(PWD)/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
-	ln -sf $(PWD)/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+.PHONY: debian-sudo
+debian-sudo:
+	echo "su -"
+	echo "usermod -aG sudo anasyrov"
+	echo "reboot"
 
-goinfre:
-	# Make link ~/.docker -> /goinfre/ksinistr/docker
-	# Make link ~/Library/Containers/com.docker.docker -> /goinfre/ksinistr/agent
-	mkdir -p ~/goinfre/docker
-	mkdir -p ~/goinfre/agent
-	npm config set prefix '~/goinfre/.npm-global'
+# keyd config that make Meta+C like in macos
+.PHONY: debian-keyd
+debian-keyd:
+	sudo mkdir -p /etc/keyd
+	sudo cp $(PWD)/keyd/default.conf /etc/keyd/default.conf
+	sudo apt-get install -y keyd
+	sudo systemctl enable keyd
+	sudo systemctl restart keyd
 
-nvim-install:
-	mkdir -p ~/.config/nvim
-	ln -sf $(PWD)/nvim/init.lua ~/.config/nvim/init.lua
-	ln -snf $(PWD)/nvim/colors ~/.config/nvim/colors
-	ln -snf $(PWD)/nvim/lua ~/.config/nvim/lua
+.PHONY: debian-apt
+debian-apt:
+	sudo apt-get update && sudo apt-get install -y \
+		curl \
+		keyd \
+		alacritty \
+		transmission \
+		vlc \
+		keepassxc \
+		calibre \
+		firefox-esr \
+		chromium \
+		flatpak \
+		plasma-discover-backend-flatpak 
 
-prepare:
-	brew upgrade neovim git ripgrep fd bat exa
-	brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+.PHONY: debian-flatpak
+debian-flatpak:
+	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo && \
+	flatpak install -y flathub \
+		org.telegram.desktop \
+		io.dbeaver.DBeaverCommunity \
+		com.getpostman.Postman
 
-deps-npm:
-	npm install -g typescript typescript-language-server
-	npm install -g eslint_d eslint prettier
-	# Install html, css, json and eslint language servers.
-	npm install -g vscode-langservers-extracted
-	npm install -g dockerfile-language-server-nodejs
+.PHONY: debian
+debian: debian-sudo debian-apt debian-flatpak
 
-deps-go:
-	GO111MODULE=on go install golang.org/x/tools/gopls@latest
-	# https://github.com/nametake/golangci-lint-langserver
-	go get github.com/nametake/golangci-lint-langserver
-
-deps-lua:
-	npm install -g lua-fmt
-
-deps-pip:
-	pip3 install --upgrade pynvim
-	pip3 install --upgrade python-lsp-server
-	pip3 install --upgrade black flake8 pycodestyle pyflakes pylint autopep8
-
-deps-sql:
-	npm install -g sql-cli
-
-deps-vue:
-	npm install -g vls
-
-deps-nvim:
-	pip3 install pynvim
-
-deps-bash:
-	bash-language-server
-
-.PHONY: vim alacritty goinfre nvim-install prepare deps-npm deps-go deps-lua deps-pip deps-sql deps-vue deps-nvim deps-bash
+.PHONE: nix
+nix:
+	mkdir -p ~/.config/nix/
+	echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 .PHONY: nix-linux
-nix-linux:
+nix-linux: nix
 	nix run github:nix-community/home-manager/release-25.05 -- switch --flake .#artur-linux
 
 .PHONY: nix-macos
-nix-macos:
+nix-macos: nix
 	nix run github:nix-community/home-manager/release-25.05 -- switch --flake .#artur-macos

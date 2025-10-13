@@ -100,7 +100,8 @@ require("codecompanion").setup({
 							-- default = "gpt-4.1",
 							-- default = "grok-code-fast-1",
 							-- default = "claude-3.7-sonnet",
-							default = "gemini-2.5-pro",
+							-- default = "gemini-2.5-pro",
+							default = "gpt-5",
 						},
 						-- temperature = {
 						-- 	default = 0.0,

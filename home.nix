@@ -58,7 +58,7 @@ lib.mkMerge [
     home.homeDirectory = lib.mkDefault homeDir;
 
     # Allow proprietary packages (Postman, Chrome, etc.)
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = false;
 
     programs.home-manager.enable = true;
 
@@ -75,7 +75,6 @@ lib.mkMerge [
         vi = "nvim";
         vim = "nvim";
         k = "kubectl";
-        cat = "bat --style=plain";
         l = "eza";
         la = "eza -a";
         ll = "eza -lah";
@@ -182,38 +181,6 @@ lib.mkMerge [
     programs.bat.enable = true;
     programs.eza.enable = true;
 
-    # Alacritty config via HM module (more convenient than just package)
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        env = {
-          TERM = "xterm-256color";
-        };
-        window = {
-          opacity = 1.0;
-          padding = {
-            x = 5;
-            y = 5;
-          };
-          dynamic_padding = true;
-          startup_mode = "Windowed";
-          decorations = "Full";
-          resize_increments = true;
-        };
-        font = {
-          size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
-          bold = {
-            family = "IosevkaTerm Nerd Font";
-            style = "Bold";
-          };
-          normal = {
-            family = "IosevkaTerm Nerd Font";
-            style = "Regular";
-          };
-        };
-      };
-    };
-
     # direnv (if you use it)
     programs.direnv = {
       enable = true;
@@ -277,18 +244,6 @@ lib.mkMerge [
         nil
         # docker  # installs client; server/groups are better handled at system level
 
-        # UI Apps
-        alacritty
-        # telegram-desktop
-        keepassxc
-        # dbeaver-bin
-        # chromium #linux-only
-        # postman        # unfree
-
-        # Media / misc
-        # vlc #linux-only
-        # transmission_3 #linux-only
-
         # Fonts (nerdfonts option)
         pkgs.nerd-fonts.iosevka-term
 
@@ -322,7 +277,60 @@ lib.mkMerge [
     ############################################
     xdg.enable = true;
     xdg.configFile = {
+      # Your Neovim config, if stored next to the flake
       "nvim".source = ./nvim;
+      # Example: alacritty.yml, if not using HM module for alacritty
+      # Manage alacritty config via xdg.configFile to avoid conflicts
+      "alacritty/alacritty.toml".source = (pkgs.formats.toml { }).generate "alacritty.toml" {
+        env = {
+          TERM = "xterm-256color";
+        };
+        keyboard = {
+          bindings = [
+            {
+              key = "C";
+              mods = "Super";
+              action = "Copy";
+            }
+            {
+              key = "V";
+              mods = "Super";
+              action = "Paste";
+            }
+          ];
+        };
+        terminal = {
+          shell = {
+            program = "${pkgs.zsh}/bin/zsh";
+            args = [ "-l" ];
+          };
+        };
+        selection = {
+          save_to_clipboard = true;
+        };
+        window = {
+          opacity = 1.0;
+          padding = {
+            x = 5;
+            y = 5;
+          };
+          dynamic_padding = true;
+          startup_mode = "Windowed";
+          decorations = "Full";
+          resize_increments = true;
+        };
+        font = {
+          size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
+          bold = {
+            family = "IosevkaTerm Nerd Font";
+            style = "Bold";
+          };
+          normal = {
+            family = "IosevkaTerm Nerd Font";
+            style = "Regular";
+          };
+        };
+      };
     };
   }
 
@@ -330,6 +338,23 @@ lib.mkMerge [
   (lib.mkIf pkgs.stdenv.isLinux {
     # example:
     # home.packages = [ pkgs.wl-clipboard ];
+    xdg.configFile = {
+      "keyd/default.conf".source = ./keyd/default.conf;
+      # XKB option: CapsLock becomes Ctrl
+      "kxkbrc".text = ''
+        [Layout]
+        Options=ctrl:nocaps
+        ResetOldOptions=true
+        LayoutList=us,ru
+      '';
+      # Key repeat: delay (ms) and rate (chars/sec)
+      "kcminputrc".text = ''
+        [Keyboard]
+        RepeatDelay=250
+        RepeatRate=40
+      '';
+    };
+
     home.sessionVariables = {
       GOPATH = "$HOME/go";
       GOMODCACHE = "$GOPATH/pkg/mod";
