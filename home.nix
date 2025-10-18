@@ -212,6 +212,7 @@ lib.mkMerge [
         python311Packages.black
         python311Packages.flake8
         python311Packages.pylint
+        python311Packages.chromadb
 
         # Node
         nodejs
