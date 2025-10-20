@@ -130,12 +130,13 @@ lib.mkMerge [
         bindkey "^A" vi-beginning-of-line
         bindkey "^E" vi-end-of-line
 
+        llm -s "respond with 3 choices that can be ran directly on command line, no formatting" --save cli
         llm_cli(){
             emulate -L zsh
-            zle -M "$(llm -m claude-3.5-sonnet -t cli $BUFFER)"
+            zle -M "$(uvx --with llm-anthropic llm --key $ANTHROPIC_API_KEY -m claude-3.5-sonnet -t cli $BUFFER)"
         }
         zle -N llm_cli
-        bindkey '\t\t' llm_cli
+        bindkey '^[l' llm_cli   # ^[ is ESC, so Meta-l
       '';
     };
 
@@ -203,6 +204,7 @@ lib.mkMerge [
         pkg-config
 
         # Python (24.05: python311Packages available)
+        uv
         python3
         python311Packages.pip
         python311Packages.virtualenv
@@ -212,7 +214,8 @@ lib.mkMerge [
         python311Packages.black
         python311Packages.flake8
         python311Packages.pylint
-        python311Packages.chromadb
+        python311Packages.llm
+        python311Packages.llm-anthropic
 
         # Node
         nodejs
@@ -251,7 +254,6 @@ lib.mkMerge [
         # Zsh git prompt
         zsh-git-prompt
 
-        vectorcode
         k9s
         ripgrep
 
