@@ -243,7 +243,6 @@ lib.mkMerge [
         protobuf
         kubectl
         kubernetes-helm
-        wl-clipboard # Linux+Wayland
         nixfmt-rfc-style
         nil
         # docker  # installs client; server/groups are better handled at system level
@@ -264,6 +263,8 @@ lib.mkMerge [
         # pipewire — system service, NOT installed in user profile
         # flatpak/gnome-software-plugin-flatpak — better at system level
         gcc
+        wl-clipboard # Linux+Wayland
+        xclip
       ];
 
     home.sessionPath = [ "${npmGlobal}/bin" ];
@@ -287,19 +288,21 @@ lib.mkMerge [
       "alacritty/alacritty.toml".source = (pkgs.formats.toml { }).generate "alacritty.toml" {
         env = {
           TERM = "xterm-256color";
+          WINIT_UNIX_BACKEND = "wayland"; # Force Wayland backend if available
         };
         keyboard = {
           bindings = [
-            {
-              key = "C";
-              mods = "Super";
-              action = "Copy";
-            }
-            {
-              key = "V";
-              mods = "Super";
-              action = "Paste";
-            }
+              # macOS-like (Super mapped by keyd to send Insert variants)
+              { key = "Insert"; mods = "Control"; action = "Copy"; }   # Super+C (keyd -> Ctrl+Insert)
+              { key = "Insert"; mods = "Shift";   action = "Paste"; }  # Super+V (keyd -> Shift+Insert) use CLIPBOARD now
+              # Optional: keep legacy PRIMARY access
+              { key = "Y";      mods = "Control|Shift"; action = "PasteSelection"; } # Explicit primary if needed
+              # Standard terminal shortcuts (still available)
+              { key = "C"; mods = "Control|Shift"; action = "Copy"; }
+              { key = "V"; mods = "Control|Shift"; action = "Paste"; }
+              # (Super variants directly, if you also press them without keyd translation)
+              { key = "C"; mods = "Super"; action = "Copy"; }
+              { key = "V"; mods = "Super"; action = "Paste"; }
           ];
         };
         terminal = {
@@ -359,10 +362,11 @@ lib.mkMerge [
     };
 
     home.sessionVariables = {
-      GOPATH = "$HOME/go";
-      GOMODCACHE = "$GOPATH/pkg/mod";
+      GOPATH = "${config.home.homeDirectory}/go";
+      GOMODCACHE = "${config.home.homeDirectory}/go/pkg/mod";
       GOROOT = "${customPkgs.go_1_23}/share/go";
-      GOBIN = "$GOPATH/bin";
+      GOBIN = "${config.home.homeDirectory}/go/bin";
+      GOCACHE = "${config.home.homeDirectory}/.cache/go-build";
     };
   })
 
