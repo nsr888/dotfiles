@@ -247,10 +247,12 @@ lib.mkMerge [
         kubernetes-helm
         nixfmt-rfc-style
         nil
-        # docker  # installs client; server/groups are better handled at system level
+        openjdk
+        plantuml
+        graphviz
 
         # Fonts (nerdfonts option)
-        pkgs.nerd-fonts.iosevka-term
+        nerd-fonts.iosevka-term
 
         # Zsh git prompt
         zsh-git-prompt
