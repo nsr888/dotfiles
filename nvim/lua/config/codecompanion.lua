@@ -69,12 +69,14 @@ require("codecompanion").setup({
 			-- adapter = "anthropic",
 			-- adapter = "copilot",
 			-- adapter = "openrouter",
-			adapter = "copilot",
+			-- adapter = "copilot",
 			-- adapter = "chutes",
+			adapter = "zai",
 		},
 		inline = {
 			-- adapter = "anthropic",
-			adapter = "copilot",
+			-- adapter = "copilot",
+			adapter = "zai",
 			keymaps = {
 				accept_change = {
 					modes = { n = "gda" }, -- Remember this as DiffAccept
@@ -192,6 +194,20 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							default = "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
+						},
+					},
+				})
+			end,
+			zai = function()
+				return require("codecompanion.adapters.http").extend("openai_compatible", {
+					env = {
+						api_key = "ZAI_API_KEY",
+						url = "https://api.z.ai/api/coding/paas/v4",
+						chat_url = "/chat/completions",
+					},
+					schema = {
+						model = {
+							default = "GLM-4.6",
 						},
 					},
 				})

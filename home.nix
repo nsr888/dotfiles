@@ -151,6 +151,8 @@ lib.mkMerge [
       PATH = "$PATH:$GOPATH/bin:$GOROOT/bin";
       FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'";
       KUBECONFIG = "$HOME/.kube/config";
+      NPM_CONFIG_PREFIX = npmGlobal;
+      NPM_CONFIG_CACHE = "${config.home.homeDirectory}/.npm-cache";
     };
 
     ############################################
@@ -367,6 +369,10 @@ lib.mkMerge [
       GOROOT = "${customPkgs.go_1_23}/share/go";
       GOBIN = "${config.home.homeDirectory}/go/bin";
       GOCACHE = "${config.home.homeDirectory}/.cache/go-build";
+
+      UV_PYTHON = "/usr/bin/python3.13";
+      # Optional safety: don't allow pip outside a venv
+      PIP_REQUIRE_VIRTUALENV = "1";
     };
   })
 
