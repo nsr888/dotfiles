@@ -68,15 +68,16 @@ require("codecompanion").setup({
 		chat = {
 			-- adapter = "anthropic",
 			-- adapter = "copilot",
-			-- adapter = "openrouter",
+			adapter = "openrouter",
 			-- adapter = "copilot",
 			-- adapter = "chutes",
-			adapter = "zai",
+			-- adapter = "zai",
 		},
 		inline = {
 			-- adapter = "anthropic",
 			-- adapter = "copilot",
-			adapter = "zai",
+			-- adapter = "zai",
+			adapter = "openrouter",
 			keymaps = {
 				accept_change = {
 					modes = { n = "gda" }, -- Remember this as DiffAccept

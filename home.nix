@@ -259,7 +259,7 @@ lib.mkMerge [
 
         k9s
         ripgrep
-
+        mods
       ]
       # ++ [ unstablePkgs.vectorcode ]
       ++ lib.optionals pkgs.stdenv.isLinux [
