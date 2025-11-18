@@ -276,6 +276,7 @@ lib.mkMerge [
     # do the install with an explicit prefix so it never touches /nix/store
     home.activation.installClaudeCode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "${npmGlobal}"
+      rm -rf "${npmGlobal}/lib/node_modules/@anthropic-ai/claude-code"
       "${pkgs.nodejs}/bin/npm" --userconfig "$HOME/.npmrc" \
         --prefix "${npmGlobal}" -g install @anthropic-ai/claude-code
     '';
