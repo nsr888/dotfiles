@@ -13,7 +13,7 @@ let
 
   # Overlay for custom Go packages
   go-overlay = self: super: {
-    go_1_23 = unstablePkgs.go_1_23;
+    go_1_24 = unstablePkgs.go_1_24;
     golangci-lint_1_63_4 = super.buildGoModule {
       pname = "golangci-lint";
       version = "1.63.4";
@@ -137,6 +137,7 @@ lib.mkMerge [
         }
         zle -N llm_cli
         bindkey '^[l' llm_cli   # ^[ is ESC, so Meta-l
+
       '';
     };
 
@@ -148,7 +149,7 @@ lib.mkMerge [
       PAGER = "less -FRX";
       LANG = "en_US.UTF-8";
 
-      PATH = "$PATH:$GOPATH/bin:$GOROOT/bin";
+      PATH = "$PATH:$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin";
       FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'";
       KUBECONFIG = "$HOME/.kube/config";
       NPM_CONFIG_PREFIX = npmGlobal;
@@ -230,7 +231,7 @@ lib.mkMerge [
         nodePackages.prettier
 
         # Go and tools (some tools may be missing in 24.05)
-        (customPkgs.go_1_23)
+        (customPkgs.go_1_24)
         (customPkgs.golangci-lint_1_63_4)
         gopls
         gofumpt
@@ -260,6 +261,7 @@ lib.mkMerge [
         k9s
         ripgrep
         mods
+        chatgpt-cli
       ]
       # ++ [ unstablePkgs.vectorcode ]
       ++ lib.optionals pkgs.stdenv.isLinux [
@@ -369,7 +371,7 @@ lib.mkMerge [
     home.sessionVariables = {
       GOPATH = "${config.home.homeDirectory}/go";
       GOMODCACHE = "${config.home.homeDirectory}/go/pkg/mod";
-      GOROOT = "${customPkgs.go_1_23}/share/go";
+      GOROOT = "${customPkgs.go_1_24}/share/go";
       GOBIN = "${config.home.homeDirectory}/go/bin";
       GOCACHE = "${config.home.homeDirectory}/.cache/go-build";
 
@@ -386,7 +388,7 @@ lib.mkMerge [
     home.sessionVariables = {
       GOPATH = "$HOME/go";
       GOMODCACHE = "$HOME/Library/Caches/go/mod";
-      GOROOT = "${customPkgs.go_1_23}/share/go";
+      GOROOT = "${customPkgs.go_1_24}/share/go";
       GOBIN = "$HOME/go/bin";
       GOCACHE = "$HOME/Library/Caches/go-build";
       LD = "/usr/bin/ld";

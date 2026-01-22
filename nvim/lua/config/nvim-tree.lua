@@ -80,4 +80,9 @@ require("nvim-tree").setup({
 		-- 	custom_only = false,
 		-- },
 	},
+	git = {
+		enable = true,
+		ignore = false,
+		timeout = 500,
+	},
 })
