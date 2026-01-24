@@ -137,7 +137,7 @@ lib.mkMerge [
         }
         zle -N llm_cli
         bindkey '^[l' llm_cli   # ^[ is ESC, so Meta-l
-
+        export PATH="$HOME/.local/bin:$PATH"
       '';
     };
 
@@ -149,7 +149,7 @@ lib.mkMerge [
       PAGER = "less -FRX";
       LANG = "en_US.UTF-8";
 
-      PATH = "$PATH:$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin";
+      PATH = "$PATH:$GOPATH/bin:$GOROOT/bin";
       FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'";
       KUBECONFIG = "$HOME/.kube/config";
       NPM_CONFIG_PREFIX = npmGlobal;
