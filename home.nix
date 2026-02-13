@@ -138,6 +138,7 @@ lib.mkMerge [
         zle -N llm_cli
         bindkey '^[l' llm_cli   # ^[ is ESC, so Meta-l
         export PATH="$HOME/.local/bin:$PATH"
+        export PATH="$HOME/.opencode/bin:$PATH"
       '';
     };
 

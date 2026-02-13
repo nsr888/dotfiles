@@ -48,3 +48,17 @@ set smartcase       "...unless uppercase letters used
 set hlsearch        "Highlight all matches
 nmap <silent> // :nohlsearch<CR>
 noremap <leader>hl :set hlsearch! hlsearch?<CR>
+
+" Ultra-minimal grayscale color scheme for vim-tiny,
+" which lacks +syntax and +termguicolors
+set background=dark
+highlight clear
+hi Normal ctermfg=252 ctermbg=235
+hi LineNr ctermfg=240
+
+" vim-tiny skips this entire block because it lacks +eval
+if 1
+  set termguicolors
+  colorscheme habamax
+  syntax on
+endif
