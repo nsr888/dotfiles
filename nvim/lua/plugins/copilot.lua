@@ -2,6 +2,7 @@ return {
 	"CopilotC-Nvim/CopilotChat.nvim",
 	branch = "main",
 	lazy = false,
+	enabled = vim.env.AI_COMPLETION_PROVIDER ~= "minuet",
 	dependencies = {
 		"github/copilot.vim",
 		"nvim-lua/plenary.nvim",

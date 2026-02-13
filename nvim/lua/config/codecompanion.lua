@@ -6,6 +6,13 @@ local constants = {
 	SYSTEM_ROLE = "system",
 }
 
+local default_adapter
+if vim.env.CODECOMPANION_ADAPTER then
+  default_adapter = vim.env.CODECOMPANION_ADAPTER
+else
+  default_adapter = "copilot"
+end
+
 require("codecompanion").setup({
 	opts = {
 		log_level = "DEBUG",
@@ -66,18 +73,10 @@ require("codecompanion").setup({
 	},
 	strategies = {
 		chat = {
-			-- adapter = "anthropic",
-			-- adapter = "copilot",
-			adapter = "openrouter",
-			-- adapter = "copilot",
-			-- adapter = "chutes",
-			-- adapter = "zai",
+			adapter = default_adapter,
 		},
 		inline = {
-			-- adapter = "anthropic",
-			-- adapter = "copilot",
-			-- adapter = "zai",
-			adapter = "openrouter",
+			adapter = default_adapter,
 			keymaps = {
 				accept_change = {
 					modes = { n = "gda" }, -- Remember this as DiffAccept
@@ -121,8 +120,8 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							-- default = "deepseek/deepseek-r1-0528",
-							-- default = "moonshotai/kimi-k2",
-							default = "google/gemini-2.5-pro",
+							default = "moonshotai/kimi-k2.5",
+							-- default = "google/gemini-2.5-pro",
 						},
 						-- temperature = {
 						-- 	default = 0.6, -- default temperature for kimi-k2
