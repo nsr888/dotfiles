@@ -27,8 +27,8 @@ require("codecompanion").setup({
 			prompt = "Prompt ", -- Prompt used for interactive LLM calls
 			provider = "snacks", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
 			opts = {
-				show_default_actions = true, -- Show the default actions in the action palette?
-				show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+				show_preset_actions = true, -- Show the default actions in the action palette?
+				show_preset_prompts = true, -- Show the default prompt library in the action palette?
 			},
 		},
 		diff = {
@@ -140,14 +140,14 @@ require("codecompanion").setup({
 			opts = {
 				mapping = "<Leader>ce",
 				modes = { "n" },
-				short_name = "buf", -- use :CodeCompanion /buf
+				alias = "buf", -- use :CodeCompanion /buf
 				-- user_prompt = true, -- ask for your message each time
 				auto_submit = false,
 			},
 			prompts = {
 				{
 					role = "user",
-					content = "#{buffer}{watch} ",
+					content = "#{buffer}{diff} ",
 					opts = { contains_code = true },
 				},
 			},
@@ -158,7 +158,7 @@ require("codecompanion").setup({
 			opts = {
 				mapping = "<LocalLeader>ce",
 				modes = { "v" },
-				short_name = "expert",
+				alias = "expert",
 				auto_submit = true,
 				stop_context_insertion = true,
 				user_prompt = true,
@@ -193,7 +193,7 @@ require("codecompanion").setup({
 			opts = {
 				mapping = "<LocalLeader>ct",
 				modes = { "v" },
-				short_name = "gotest",
+				alias = "gotest",
 				auto_submit = true,
 				stop_context_insertion = true,
 				user_prompt = false,
