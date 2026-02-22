@@ -15,9 +15,6 @@ return {
 	-- Fzf
 	{
 		"junegunn/fzf",
-		build = function()
-			vim.fn["fzf#install"]()
-		end,
 		event = { "BufReadPost" },
 	},
 	{ "junegunn/fzf.vim", dependencies = "junegunn/fzf" },

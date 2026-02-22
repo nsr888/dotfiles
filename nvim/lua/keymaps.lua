@@ -122,16 +122,17 @@ local mappings = {
 		{ "<leader>FF", "<cmd>FlutterCopyProfilerUrl<CR>" },
 		{ "<leader>y", '"+y' }, -- Copy to clipboard
 		{ "<leader>Y", 'gg"+yG' }, -- Copy whole document to clipboard
-		-- neotest
-		{ "<leader>tt", "<cmd>lua require'neotest'.run.run()<cr>" }, -- Test nearest
-		{ "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>" }, -- Test file
-		{ "<leader>td", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>" }, -- Debug test
-		{ "<leader>ts", "<cmd>lua require('neotest').run.stop()<cr>" }, -- Test stop
-		{ "<leader>ta", "<cmd>lua require('neotest').run.attach()<cr>" }, -- Attach test
 		{ "<localleader>t", ':echo "Hello, world!"<cr>' },
 		{ "<leader>cl", ":CodeCompanion<CR>" },
 		{ "<leader>cc", ":CodeCompanionChat<CR>" },
 		{ "<leader>ct", ":CodeCompanionAction<CR>" },
+		{
+			"<leader>td",
+			function()
+				require("neotest").run.run({ suite = false, strategy = "dap" })
+			end,
+			desc = "Debug nearest test",
+		},
 	},
 	t = {
 		-- Terminal mode
@@ -191,61 +192,3 @@ vim.api.nvim_set_keymap("n", "<leader>tp", ":tabp<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>tmp", ":-tabmove<CR>", { noremap = true })
 -- move current tab to next position
 vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
-
--- Harpoon keymaps
-local harpoon = require("harpoon")
-harpoon:setup()
-register_mappings({
-	n = {
-		{
-			"<leader>ha",
-			function()
-				harpoon:list():add()
-			end,
-			"Harpoon: add file",
-		},
-		{
-			"<leader>hm",
-			function()
-				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end,
-			"Harpoon: menu",
-		},
-		{
-			"<leader>h1",
-			function()
-				harpoon:list():select(1)
-			end,
-			"Harpoon: file 1",
-		},
-		{
-			"<leader>h2",
-			function()
-				harpoon:list():select(2)
-			end,
-			"Harpoon: file 2",
-		},
-		{
-			"<leader>h3",
-			function()
-				harpoon:list():select(3)
-			end,
-			"Harpoon: file 3",
-		},
-		{
-			"<leader>h4",
-			function()
-				harpoon:list():select(4)
-			end,
-			"Harpoon: file 4",
-		},
-	},
-}, { silent = true, noremap = true })
-
--- Toggle previous & next buffers stored within Harpoon list
-vim.keymap.set("n", "<C-S-P>", function()
-	harpoon:list():prev()
-end)
-vim.keymap.set("n", "<C-S-N>", function()
-	harpoon:list():next()
-end)
