@@ -262,7 +262,7 @@ lib.mkMerge [
         k9s
         ripgrep
         mods
-        chatgpt-cli
+        tree-sitter # tree-sitter-cli for nvim-treesitter
       ]
       # ++ [ unstablePkgs.vectorcode ]
       ++ lib.optionals pkgs.stdenv.isLinux [

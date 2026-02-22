@@ -89,3 +89,10 @@ vim.g.loaded_perl_provider = 0
 vim.lsp.set_log_level("off")
 vim.g.copilot_filetypes = { markdown = false, zsh = false }
 vim.g.copilot_enabled = false
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	callback = function(args)
+		pcall(vim.treesitter.start, args.buf)
+	end,
+})
