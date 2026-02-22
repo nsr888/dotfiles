@@ -97,16 +97,15 @@ require("codecompanion").setup({
 					name = "copilot",
 					schema = {
 						model = {
-							-- default = "gpt-5-mini",
-							-- default = "gpt-4.1",
-							-- default = "grok-code-fast-1",
-							-- default = "claude-3.7-sonnet",
-							-- default = "gpt-5",
-							default = "gemini-2.5-pro",
+							default = "gpt-5",
+							choices = {
+								"gpt-5-mini",
+								"gpt-4.1",
+								"grok-code-fast-1",
+								"claude-3.7-sonnet",
+								"gemini-2.5-pro",
+							},
 						},
-						-- temperature = {
-						-- 	default = 0.0,
-						-- },
 					},
 				})
 			end,
@@ -119,7 +118,7 @@ require("codecompanion").setup({
 					},
 					schema = {
 						model = {
-							default = "google/gemini-3-pro-preview",
+							default = "anthropic/claude-opus-4.6",
 							choices = {
 								"z-ai/glm-5",
 								"google/gemini-2.5-pro",
@@ -128,92 +127,6 @@ require("codecompanion").setup({
 								"anthropic/claude-opus-4.6",
 								"google/gemini-3-pro-preview",
 							},
-						},
-						-- temperature = {
-						-- 	default = 0.6, -- default temperature for kimi-k2
-						-- },
-					},
-				})
-			end,
-			gemini = function()
-				return require("codecompanion.adapters.http").extend("gemini", {
-					name = "gemini",
-					schema = {
-						model = {
-							default = "gemini-2.5-pro",
-						},
-						num_ctx = {
-							default = 8192,
-						},
-						num_predict = {
-							default = -1,
-						},
-					},
-					env = {
-						api_key = "GEMINI_API_KEY",
-					},
-				})
-			end,
-			llama3 = function()
-				return require("codecompanion.adapters.http").extend("ollama", {
-					name = "llama3",
-					schema = {
-						model = {
-							default = "llama3.2:3b",
-							choices = {
-								"mistral:7b",
-								"starcoder2:7b",
-								"codellama:7b",
-								"qwen2.5-coder:7b",
-								"deepseek-r1:7b",
-								"llama3.2:3b",
-							},
-						},
-						num_ctx = {
-							default = 16384,
-						},
-						num_predict = {
-							default = -1,
-						},
-					},
-				})
-			end,
-			anthropic = function()
-				return require("codecompanion.adapters.http").extend("anthropic", {
-					env = {
-						api_key = "ANTHROPIC_API_KEY",
-					},
-					schema = {
-						model = {
-							default = "claude-sonnet-4-20250514",
-						},
-					},
-				})
-			end,
-			chutes = function()
-				return require("codecompanion.adapters.http").extend("openai_compatible", {
-					env = {
-						api_key = "CHUTES_CODECOMPANION_API_KEY",
-						url = "https://llm.chutes.ai",
-						chat_url = "/v1/chat/completions",
-					},
-					schema = {
-						model = {
-							default = "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
-						},
-					},
-				})
-			end,
-			zai = function()
-				return require("codecompanion.adapters.http").extend("openai_compatible", {
-					env = {
-						api_key = "ZAI_API_KEY",
-						url = "https://api.z.ai/api/coding/paas/v4",
-						chat_url = "/chat/completions",
-					},
-					schema = {
-						model = {
-							default = "GLM-4.6",
 						},
 					},
 				})
