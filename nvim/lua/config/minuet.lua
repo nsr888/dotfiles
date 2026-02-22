@@ -1,10 +1,10 @@
 local mc = require("minuet.config")
 
 require("minuet").setup({
-	-- notify = "debug",
+	notify = "debug",
+	provider = "codestral",
 	n_completions = 1,
 	add_single_line_entry = false,
-	provider = "openai_compatible",
 	provider_options = {
 		-- Requires $GEMINI_API_KEY
 		gemini = {
@@ -38,7 +38,7 @@ require("minuet").setup({
 		},
 	},
 	virtualtext = {
-		auto_trigger_ft = { "lua" }, -- manually trigger, see ./completion.lua
+		auto_trigger_ft = { "lua", "go", "python" },
 		keymap = {
 			accept = "<Tab>",
 			accept_line = "<C-l>",

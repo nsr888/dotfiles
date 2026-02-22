@@ -8,9 +8,9 @@ local constants = {
 
 local default_adapter
 if vim.env.CODECOMPANION_ADAPTER then
-  default_adapter = vim.env.CODECOMPANION_ADAPTER
+	default_adapter = vim.env.CODECOMPANION_ADAPTER
 else
-  default_adapter = "copilot"
+	default_adapter = "copilot"
 end
 
 require("codecompanion").setup({
@@ -19,13 +19,13 @@ require("codecompanion").setup({
 	},
 	display = {
 		chat = {
-			show_settings = true,
+			-- show_settings = true,
 		},
 		action_palette = {
 			width = 95,
 			height = 10,
 			prompt = "Prompt ", -- Prompt used for interactive LLM calls
-			provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+			provider = "snacks", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
 			opts = {
 				show_default_actions = true, -- Show the default actions in the action palette?
 				show_default_prompt_library = true, -- Show the default prompt library in the action palette?
@@ -119,9 +119,15 @@ require("codecompanion").setup({
 					},
 					schema = {
 						model = {
-							-- default = "deepseek/deepseek-r1-0528",
-							default = "moonshotai/kimi-k2.5",
-							-- default = "google/gemini-2.5-pro",
+							default = "google/gemini-3-pro-preview",
+							choices = {
+								"z-ai/glm-5",
+								"google/gemini-2.5-pro",
+								"moonshotai/kimi-k2.5",
+								"deepseek/deepseek-r1-0528",
+								"anthropic/claude-opus-4.6",
+								"google/gemini-3-pro-preview",
+							},
 						},
 						-- temperature = {
 						-- 	default = 0.6, -- default temperature for kimi-k2
