@@ -1,28 +1,34 @@
 return {
-	"nvim-neotest/neotest",
-	dependencies = {
-		"nvim-neotest/nvim-nio",
-		"nvim-lua/plenary.nvim",
-		"antoinemadec/FixCursorHold.nvim",
-		"nvim-treesitter/nvim-treesitter",
-		"nvim-neotest/neotest-go",
-	},
-	config = function()
-		-- get neotest namespace (api call creates or returns namespace)
-		local neotest_ns = vim.api.nvim_create_namespace("neotest")
-		vim.diagnostic.config({
-			virtual_text = {
-				format = function(diagnostic)
-					local message = diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
-					return message
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			{
+				"nvim-treesitter/nvim-treesitter", -- Optional, but recommended
+				branch = "main", -- NOTE; not the master branch!
+				build = function()
+					vim.cmd(":TSUpdate go")
 				end,
 			},
-		}, neotest_ns)
-		require("neotest").setup({
-			-- your neotest config here
-			adapters = {
-				require("neotest-go"),
+			{
+				"fredrikaverpil/neotest-golang",
+				version = "*", -- Optional, but recommended; track releases
+				build = function()
+					vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
+				end,
 			},
-		})
-	end,
+		},
+		config = function()
+			local config = {
+				runner = "gotestsum", -- Optional, but recommended
+			}
+			require("neotest").setup({
+				adapters = {
+					require("neotest-golang")(config),
+				},
+			})
+		end,
+	},
 }
