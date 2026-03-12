@@ -48,6 +48,7 @@ let
 
   # Apply the overlay
   customPkgs = pkgs.extend go-overlay;
+  rustToolchain = pkgs.rust-bin.stable.latest.default;
 in
 lib.mkMerge [
   {
@@ -240,8 +241,7 @@ lib.mkMerge [
         # gci golines yamlfmt — check in your nixpkgs branch, can be added via nixpkgs-unstable overlay if needed
 
         # Rust
-        rustc
-        cargo
+        rustToolchain
         stylua
 
         # Dev tools
