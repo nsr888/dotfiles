@@ -92,7 +92,8 @@ lib.mkMerge [
         ZSH_GIT_PROMPT_FORCE_BLANK=1
 
         # Set the prompt
-        export PROMPT='%n@%m:%~ $(git_super_status)%# '
+        # export PROMPT='%n@%m:%~ $(git_super_status)%# '
+        PROMPT='%n@%m:%1~ $(git_super_status)%# '
 
         # kubectl completion for zsh
         if command -v kubectl >/dev/null 2>&1; then
