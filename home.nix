@@ -180,6 +180,11 @@ lib.mkMerge [
       # Plugins can be added through flakes/xdg.configFile, keeping base setup
     };
 
+    programs.worktrunk = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     programs.fzf = {
       enable = true;
       enableZshIntegration = true; # ^R history / ^T files / Alt-C cd

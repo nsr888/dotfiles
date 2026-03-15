@@ -11,6 +11,8 @@
 
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    worktrunk.url = "github:max-sixty/worktrunk";
   };
 
   outputs =
@@ -20,6 +22,7 @@
       unstable,
       rust-overlay,
       home-manager,
+      worktrunk,
       ...
     }:
     let
@@ -77,8 +80,12 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = pkgs;
           # Make pkgs2505 available to modules (e.g., to use newer packages)
-          extraSpecialArgs = { inherit unstablePkgs; };
+          extraSpecialArgs = {
+            inherit unstablePkgs;
+            worktrunk-pkgs = worktrunk.packages.${system};
+          };
           modules = [
+            worktrunk.homeModules.default
             (
               { ... }:
               {
