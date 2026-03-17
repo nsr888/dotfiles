@@ -10,6 +10,10 @@ let
   user = "anasyrov";
   homeDir = "/home/${user}";
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
+  terminalFontName = "IosevkaTerm Nerd Font";
+  terminalFontSize = if pkgs.stdenv.isLinux then 14.0 else 16.0;
+  zshShell = "${pkgs.zsh}/bin/zsh";
+  zshLoginShell = "${zshShell} --login";
 
   # Overlay for custom Go packages
   go-overlay = self: super: {
@@ -321,7 +325,7 @@ lib.mkMerge [
         };
         terminal = {
           shell = {
-            program = "${pkgs.zsh}/bin/zsh";
+            program = zshShell;
             args = [ "-l" ];
           };
         };
@@ -340,13 +344,13 @@ lib.mkMerge [
           resize_increments = true;
         };
         font = {
-          size = if pkgs.stdenv.isLinux then 14.0 else 16.0;
+          size = terminalFontSize;
           bold = {
-            family = "IosevkaTerm Nerd Font";
+            family = terminalFontName;
             style = "Bold";
           };
           normal = {
-            family = "IosevkaTerm Nerd Font";
+            family = terminalFontName;
             style = "Regular";
           };
         };
@@ -356,10 +360,34 @@ lib.mkMerge [
 
   # Linux specific:
   (lib.mkIf pkgs.stdenv.isLinux {
+    fonts.fontconfig.enable = true;
+
     # example:
     # home.packages = [ pkgs.wl-clipboard ];
     xdg.configFile = {
+      "kitty/kitty.conf".text = ''
+        font_family ${terminalFontName}
+        font_size ${toString terminalFontSize}
+        background_opacity 1.0
+        confirm_os_window_close 0
+        copy_on_select clipboard
+        enable_audio_bell no
+        shell ${zshLoginShell}
+        tab_bar_edge top
+        tab_bar_min_tabs 1
+        tab_bar_style slant
+        window_padding_width 0
+        map ctrl+insert copy_to_clipboard
+        map shift+insert paste_from_clipboard
+        map ctrl+shift+c copy_to_clipboard
+        map ctrl+shift+v paste_from_clipboard
+        map super+c copy_to_clipboard
+        map super+v paste_from_clipboard
+      '';
       "keyd/default.conf".source = ./keyd/default.conf;
+      "xdg-terminals.list".text = ''
+        kitty.desktop
+      '';
       # XKB option: CapsLock becomes Ctrl
       "kxkbrc".text = ''
         [Layout]
@@ -385,6 +413,7 @@ lib.mkMerge [
       UV_PYTHON = "/usr/bin/python3.13";
       # Optional safety: don't allow pip outside a venv
       PIP_REQUIRE_VIRTUALENV = "1";
+      TERMINAL = "kitty";
     };
   })
 

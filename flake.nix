@@ -99,6 +99,12 @@
                 };
               }
             )
+            (
+              { pkgs, ... }:
+              {
+                targets.genericLinux.enable = pkgs.stdenv.isLinux;
+              }
+            )
             ./home.nix
             (
               { config, pkgs, ... }:
