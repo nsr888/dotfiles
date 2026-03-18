@@ -314,7 +314,7 @@ lib.mkMerge [
         tab_bar_edge top
         tab_bar_min_tabs 1
         tab_bar_style slant
-        window_padding_width 0
+        window_padding_width 5
         map ctrl+shift+c copy_to_clipboard
         map ctrl+shift+v paste_from_clipboard
         map super+c copy_to_clipboard
