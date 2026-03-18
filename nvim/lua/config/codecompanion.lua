@@ -98,13 +98,13 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							default = "gpt-5",
-							choices = {
-								"gpt-5-mini",
-								"gpt-4.1",
-								"grok-code-fast-1",
-								"claude-3.7-sonnet",
-								"gemini-2.5-pro",
-							},
+							-- choices = {
+							-- 	"gpt-5-mini",
+							-- 	"gpt-4.1",
+							-- 	"grok-code-fast-1",
+							-- 	"claude-3.7-sonnet",
+							-- 	"gemini-2.5-pro",
+							-- },
 						},
 					},
 				})

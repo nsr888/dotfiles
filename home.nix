@@ -384,6 +384,7 @@ lib.mkMerge [
         map super+c copy_to_clipboard
         map super+v paste_from_clipboard
       '';
+      "kitty/current-theme.conf".source = ./kitty/current-theme.conf;
       "keyd/default.conf".source = ./keyd/default.conf;
       "xdg-terminals.list".text = ''
         kitty.desktop
