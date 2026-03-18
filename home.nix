@@ -10,7 +10,7 @@ let
   user = "anasyrov";
   homeDir = "/home/${user}";
   npmGlobal = "${config.home.homeDirectory}/.npm-global";
-  terminalFontName = "IosevkaTerm Nerd Font";
+  terminalFontName = "IosevkaTerm Nerd Font Mono";
   terminalFontSize = if pkgs.stdenv.isLinux then 14.0 else 16.0;
   zshShell = "${pkgs.zsh}/bin/zsh";
   zshLoginShell = "${zshShell} --login";
@@ -303,6 +303,28 @@ lib.mkMerge [
       "nvim".source = ./nvim;
       # Example: alacritty.yml, if not using HM module for alacritty
       # Manage alacritty config via xdg.configFile to avoid conflicts
+      "kitty/kitty.conf".text = ''
+        font_family family="${terminalFontName}"
+        font_size ${toString terminalFontSize}
+        background_opacity 1.0
+        confirm_os_window_close 0
+        copy_on_select clipboard
+        enable_audio_bell no
+        shell ${zshLoginShell}
+        tab_bar_edge top
+        tab_bar_min_tabs 1
+        tab_bar_style slant
+        window_padding_width 0
+        map ctrl+shift+c copy_to_clipboard
+        map ctrl+shift+v paste_from_clipboard
+        map super+c copy_to_clipboard
+        map super+v paste_from_clipboard
+        include current-theme.conf
+      '' + lib.optionalString pkgs.stdenv.isLinux ''
+        map ctrl+insert copy_to_clipboard
+        map shift+insert paste_from_clipboard
+      '';
+      "kitty/current-theme.conf".source = ./kitty/current-theme.conf;
       "alacritty/alacritty.toml".source = (pkgs.formats.toml { }).generate "alacritty.toml" {
         env = {
           TERM = "xterm-256color";
@@ -365,26 +387,6 @@ lib.mkMerge [
     # example:
     # home.packages = [ pkgs.wl-clipboard ];
     xdg.configFile = {
-      "kitty/kitty.conf".text = ''
-        font_family ${terminalFontName}
-        font_size ${toString terminalFontSize}
-        background_opacity 1.0
-        confirm_os_window_close 0
-        copy_on_select clipboard
-        enable_audio_bell no
-        shell ${zshLoginShell}
-        tab_bar_edge top
-        tab_bar_min_tabs 1
-        tab_bar_style slant
-        window_padding_width 0
-        map ctrl+insert copy_to_clipboard
-        map shift+insert paste_from_clipboard
-        map ctrl+shift+c copy_to_clipboard
-        map ctrl+shift+v paste_from_clipboard
-        map super+c copy_to_clipboard
-        map super+v paste_from_clipboard
-      '';
-      "kitty/current-theme.conf".source = ./kitty/current-theme.conf;
       "keyd/default.conf".source = ./keyd/default.conf;
       "xdg-terminals.list".text = ''
         kitty.desktop
