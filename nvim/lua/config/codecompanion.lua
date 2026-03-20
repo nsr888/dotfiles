@@ -97,7 +97,7 @@ require("codecompanion").setup({
 					name = "copilot",
 					schema = {
 						model = {
-							default = "gpt-5",
+							default = "claude-sonnet-4.6",
 							-- choices = {
 							-- 	"gpt-5-mini",
 							-- 	"gpt-4.1",
